@@ -10,12 +10,14 @@ public class Camera : MonoBehaviour
 	
 	public float moveDamping = 15.0f;
 	//public float rotateDamping = 10.0f;
-	public float distance = 5.0f;
-	public float height = 4.0f;
+	private float xDistance;
+	private float zDistance;
 
-	public float targetOffset = 2.0f;
+	private float height;
 
 	private Transform tr;
+
+	private bool isChanged = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -23,28 +25,24 @@ public class Camera : MonoBehaviour
 		target = player;
 		tr = GetComponent<Transform>();
 
-		distance = tr.position.z;
+		xDistance = tr.position.x;
+		zDistance = tr.position.z;
 		height = tr.position.y;
 	}
 
 	private void LateUpdate()
 	{
-		if (EnemyGenerator.isGenerated)
+		if (!isChanged && EnemyGenerator.isGenerated)
 		{
 			StartCoroutine(ChangeTarget());
-			EnemyGenerator.isGenerated = false;
+			isChanged = true;
 		}
 
-		distance = target.Equals(player) ? -20 : 0;
-		var camPos = target.position - (target.forward * distance) + (target.up * height);
 
-		tr.position = Vector3.Slerp(tr.position, camPos, Time.deltaTime * moveDamping);
-
-		//tr.rotation = Quaternion.Slerp(tr.rotation, target.rotation, Time.deltaTime * rotateDamping);
-
-		//tr.LookAt(target.position + (target.up * targetOffset));
-
-		Debug.Log(target.position);
+		Vector3 followPos = target.position + (Vector3.forward * zDistance) + (Vector3.right * xDistance);
+		followPos.y = height; 
+		tr.position = Vector3.Lerp(tr.position, followPos, Time.deltaTime * moveDamping);
+	
 	}
 
 	IEnumerator ChangeTarget()

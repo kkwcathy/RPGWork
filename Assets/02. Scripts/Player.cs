@@ -15,19 +15,18 @@ public class Player : MonoBehaviour
     void Start()
     {
 		navMeshAgent = GetComponent<NavMeshAgent>();
-		navMeshAgent.speed = 10;
 		navMeshAgent.SetDestination(wayPoints[0].transform.position);
-	}
-
-	private void MovePoint()
-	{
-		
 	}
 
 	void Update()
     {
-		MovePoint();
-		
+
+		if (EnemyGenerator.isGenerated)
+		{
+			navMeshAgent.SetDestination(wayPoints[1].transform.position);
+			Debug.Log("ddaf");
+		}
+
 		//transform.position = Vector3.Lerp(, wayPoints[0].transform.position, Time.deltaTime * speed);
 		//Debug.Log(transform.position);
 	}
