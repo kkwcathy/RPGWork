@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 {
 	[SerializeField] private float speed;
 
-	public List<GameObject> wayPoints;
 
 	NavMeshAgent navMeshAgent;
 
@@ -15,17 +14,15 @@ public class Player : MonoBehaviour
     void Start()
     {
 		navMeshAgent = GetComponent<NavMeshAgent>();
-		navMeshAgent.SetDestination(wayPoints[0].transform.position);
+
+		// 시작할 땐 첫 웨이브 전까지 ↙ 방향으로 이동
+		navMeshAgent.SetDestination(transform.position + (Vector3.left * 20 + Vector3.back * 20));
+		//navMeshAgent.SetDestination(wayPoints[0].transform.position);
+
 	}
 
 	void Update()
     {
-
-		if (EnemyGenerator.isGenerated)
-		{
-			navMeshAgent.SetDestination(wayPoints[1].transform.position);
-			Debug.Log("ddaf");
-		}
 
 		//transform.position = Vector3.Lerp(, wayPoints[0].transform.position, Time.deltaTime * speed);
 		//Debug.Log(transform.position);

@@ -48,9 +48,8 @@ public class Camera : MonoBehaviour
 	IEnumerator ChangeTarget()
 	{
 		target = change;
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.0f);
 
-		Debug.Log("change");
 		target = player;
 	}
 }
