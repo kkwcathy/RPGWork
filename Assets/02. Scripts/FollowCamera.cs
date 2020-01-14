@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class FollowCamera : MonoBehaviour
 {
-	public Transform player;
+
+	public Transform playerFocus;
+
 	Transform target;
-	public Transform change;
-	
+
 	public float moveDamping = 15.0f;
 	//public float rotateDamping = 10.0f;
 	private float xDistance;
@@ -17,12 +18,14 @@ public class Camera : MonoBehaviour
 
 	private Transform tr;
 
-	private bool isChanged = false;
-
+	bool isTargetChange = false;
+	bool isEnemyFocus = false;
+	
 	// Start is called before the first frame update
 	void Start()
 	{
-		target = player;
+		target = playerFocus;
+
 		tr = GetComponent<Transform>();
 
 		xDistance = tr.position.x;
@@ -32,24 +35,23 @@ public class Camera : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (!isChanged && EnemyGenerator.isGenerated)
-		{
-			StartCoroutine(ChangeTarget());
-			isChanged = true;
-		}
-
-
 		Vector3 followPos = target.position + (Vector3.forward * zDistance) + (Vector3.right * xDistance);
 		followPos.y = height; 
 		tr.position = Vector3.Lerp(tr.position, followPos, Time.deltaTime * moveDamping);
 	
 	}
-
-	IEnumerator ChangeTarget()
+	public void ChangeTarget(Transform change)
 	{
+		StartCoroutine(FocusEnemy(change));
+	}
+
+	public IEnumerator FocusEnemy(Transform change)
+	{
+
 		target = change;
 		yield return new WaitForSeconds(1.0f);
 
-		target = player;
+		target = playerFocus;
+		isEnemyFocus = false;
 	}
 }
