@@ -5,9 +5,12 @@ using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
-	[SerializeField] private float speed;
+	[SerializeField] private float speed = 15.0f;
 
+	[SerializeField] private float DodgeDistance = -5.0f;
 	public Vector3 curDesPos;
+
+	Vector3 prevPos;
 
 	public bool IsChange
 	{
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour
 		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
 	}
 
+
 	void Start()
     {
 		navMeshAgent = GetComponent<NavMeshAgent>();
@@ -38,7 +42,17 @@ public class Player : MonoBehaviour
 	public void ChangeDestination()
 	{
 		curDesPos = EnemyGenerator.curWayPoint.position;
-		navMeshAgent.SetDestination(curDesPos);
+
+		if (navMeshAgent.enabled)
+		{
+			navMeshAgent.SetDestination(curDesPos);
+		}
+	}
+
+	public void Dodge()
+	{
+		navMeshAgent.enabled = false;
+		prevPos = transform.forward;
 	}
 
 	void Update()
@@ -47,6 +61,17 @@ public class Player : MonoBehaviour
 		{
 			ChangeDestination();
 		}
-		
+
+		if (!navMeshAgent.enabled)
+		{
+			transform.position = Vector3.Lerp(transform.position, prevPos * DodgeDistance, speed * Time.deltaTime);
+
+			if(transform.position.Equals(prevPos * DodgeDistance))
+			{
+				navMeshAgent.enabled = true;
+				navMeshAgent.SetDestination(curDesPos);
+			}
+		}
+
 	}
 }
