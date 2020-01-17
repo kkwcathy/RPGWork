@@ -7,10 +7,14 @@ public class Player : MonoBehaviour
 {
 	[SerializeField] private float speed = 15.0f;
 
-	[SerializeField] private float DodgeDistance = -5.0f;
+	[SerializeField] private float dodgeDistance = -5.0f;
 	public Vector3 curDesPos;
 
-	Vector3 prevPos;
+	Vector3 startPos;
+	Vector3 endPos;
+	float moveStartTime;
+
+	private bool isLerpMoving = false;
 
 	public bool IsChange
 	{
@@ -52,7 +56,12 @@ public class Player : MonoBehaviour
 	public void Dodge()
 	{
 		navMeshAgent.enabled = false;
-		prevPos = transform.forward;
+
+		startPos = transform.position;
+		endPos = transform.forward * dodgeDistance;
+		moveStartTime = Time.time;
+
+		isLerpMoving = true;
 	}
 
 	void Update()
@@ -61,17 +70,24 @@ public class Player : MonoBehaviour
 		{
 			ChangeDestination();
 		}
+	}
 
-		if (!navMeshAgent.enabled)
+	private void FixedUpdate()
+	{
+		if (isLerpMoving)
 		{
-			transform.position = Vector3.Lerp(transform.position, prevPos * DodgeDistance, speed * Time.deltaTime);
+			Vector3 changePos = transform.position;
 
-			if(transform.position.Equals(prevPos * DodgeDistance))
+			if(Utility.LerpMove(ref changePos, startPos, endPos, moveStartTime))
 			{
+				transform.position = changePos;
+			}
+			else
+			{
+				isLerpMoving = false;
 				navMeshAgent.enabled = true;
 				navMeshAgent.SetDestination(curDesPos);
 			}
 		}
-
 	}
 }

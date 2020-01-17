@@ -1273,6 +1273,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 2032626866}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 910287825}
     - target: {fileID: 2298757975144648944, guid: 484dfbaf453cd0046a5e9165893a6c65,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1328,16 +1338,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 2032626866}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 910287825}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484dfbaf453cd0046a5e9165893a6c65, type: 3}
 --- !u!4 &1653785509 stripped
@@ -1418,6 +1418,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 2032626866}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 910287825}
     - target: {fileID: 2298757975144648944, guid: 484dfbaf453cd0046a5e9165893a6c65,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1473,16 +1483,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 2032626866}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 910287825}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484dfbaf453cd0046a5e9165893a6c65, type: 3}
 --- !u!1 &2032626866
@@ -1766,6 +1766,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 2032626866}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 910287825}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: DodgeDistance
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
+        type: 3}
+      propertyPath: dodgeDistance
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 2298757975144648944, guid: 484dfbaf453cd0046a5e9165893a6c65,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1820,26 +1845,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 2032626866}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: wayPoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 910287825}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: DodgeDistance
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2298757975144648948, guid: 484dfbaf453cd0046a5e9165893a6c65,
-        type: 3}
-      propertyPath: speed
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484dfbaf453cd0046a5e9165893a6c65, type: 3}
