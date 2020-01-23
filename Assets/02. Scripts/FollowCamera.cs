@@ -20,7 +20,9 @@ public class FollowCamera : MonoBehaviour
 
 	bool isTargetChange = false;
 	bool isEnemyFocus = false;
-	
+
+	Vector3 followPos;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -35,13 +37,29 @@ public class FollowCamera : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		Vector3 followPos = target.position + (Vector3.forward * zDistance) + (Vector3.right * xDistance);
-		followPos.y = height; 
-		tr.position = Vector3.Lerp(tr.position, followPos, Time.deltaTime * moveDamping);
-	
+		followPos = target.position + (Vector3.forward * zDistance) + (Vector3.right * xDistance);
+		followPos.y = height;
+
+		if (!isEnemyFocus)
+		{
+			tr.position = followPos;
+		}
+		else
+		{
+			tr.position = Vector3.Lerp(tr.position, followPos, Time.deltaTime * moveDamping);
+
+			if (Utility.GetIsNear(tr.position, followPos) && target == playerFocus)
+			{
+				isEnemyFocus = false;
+			}
+
+		}
+		
 	}
 	public void ChangeTarget(Transform change)
 	{
+		isEnemyFocus = true;
+
 		StartCoroutine(FocusEnemy(change));
 	}
 
@@ -49,9 +67,10 @@ public class FollowCamera : MonoBehaviour
 	{
 
 		target = change;
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(0.8f);
 
 		target = playerFocus;
-		isEnemyFocus = false;
+
+		
 	}
 }

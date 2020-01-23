@@ -26,5 +26,10 @@ public class GameManager : MonoBehaviour
 		{
 			player.Dodge();
 		}
+
+		if (GUI.Button(new Rect(100, 0, 100, 100), "Damaged"))
+		{
+			player.ShowDamaged();
+		}
 	}
 }

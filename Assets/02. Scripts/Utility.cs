@@ -4,27 +4,33 @@ using UnityEngine;
 
 public static class Utility 
 {
-	static float lerpTotalTime = 1.0f;
-
-	public static bool LerpMove(ref Vector3 curPos, 
-		Vector3 startPos, 
-		Vector3 endPos, 
-		float startTime)
+	public static bool GetIsNear(Vector3 A, Vector3 B)
 	{
-		float passedTime = Time.time - startTime;
-		float curPercentage = passedTime / lerpTotalTime;
-
-		curPos = Vector3.Lerp(curPos, endPos, curPercentage);
-
 		float distance =
-			Mathf.Sqrt((curPos.x - endPos.x) * (curPos.x - endPos.x) + (curPos.z - endPos.z) * (curPos.z - endPos.z));
-		Debug.Log("cupPos=" + curPos);
-		Debug.Log("curPercentage=" + curPercentage);
-		if((int)distance == 0)
+			Mathf.Sqrt((A.x - B.x) * (A.x - B.x) + (A.z - B.z) * (A.z - B.z));
+
+		if (distance < 0.1f)
 		{
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
+
+	//public static bool LerpMove(ref Vector3 curPos, 
+	//	Vector3 endPos, 
+	//	float moveDamping)
+	//{
+	//	curPos = Vector3.Lerp(curPos, endPos, Time.deltaTime * moveDamping);
+
+	//	float distance =
+	//		Mathf.Sqrt((curPos.x - endPos.x) * (curPos.x - endPos.x) + (curPos.z - endPos.z) * (curPos.z - endPos.z));
+
+	//	if((int)distance == 0)
+	//	{
+	//		return false;
+	//	}
+
+	//	return true;
+	//}
 }
