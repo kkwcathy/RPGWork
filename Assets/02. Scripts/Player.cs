@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
 	[SerializeField] private float speed = 15.0f;
 
@@ -37,7 +37,10 @@ public class Player : MonoBehaviour
 
 	private void Awake()
 	{
-		//IsChange = false;
+		GenerateModel();
+		//model.transform.parent = transform;
+
+		//IsChange = false
 		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
 	}
 
