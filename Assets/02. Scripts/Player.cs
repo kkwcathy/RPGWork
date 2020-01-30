@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 	Renderer renderer;
 
 	float m_elapsedTime = 0;
-	float damageEffectSpeed = 1.0f;
+	float damageEffectSpeed = 7.0f;
 
 	bool isDamaged = false;
 
@@ -82,35 +82,18 @@ public class Player : MonoBehaviour
 	{
 		if (isDamaged)
 		{
-			m_elapsedTime += Time.deltaTime * 2.0f;
-			m_elapsedTime = Mathf.Clamp01(m_elapsedTime);
-
-			Color start;
-			Color end;
-
-			if (m_elapsedTime <= 0.5f)
-			{
-				start = Color.black;
-				end = Color.white;
-
-				Debug.Log("A");
-			}
-			else
-			{
-				start = Color.white;
-				end = Color.black;
-				Debug.Log("B");
-			}
-
-			Color color = Color.Lerp(start, end, m_elapsedTime*2.0f);
+			m_elapsedTime += Time.deltaTime * damageEffectSpeed;
+			m_elapsedTime = Mathf.Clamp(m_elapsedTime, 0.0f, 2.0f);
+			Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(m_elapsedTime, 1));
 
 			renderer.material.SetFloat("_R", color.r);
 			renderer.material.SetFloat("_G", color.g);
 			renderer.material.SetFloat("_B", color.b);
 
-			if(m_elapsedTime >= 1.0f )
+			if(m_elapsedTime >= 2.0f)
 			{
-				m_elapsedTime = 0;
+				m_elapsedTime = 0.0f;
+				isDamaged = false;
 			}
 		}
 
