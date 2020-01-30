@@ -957,7 +957,7 @@ SkinnedMeshRenderer:
   m_RootBone: {fileID: 4428306612239794}
   m_AABB:
     m_Center: {x: -0.37303326, y: 0.06247446, z: -0.0000024437904}
-    m_Extent: {x: 0.6532576, y: 0.37862855, z: 0.8032105}
+    m_Extent: {x: 0.6532576, y: 0.37862855, z: 0.3786286}
   m_DirtyAABB: 0
 --- !u!1 &1760207043965630
 GameObject:
@@ -1062,7 +1062,7 @@ GameObject:
   - component: {fileID: 4744222756475520}
   - component: {fileID: 95206688057043068}
   m_Layer: 0
-  m_Name: Boximon Fiery
+  m_Name: Boximon Fiery 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

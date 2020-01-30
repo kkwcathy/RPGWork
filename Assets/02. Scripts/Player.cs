@@ -16,12 +16,9 @@ public class Player : Character
 
 	private bool isLerpMoving = false;
 
-	Renderer renderer;
+	public GameObject enemyGroup;
 
-	float m_elapsedTime = 0;
-	float damageEffectSpeed = 7.0f;
 
-	bool isDamaged = false;
 
 	CharacterController characterController;
 
@@ -49,7 +46,7 @@ public class Player : Character
 	{
 		characterController = GetComponent<CharacterController>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
-		renderer = GetComponentInChildren<Renderer>();
+		
 
 		// 시작할 땐 첫 웨이브 전까지 ↙ 방향으로 이동
 		navMeshAgent.SetDestination(curDesPos);
@@ -81,25 +78,32 @@ public class Player : Character
 		isDamaged = true;
 	}
 
-	void Update()
+	public void CheckDamaged()
 	{
-		if (isDamaged)
+		Enemy[] enemies = enemyGroup.GetComponentsInChildren<Enemy>();
+
+		foreach(var i in enemies)
 		{
-			m_elapsedTime += Time.deltaTime * damageEffectSpeed;
-			m_elapsedTime = Mathf.Clamp(m_elapsedTime, 0.0f, 2.0f);
-			Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(m_elapsedTime, 1));
-
-			renderer.material.SetFloat("_R", color.r);
-			renderer.material.SetFloat("_G", color.g);
-			renderer.material.SetFloat("_B", color.b);
-
-			if(m_elapsedTime >= 2.0f)
+			if (bs.Intersects(i.bs))
 			{
-				m_elapsedTime = 0.0f;
-				isDamaged = false;
+				Debug.Log("intersect");
+				StartCoroutine(Blinkikng());
+				//Blink();
+				//isDamaged = true;
 			}
 		}
+	}
 
+	void Update()
+	{
+		bs.center = transform.position;
+
+		CheckDamaged();
+
+		//if (isDamaged)
+		//{
+		//	Blink();
+		//}
 
 		if (IsChange)
 		{

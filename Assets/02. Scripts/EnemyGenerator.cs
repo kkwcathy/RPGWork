@@ -46,14 +46,15 @@ public class EnemyGenerator : MonoBehaviour
 	{
 		GameObject enemy = Instantiate(enemyPrefab, generatePos);
 		curEnemy = enemy;
+		enemy.transform.parent = transform;
 	}
     // Update is called once per frame
     void Update()
     {
-		// 임시 클리어 조건
-		if(curEnemy && curEnemy.transform.position.x != curWayPoint.transform.position.x)
+		//// 임시 클리어 조건
+		if (curEnemy && curEnemy.transform.position.x != curWayPoint.transform.position.x)
 		{
 			isClear = true;
 		}
-    }
+	}
 }

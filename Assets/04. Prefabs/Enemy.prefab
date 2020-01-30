@@ -85,4 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e5449a0dacf8d47b531963b927a177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charModel: {fileID: 1111084942782338, guid: 84493eaa65d75074ca2c6e2d8a90ff9a, type: 3}
+  charModel: {fileID: 1111084942782338, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
+  bs:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
