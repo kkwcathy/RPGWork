@@ -573,7 +573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335902226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2032626870}
@@ -869,6 +869,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
+        type: 3}
+      propertyPath: enemyGroup
+      value: 
+      objectReference: {fileID: 1790987413}
     - target: {fileID: 7188697079655286280, guid: 57ab2fc0e71ae184cbf884e2f101c855,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -924,11 +929,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
-        type: 3}
-      propertyPath: enemyGroup
-      value: 
-      objectReference: {fileID: 1790987413}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57ab2fc0e71ae184cbf884e2f101c855, type: 3}
 --- !u!1 &982348308
@@ -1518,6 +1518,7 @@ MonoBehaviour:
   - {fileID: 287049020}
   - {fileID: 982348309}
   - {fileID: 1234484812}
+  isWaveStart: 0
   camera: {fileID: 1277274056}
 --- !u!4 &1790987415
 Transform:

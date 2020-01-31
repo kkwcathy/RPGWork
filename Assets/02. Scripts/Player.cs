@@ -73,9 +73,20 @@ public class Player : Character
 		isLerpMoving = true;
 	}
 
-	public void ShowDamaged()
+	// 테스트 전용
+	public void Pause()
 	{
-		isDamaged = true;
+		if (navMeshAgent.enabled)
+		{
+			navMeshAgent.enabled = false;
+		}
+		else
+		{
+			navMeshAgent.enabled = true;
+			navMeshAgent.SetDestination(curDesPos);
+		}
+
+
 	}
 
 	public void CheckDamaged()
@@ -86,24 +97,22 @@ public class Player : Character
 		{
 			if (bs.Intersects(i.bs))
 			{
-				Debug.Log("intersect");
-				StartCoroutine(Blinkikng());
-				//Blink();
-				//isDamaged = true;
+				targetObj = i;
+			}
+			else
+			{
+				targetObj = null;
 			}
 		}
 	}
 
 	void Update()
 	{
+		UpdateDo();
+
 		bs.center = transform.position;
 
 		CheckDamaged();
-
-		//if (isDamaged)
-		//{
-		//	Blink();
-		//}
 
 		if (IsChange)
 		{

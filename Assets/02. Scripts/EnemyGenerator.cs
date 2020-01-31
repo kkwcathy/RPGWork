@@ -11,7 +11,9 @@ public class EnemyGenerator : MonoBehaviour
 	public static bool isClear = true;
 	public static Transform curWayPoint;
 
-	GameObject curEnemy;
+	public bool isWaveStart = false;
+
+	Enemy curEnemy;
 
 	public FollowCamera camera;
 
@@ -27,7 +29,7 @@ public class EnemyGenerator : MonoBehaviour
 	IEnumerator RunWaves()
 	{
 		yield return new WaitForSeconds(3.0f);
-
+		
 		isClear = false;
 
 		for(int i = 0; i < wayPoints.Count; ++i)
@@ -36,8 +38,11 @@ public class EnemyGenerator : MonoBehaviour
 			curWayPoint = wayPoints[i];
 			GenerateEnemy(wayPoints[i]);
 
+			isWaveStart = true;
+
 			yield return new WaitUntil(isWaveCleared);
 
+			isWaveStart = false;
 			isClear = false;
 		}
 	}
@@ -45,14 +50,13 @@ public class EnemyGenerator : MonoBehaviour
 	public void GenerateEnemy(Transform generatePos)
 	{
 		GameObject enemy = Instantiate(enemyPrefab, generatePos);
-		curEnemy = enemy;
+		curEnemy = enemy.GetComponent<Enemy>();
 		enemy.transform.parent = transform;
 	}
     // Update is called once per frame
     void Update()
     {
-		//// 임시 클리어 조건
-		if (curEnemy && curEnemy.transform.position.x != curWayPoint.transform.position.x)
+		if (isWaveStart && curEnemy.isDead)
 		{
 			isClear = true;
 		}

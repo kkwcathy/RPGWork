@@ -10,10 +10,18 @@ public class Character : MonoBehaviour
 	public Bounds bs = new Bounds();
 
 	protected Renderer renderer;
-	float m_elapsedTime = 0;
 
-	float damageEffectSpeed = 7.0f;
 	protected bool isDamaged = false;
+
+	public bool isDead = false;
+
+	protected float m_elapsedTime = 0;
+
+	protected float damageEffectSpeed = 7.0f;
+
+	protected Character targetObj = null;
+
+	[SerializeField] int hp = 100;
 
 	public void GenerateModel()
 	{
@@ -25,15 +33,40 @@ public class Character : MonoBehaviour
 		renderer = GetComponentInChildren<Renderer>();
 	}
 
-	public void Blink()
+	public void Damaged()
 	{
-		StartCoroutine(Blinkikng());
+		hp -= 10;
+
+		if(!isDamaged)
+		{
+			isDamaged = true;
+		}
 	}
 
-	public IEnumerator Blinkikng()
+	public void Attack()
 	{
-		Debug.Log("blink");
-		
+		if(targetObj != null)
+		{
+			targetObj.Damaged();
+		}
+	}
+
+	public void UpdateDo()
+	{
+		if (isDamaged)
+		{
+			Blink();
+		}
+
+		if (hp <= 0)
+		{
+			isDead = true;
+			Destroy(gameObject);
+		}
+	}
+
+	public void Blink()
+	{
 		m_elapsedTime += Time.deltaTime * damageEffectSpeed;
 		m_elapsedTime = Mathf.Clamp(m_elapsedTime, 0.0f, 2.0f);
 		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(m_elapsedTime, 1));
@@ -42,10 +75,10 @@ public class Character : MonoBehaviour
 		renderer.material.SetFloat("_G", color.g);
 		renderer.material.SetFloat("_B", color.b);
 
-		yield return new WaitForSeconds(1.0f);
-
-		m_elapsedTime = 0.0f;
-		Debug.Log("blink end");
-
+		if (m_elapsedTime >= 2.0f)
+		{
+			m_elapsedTime = 0.0f;
+			isDamaged = false;
+		}
 	}
 }

@@ -29,7 +29,16 @@ public class GameManager : MonoBehaviour
 
 		if (GUI.Button(new Rect(100, 0, 100, 100), "Damaged"))
 		{
-			player.ShowDamaged();
+			player.Damaged();
+		}
+		if (GUI.Button(new Rect(200, 0, 100, 100), "Attack"))
+		{
+			player.Attack();
+		}
+
+		if (GUI.Button(new Rect(300, 0, 100, 100), "Pause"))
+		{
+			player.Pause();
 		}
 	}
 }
