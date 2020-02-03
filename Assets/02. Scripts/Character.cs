@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
 
 	protected float m_elapsedTime = 0;
 
-	protected float damageEffectSpeed = 7.0f;
+	protected float damageEffectSpeed = 10.0f;
 
 	protected Character targetObj = null;
 
