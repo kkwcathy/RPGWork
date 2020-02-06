@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-
 	[SerializeField] private GameObject enemyPrefab;
 	[SerializeField] private List<Transform> wayPoints;
 
@@ -58,7 +57,8 @@ public class EnemyGenerator : MonoBehaviour
     {
 		if (isWaveStart && curEnemy.isDead)
 		{
-			isClear = true;
+            Debug.Log("dfafd");
+            isClear = true;
 		}
 	}
 }

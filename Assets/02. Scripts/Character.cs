@@ -45,11 +45,20 @@ public class Character : MonoBehaviour
 
 	public void Attack()
 	{
-		if(targetObj != null)
-		{
-			targetObj.Damaged();
-		}
+        StartCoroutine(Attacking());
 	}
+
+    IEnumerator Attacking()
+    {
+        while(targetObj != null)
+        {
+            targetObj.Damaged();
+
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    
 
 	public void UpdateDo()
 	{
@@ -62,6 +71,8 @@ public class Character : MonoBehaviour
 		{
 			isDead = true;
 			Destroy(gameObject);
+
+            Debug.Log("dfa");
 		}
 	}
 

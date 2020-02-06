@@ -66,15 +66,15 @@ public class Player : Character
 
 	public void Dodge()
 	{
-		navMeshAgent.enabled = false;
+		//navMeshAgent.enabled = false;
 
 		targetPos = transform.position + (transform.forward * -dodgeDistance);
 
-		isLerpMoving = true;
-	}
+        isLerpMoving = true;
+    }
 
-	// 테스트 전용
-	public void Pause()
+    // 테스트 전용
+    public void Pause()
 	{
 		if (navMeshAgent.enabled)
 		{
@@ -128,8 +128,8 @@ public class Player : Character
 			if (Utility.GetIsNear(curPos, targetPos))
 			{
 				isLerpMoving = false;
-				navMeshAgent.enabled = true;
-				navMeshAgent.SetDestination(curDesPos);
+				//navMeshAgent.enabled = true;
+				//navMeshAgent.SetDestination(curDesPos);
 			}
 		}
 	}
