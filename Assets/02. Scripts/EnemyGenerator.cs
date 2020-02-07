@@ -28,7 +28,9 @@ public class EnemyGenerator : MonoBehaviour
 	IEnumerator RunWaves()
 	{
 		yield return new WaitForSeconds(3.0f);
-		
+
+        camera.ChangeDistance(2, -3, 3);
+
 		isClear = false;
 
 		for(int i = 0; i < wayPoints.Count; ++i)

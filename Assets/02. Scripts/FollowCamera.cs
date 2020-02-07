@@ -14,7 +14,7 @@ public class FollowCamera : MonoBehaviour
 	private float xDistance;
 	private float zDistance;
 
-	private float height;
+	private float _height;
 
 	private Transform tr;
 
@@ -32,13 +32,19 @@ public class FollowCamera : MonoBehaviour
 
 		xDistance = tr.position.x;
 		zDistance = tr.position.z;
-		height = tr.position.y;
+		_height = tr.position.y;
 	}
 
+    public void ChangeDistance(int x, int y, int z)
+    {
+        xDistance += x;
+        _height += y;
+        zDistance += z;
+    }
 	private void LateUpdate()
 	{
 		followPos = target.position + (Vector3.forward * zDistance) + (Vector3.right * xDistance);
-		followPos.y = height;
+		followPos.y = _height;
 
 		if (!isEnemyFocus)
 		{
