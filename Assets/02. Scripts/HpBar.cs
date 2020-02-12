@@ -27,19 +27,27 @@ public class HpBar : MonoBehaviour
         rectParent = uiCanvas.GetComponent<RectTransform>();
         rectHp = GetComponent<RectTransform>();
     }
-
+    
     private void LateUpdate()
     {
-        var screenPos = Camera.main.WorldToScreenPoint(targetTr.position + offset);
-
-        if (screenPos.z < 0.0f)
+        if (targetTr == null)
         {
-            screenPos *= -1.0f;
+            Destroy(gameObject);
         }
+        else
+        {
+            var screenPos = Camera.main.WorldToScreenPoint(targetTr.position + offset);
 
-        var localPos = Vector2.zero;
+            if (screenPos.z < 0.0f)
+            {
+                screenPos *= -1.0f;
+            }
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
-        rectHp.localPosition = localPos;
+            var localPos = Vector2.zero;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
+            rectHp.localPosition = localPos;
+
+        }
     }
 }
