@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // 나중에 이미지 분리하면 삭제하기
 
 public class Character : MonoBehaviour
 {
@@ -21,9 +22,18 @@ public class Character : MonoBehaviour
 
 	protected Character targetObj = null;
 
-	[SerializeField] int hp = 100;
+    // 데미지 관련
 
-	public void GenerateModel()
+    private float hp = 100.0f;
+    private float initHp = 100.0f;
+
+    public GameObject hpBarPrefab;
+    public Vector3 hpBarOffset = new Vector3(0, 2.2f, 0);
+    private Canvas uiCanvas;
+    private Image hpBarImage;
+
+
+    public void GenerateModel()
 	{
 		model = Instantiate(charModel, transform);
 
@@ -31,13 +41,27 @@ public class Character : MonoBehaviour
 
 		bs.size = Vector3.one;
 		renderer = GetComponentInChildren<Renderer>();
-	}
+
+
+        //데미지 관련
+        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
+
+        GameObject hpBar = Instantiate<GameObject>(hpBarPrefab, uiCanvas.transform);
+
+        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+
+        var hpBarComp = hpBar.GetComponent<HpBar>();
+        hpBarComp.targetTr = transform;
+        hpBarComp.offset = hpBarOffset;
+
+    }
 
 	public void Damaged()
 	{
 		hp -= 10;
+        hpBarImage.fillAmount = hp / initHp;
 
-		if(!isDamaged)
+        if (!isDamaged)
 		{
 			isDamaged = true;
 		}

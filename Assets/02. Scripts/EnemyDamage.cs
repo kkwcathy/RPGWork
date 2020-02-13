@@ -3,38 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// 이펙트 부분만 나중에 참고용
 public class EnemyDamage : MonoBehaviour
 {
     private const string bulletTag = "BULLET";
 
-    private float hp = 100.0f;
-
-    private float initHp = 100.0f;
+    
 
     private GameObject bloodEffect;
 
-    public GameObject hpBarPrefab;
-
-    public Vector3 hpBarOffset = new Vector3(0, 2.2f, 0);
-
-    private Canvas uiCanvas;
-
-    private Image hpBarImage;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         //bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
 
-        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
-
-        GameObject hpBar = Instantiate<GameObject>(hpBarPrefab, uiCanvas.transform);
-
-        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-
-        var hpBarComp = hpBar.GetComponent<HpBar>();
-        hpBarComp.targetTr = transform;
-        hpBarComp.offset = hpBarOffset;
+        
     }
 
     // Update is called once per frame
@@ -45,7 +31,7 @@ public class EnemyDamage : MonoBehaviour
 
     public void GetDamaged()
     {
-        hpBarImage.fillAmount = hp / initHp;
+        
 
         //if (hp <= 0.0f)
         //{

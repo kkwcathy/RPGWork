@@ -6,6 +6,7 @@ public class EnemyGenerator : MonoBehaviour
 {
 	[SerializeField] private GameObject enemyPrefab;
 	[SerializeField] private List<Transform> wayPoints;
+    [SerializeField] private List<Enemy> enemyList;
 
 	public static bool isClear = true;
 	public static Transform curWayPoint;
@@ -47,13 +48,16 @@ public class EnemyGenerator : MonoBehaviour
 			isClear = false;
 		}
 	}
-
+    
 	public void GenerateEnemy(Transform generatePos)
 	{
 		GameObject enemy = Instantiate(enemyPrefab, generatePos);
 		curEnemy = enemy.GetComponent<Enemy>();
 		enemy.transform.parent = transform;
+
+        enemyList.Add(curEnemy);
 	}
+
     // Update is called once per frame
     void Update()
     {
