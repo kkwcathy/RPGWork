@@ -40,5 +40,9 @@ public class GameManager : MonoBehaviour
 		{
 			player.Pause();
 		}
-	}
+        if (GUI.Button(new Rect(400, 0, 100, 100), "BasicSkill"))
+        {
+            player.BasicSkillAttack();
+        }
+    }
 }

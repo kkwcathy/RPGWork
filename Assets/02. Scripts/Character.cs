@@ -33,6 +33,12 @@ public class Character : MonoBehaviour
     private Image hpBarImage;
 
 
+    // 공격 관련
+
+    [SerializeField] GameObject basicSkillEffect;
+
+    
+
     public void GenerateModel()
 	{
 		model = Instantiate(charModel, transform);
@@ -71,6 +77,11 @@ public class Character : MonoBehaviour
 	{
         StartCoroutine(Attacking());
 	}
+
+    public void BasicSkillAttack()
+    {
+        Instantiate(basicSkillEffect, transform.position, transform.rotation);
+    }
 
     IEnumerator Attacking()
     {
