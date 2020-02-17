@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-	[SerializeField] private GameObject enemyPrefab;
+	[SerializeField] private GameObject enemyPrefab = null;
 	[SerializeField] private List<Transform> wayPoints;
-    [SerializeField] private List<Enemy> enemyList;
+    [SerializeField] private List<Enemy> enemyList = null;
 
 	public static bool isClear = true;
 	public static Transform curWayPoint;

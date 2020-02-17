@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7188697079655286281}
   - component: {fileID: 7188697079655286282}
   - component: {fileID: 7188697079655286295}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,17 +85,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf4abef0c201d34f8fbd28362f98387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charModel: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
   bs:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  charModel: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
   isDead: 0
   hpBarPrefab: {fileID: 1325243606125559942, guid: 1e8f7a0a3c8731d49b26763ef79a8ed4,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
   basicSkillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
     type: 3}
-  speed: 15
   dodgeSpeed: 5
   dodgeDistance: 5
   curDesPos: {x: 0, y: 0, z: 0}

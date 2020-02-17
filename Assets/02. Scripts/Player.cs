@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Player : Character
 {
-	[SerializeField] private float speed = 15.0f;
+	//[SerializeField] private float speed = 15.0f;
 
 	public float dodgeSpeed = 5.0f;
 
@@ -17,10 +17,12 @@ public class Player : Character
 	private bool isLerpMoving = false;
 
 	public GameObject enemyGroup;
+    public Enemy[] enemies;
 
 
 
-	CharacterController characterController;
+
+    CharacterController characterController;
 
 	public bool IsChange
 	{
@@ -91,7 +93,7 @@ public class Player : Character
 
 	public void CheckDamaged()
 	{
-		Enemy[] enemies = enemyGroup.GetComponentsInChildren<Enemy>();
+        enemies = enemyGroup.GetComponentsInChildren<Enemy>();
 
 		foreach(var i in enemies)
 		{

@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillEffect : MonoBehaviour
+public class SkillEffect : SkillBase
 {
 	public Transform Axis;
-
-    public Bounds bs;
 
     float speed = 1.0f;
 
     void Start()
     {
-        bs.size = Vector3.one;
+        Init();
+        gameObject.layer = transform.parent.gameObject.layer;
 
-        Destroy(gameObject, 1.0f);
+        Destroy(gameObject, 5.0f);
     }
 
     void Update()
     {
-        bs.center = transform.position;
+        BoundsUpdate();
+
         transform.Translate(Vector3.forward * speed);
 		//transform.RotateAround(Axis.position, Vector3.down, 100 * Time.deltaTime);
     }

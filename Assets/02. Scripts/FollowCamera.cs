@@ -18,7 +18,7 @@ public class FollowCamera : MonoBehaviour
 
 	private Transform tr;
 
-	bool isTargetChange = false;
+	//bool isTargetChange = false;
 	bool isEnemyFocus = false;
 
 	Vector3 followPos;

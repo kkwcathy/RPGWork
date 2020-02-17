@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // 나중에 이미지 분리하면 삭제하기
 
-public class Character : MonoBehaviour
+public class Character : ObjBase
 {
 	public GameObject charModel;
 	protected GameObject model;
-
-	public Bounds bs = new Bounds();
-
+    
 	protected Renderer renderer;
 
 	protected bool isDamaged = false;
@@ -35,7 +33,7 @@ public class Character : MonoBehaviour
 
     // 공격 관련
 
-    [SerializeField] GameObject basicSkillEffect;
+    [SerializeField] GameObject basicSkillEffect = null;
 
     
 
@@ -80,7 +78,9 @@ public class Character : MonoBehaviour
 
     public void BasicSkillAttack()
     {
-        Instantiate(basicSkillEffect, transform.position, transform.rotation);
+        GameObject skillEffect = Instantiate(basicSkillEffect, transform.position, transform.rotation);
+        skillEffect.transform.parent = transform;
+
     }
 
     IEnumerator Attacking()
