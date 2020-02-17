@@ -13,7 +13,8 @@ public class ObjBase : MonoBehaviour
 
     public void Init()
     {
-        bs.size = Vector3.one;
+		bs.size = Vector3.one;
+		//Debug.Log("bounds set");
     }
 
     public void BoundsUpdate()

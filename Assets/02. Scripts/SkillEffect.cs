@@ -20,6 +20,8 @@ public class SkillEffect : SkillBase
     {
         BoundsUpdate();
 
+		//Debug.Log("position"+bs.center);
+
         transform.Translate(Vector3.forward * speed);
 		//transform.RotateAround(Axis.position, Vector3.down, 100 * Time.deltaTime);
     }

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class CheckCollision : MonoBehaviour
 {
-    Bounds bs;
+	ObjBase objBounds;
+	Bounds bs;
     ObjBase[] obj;
 
     void Start()
     {
-        bs = transform.GetComponent<ObjBase>().bs;
+		objBounds = transform.GetComponent<ObjBase>();
     }
     
     private void CheckInstersect()
@@ -28,6 +29,7 @@ public class CheckCollision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckInstersect();
+		bs = objBounds.GetBounds();
+		CheckInstersect();
     }
 }
