@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	public Player player;
+    [SerializeField] private static List<Character> charObjList;
 
-    // Start is called before the first frame update
-    void Start()
+    public static List<Character> GetCharObjList()
+    {
+        return charObjList;
+    }
+
+    private void Awake()
     {
         
     }
 
-	
-
-	// Update is called once per frame
-	void Update()
-    {
-        
-    }
+    public Player player;
 
 	private void OnGUI()
 	{

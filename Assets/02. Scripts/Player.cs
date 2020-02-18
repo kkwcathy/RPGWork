@@ -46,7 +46,7 @@ public class Player : Character
 
 	void Start()
 	{
-		characterController = GetComponent<CharacterController>();
+		//characterController = GetComponent<CharacterController>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		
 

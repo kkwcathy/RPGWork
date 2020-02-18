@@ -92,9 +92,7 @@ public class Character : ObjBase
             yield return new WaitForSeconds(1.0f);
         }
     }
-
     
-
 	public void UpdateDo()
 	{
 		if (isDamaged)

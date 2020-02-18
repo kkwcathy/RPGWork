@@ -6,7 +6,7 @@ public class CheckCollision : MonoBehaviour
 {
 	ObjBase objBounds;
 	Bounds bs;
-    ObjBase[] obj;
+    Character[] obj;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class CheckCollision : MonoBehaviour
         {
             if (bs.Intersects(i.bs))
             {
-                Debug.Log("dhk");
+                i.Damaged();
             }
         }
     }
