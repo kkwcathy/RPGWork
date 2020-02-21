@@ -4866,8 +4866,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1790987415}
   - component: {fileID: 1790987414}
+  - component: {fileID: 1790987416}
   m_Layer: 0
-  m_Name: EnemyGenerator
+  m_Name: EnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4887,17 +4888,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1981106145682425779, guid: ac095eafdfd33594d8da84a29992cba8,
     type: 3}
-  wayPoints:
-  - {fileID: 2032626870}
-  - {fileID: 910287829}
-  - {fileID: 1152122180}
-  - {fileID: 2095145355}
-  - {fileID: 287049020}
-  - {fileID: 982348309}
-  - {fileID: 1234484812}
-  enemyList: []
-  isWaveStart: 0
-  camera: {fileID: 1277274056}
+  MonsterPoints: {fileID: 335902226}
+  _maxWave: 0
 --- !u!4 &1790987415
 Transform:
   m_ObjectHideFlags: 0
@@ -4912,6 +4904,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1790987416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790987413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0bf9acbf3c65d4b860945af2234176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followCam: {fileID: 1277274056}
+  _enemyList: []
 --- !u!4 &1795420113 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2303790651989448907, guid: 315e3037d6061204cad190d8fb3728b6,

@@ -24,13 +24,13 @@ public class Player : Character
 
     CharacterController characterController;
 
-	public bool IsChange
-	{
-		get
-		{
-			return !EnemyGenerator.isClear && EnemyGenerator.curWayPoint.position != curDesPos;
-		}
-	}
+	//public bool IsChange
+	//{
+	//	get
+	//	{
+	//		return !EnemyGenerator.isClear && EnemyGenerator.curWayPoint.position != curDesPos;
+	//	}
+	//}
 
 	NavMeshAgent navMeshAgent;
 
@@ -56,13 +56,11 @@ public class Player : Character
 
 	}
 
-	public void ChangeDestination()
+	public void ChangeDestination(Vector3 desPos)
 	{
-		curDesPos = EnemyGenerator.curWayPoint.position;
-
 		if (navMeshAgent.enabled)
 		{
-			navMeshAgent.SetDestination(curDesPos);
+			navMeshAgent.SetDestination(desPos);
 		}
 	}
 
@@ -116,10 +114,10 @@ public class Player : Character
 
 		CheckDamaged();
 
-		if (IsChange)
-		{
-			ChangeDestination();
-		}
+		//if (IsChange)
+		//{
+		//	ChangeDestination();
+		//}
 
 		if (isLerpMoving)
 		{
@@ -134,5 +132,7 @@ public class Player : Character
 				//navMeshAgent.SetDestination(curDesPos);
 			}
 		}
+
+		//Debug.Log(navMeshAgent.destination);
 	}
 }

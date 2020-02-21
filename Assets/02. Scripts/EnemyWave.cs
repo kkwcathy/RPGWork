@@ -6,15 +6,21 @@ public class EnemyWave : MonoBehaviour
 {
     // 임시 몬스터 데이터
     
-    delegate void TeamHandler();
+    delegate void TeamHandler(Vector3 desPos);
     TeamHandler teamHandler;
 
     EnemyGenerator enemyGenerator;
-    public FollowCamera camera;
+    public FollowCamera followCam;
 
     [SerializeField] List<Enemy> _enemyList;
-   
-    void InitTeamSet()
+
+	bool _isGameStart = false;
+	bool _isWaveCleared () => _enemyList.Count <= 0;
+
+	Enemy curEnemy;
+	int curEnemyIndex = 0;
+
+	void InitTeamSet()
     {
         Player[] players = GameObject.Find("Team").GetComponentsInChildren<Player>();
 
@@ -24,17 +30,13 @@ public class EnemyWave : MonoBehaviour
         }
     }
     
-    bool isWaveCleared()
-    {
-        return _enemyList.Count <= 0;
-    }
-
     void Start()
     {
         // 나중에 필요없으면 인스펙터 창에서 드랙앤드롭으로 대체
         enemyGenerator = GetComponent<EnemyGenerator>();
 
         InitTeamSet();
+		StartCoroutine(RunWaves());
     }
 
     public void AddEnemy(Enemy enemy)
@@ -44,34 +46,54 @@ public class EnemyWave : MonoBehaviour
 
     public void DeleteEnemy(Enemy enemy)
     {
+		Debug.Log("delete");
         _enemyList.Remove(enemy);
     }
 
     void Update()
     {
-        
-    }
+		if (_isGameStart)
+		{
+			if (curEnemy.isDead)
+			{
+				DeleteEnemy(curEnemy);
+				if(!_isWaveCleared())
+					curEnemy = _enemyList[curEnemyIndex];
+			}
+			else
+			{
+				teamHandler(curEnemy.transform.position);
+			}
+			
+		}
 
-    IEnumerator RunWaves()
+	}
+
+	public void ChangeWave()
+	{
+		curEnemyIndex = 0;
+
+		Transform curPoint = enemyGenerator.GenerateEnemy(_enemyList);
+		curEnemy = _enemyList[curEnemyIndex];
+
+		followCam.ChangeDistance(2, -3, 3);
+		followCam.ChangeTarget(curPoint);
+	}
+
+	IEnumerator RunWaves()
     {
         yield return new WaitForSeconds(3.0f);
 
-        camera.ChangeDistance(2, -3, 3);
+		_isGameStart = true;
 
-        isClear = false;
+		while (enemyGenerator.CurWave < enemyGenerator._maxWave)
+		{
+			ChangeWave();
 
-        for (int i = 0; i < wayPoints.Count; ++i)
-        {
-            camera.ChangeTarget(wayPoints[i]);
-            curWayPoint = wayPoints[i];
-            GenerateEnemy(wayPoints[i]);
+			yield return new WaitUntil(_isWaveCleared);
 
-            isWaveStart = true;
-
-            yield return new WaitUntil(isWaveCleared);
-
-            isWaveStart = false;
-            isClear = false;
-        }
+			followCam.ChangeDistance(-2, 3, -3);
+			enemyGenerator.CurWave += 1;
+		}
     }
 }
