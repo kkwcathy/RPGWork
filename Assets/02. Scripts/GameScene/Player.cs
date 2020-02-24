@@ -14,25 +14,13 @@ public class Player : Character
 
 	Vector3 targetPos;
 
-	private bool isLerpMoving = false;
+	//private bool isLerpMoving = false;
 
 	public GameObject enemyGroup;
     public Enemy[] enemies;
 
-
-
-
     CharacterController characterController;
-
-	//public bool IsChange
-	//{
-	//	get
-	//	{
-	//		return !EnemyGenerator.isClear && EnemyGenerator.curWayPoint.position != curDesPos;
-	//	}
-	//}
-
-	NavMeshAgent navMeshAgent;
+	
 
 	private void Awake()
 	{
@@ -56,33 +44,25 @@ public class Player : Character
 
 	}
 
-	public void ChangeDestination(Vector3 desPos)
-	{
-		if (navMeshAgent.enabled)
-		{
-			navMeshAgent.SetDestination(desPos);
-		}
-	}
+
 
 	public void Dodge()
 	{
-		//navMeshAgent.enabled = false;
-
 		targetPos = transform.position + (transform.forward * -dodgeDistance);
 
-        isLerpMoving = true;
+       // isLerpMoving = true;
     }
 
     // 테스트 전용
     public void Pause()
 	{
-		if (navMeshAgent.enabled)
+		if (!navMeshAgent.isStopped)
 		{
-			navMeshAgent.enabled = false;
+			navMeshAgent.isStopped = true;
 		}
 		else
 		{
-			navMeshAgent.enabled = true;
+			navMeshAgent.isStopped = false;
 			navMeshAgent.SetDestination(curDesPos);
 		}
 
@@ -114,25 +94,16 @@ public class Player : Character
 
 		CheckDamaged();
 
-		//if (IsChange)
+		//if (isLerpMoving)
 		//{
-		//	ChangeDestination();
+		//	Vector3 curPos = transform.position;
+
+		//	characterController.Move((targetPos - curPos) * Time.deltaTime * dodgeSpeed);
+
+		//	if (Utility.GetIsNear(curPos, targetPos))
+		//	{
+		//		isLerpMoving = false;
+		//	}
 		//}
-
-		if (isLerpMoving)
-		{
-			Vector3 curPos = transform.position;
-
-			characterController.Move((targetPos - curPos) * Time.deltaTime * dodgeSpeed);
-
-			if (Utility.GetIsNear(curPos, targetPos))
-			{
-				isLerpMoving = false;
-				//navMeshAgent.enabled = true;
-				//navMeshAgent.SetDestination(curDesPos);
-			}
-		}
-
-		//Debug.Log(navMeshAgent.destination);
 	}
 }

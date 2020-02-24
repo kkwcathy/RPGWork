@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyWave : MonoBehaviour
+public class WaveController : MonoBehaviour
 {
-    // 임시 몬스터 데이터
-    
-    delegate void TeamHandler(Vector3 desPos);
+    delegate void TeamHandler(List<Character> targetList);
     TeamHandler teamHandler;
 
     EnemyGenerator enemyGenerator;
     public FollowCamera followCam;
 
-    [SerializeField] List<Enemy> _enemyList;
+    [SerializeField] List<Character> _enemyList = null;
 
 	bool _isGameStart = false;
 	bool _isWaveCleared () => _enemyList.Count <= 0;
 
-	Enemy curEnemy;
+	Character curEnemy;
 	int curEnemyIndex = 0;
 
 	void InitTeamSet()
@@ -39,14 +37,13 @@ public class EnemyWave : MonoBehaviour
 		StartCoroutine(RunWaves());
     }
 
-    public void AddEnemy(Enemy enemy)
+    public void AddEnemy(Character enemy)
     {
         _enemyList.Add(enemy);
     }
 
-    public void DeleteEnemy(Enemy enemy)
+    public void DeleteEnemy(Character enemy)
     {
-		Debug.Log("delete");
         _enemyList.Remove(enemy);
     }
 
@@ -54,20 +51,23 @@ public class EnemyWave : MonoBehaviour
     {
 		if (_isGameStart)
 		{
-			if (curEnemy.isDead)
-			{
-				DeleteEnemy(curEnemy);
-				if(!_isWaveCleared())
-					curEnemy = _enemyList[curEnemyIndex];
-			}
-			else
-			{
-				teamHandler(curEnemy.transform.position);
-			}
-			
+            CheckDeath();
+            teamHandler(_enemyList);
 		}
 
 	}
+
+    public void CheckDeath()
+    {
+        for(int i = 0; i < _enemyList.Count; ++i)
+        {
+            if(_enemyList[i].isDead)
+            {
+                DeleteEnemy(_enemyList[i]);
+                //teamHandler(_enemyList);
+            }
+        }
+    }
 
 	public void ChangeWave()
 	{
@@ -90,7 +90,7 @@ public class EnemyWave : MonoBehaviour
 		{
 			ChangeWave();
 
-			yield return new WaitUntil(_isWaveCleared);
+            yield return new WaitUntil(_isWaveCleared);
 
 			followCam.ChangeDistance(-2, 3, -3);
 			enemyGenerator.CurWave += 1;

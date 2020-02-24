@@ -7,6 +7,7 @@ public class EnemyGenerator : MonoBehaviour
 	[SerializeField] private GameObject enemyPrefab = null;
 
     public GameObject MonsterPoints;
+
     List<Transform> spawnPoints;
     int[] spawnNumArray;
 
@@ -25,31 +26,16 @@ public class EnemyGenerator : MonoBehaviour
 
 	public int GetMaxWave () => _maxWave;
 
-	//public static bool isClear = true;
-	//public static Transform curWayPoint;
-
-	//public bool isWaveStart = false;
-
-	//Enemy curEnemy;
-
-	
-
-	//System.Func<bool> isWaveCleared = () => isClear;
-	
-	// Start is called before the first frame update
 	void Start()
 	{
         InitSpawnSet();
-		//StartCoroutine(RunWaves());
-
 	}
 
     void InitSpawnSet()
     {
         spawnPoints = new List<Transform>(MonsterPoints.GetComponentsInChildren<Transform>());
-		Debug.Log(spawnPoints.Count);
 		spawnPoints.RemoveAt(0);
-		Debug.Log(spawnPoints.Count);
+
 		spawnNumArray = new int[spawnPoints.Count];
 
 		_maxWave = spawnPoints.Count;
@@ -60,28 +46,26 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 	
-	public Transform GenerateEnemy(List<Enemy> enemyList)
+	public Transform GenerateEnemy(List<Character> enemyList)
 	{
-        for(int i = 0; i< spawnNumArray[_curWave]; ++i)
-        {
-			Vector3 generatePos = spawnPoints[_curWave].position + (Vector3.forward * i*2);
+        int spawnRadius = spawnNumArray[_curWave];
+        int angle = Random.Range(0, 360);
 
-			GameObject enemy = Instantiate(enemyPrefab, generatePos, Quaternion.identity);
+        for(int i = 0; i < spawnRadius; ++i)
+        {
+            float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
+            float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
+
+            Vector3 generatePos = spawnPoints[_curWave].position + Vector3.forward * z + Vector3.right * x;
+
+            GameObject enemy = Instantiate(enemyPrefab, generatePos, Quaternion.identity);
             enemy.transform.parent = transform;
             enemyList.Add(enemy.GetComponent<Enemy>());
+
+            angle += 360 / spawnRadius;
         }
 
 		return spawnPoints[_curWave];
-		//enemyList.Add(curEnemy);
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-		//if (isWaveStart && curEnemy.isDead)
-		//{
-  //          Debug.Log("dfafd");
-  //          isClear = true;
-		//}
-	}
 }

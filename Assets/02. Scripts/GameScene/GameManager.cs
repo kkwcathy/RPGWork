@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private static List<Character> charObjList;
 
-    public static List<Character> GetCharObjList()
-    {
-        return charObjList;
-    }
 
     private void Awake()
     {
@@ -42,5 +37,11 @@ public class GameManager : MonoBehaviour
         {
             player.BasicSkillAttack();
         }
+    }
+
+    private void Update()
+    {
+        if (player.godjiulguya != null)
+        Debug.Log(Vector3.Distance(player.transform.position, player.godjiulguya.transform.position));
     }
 }

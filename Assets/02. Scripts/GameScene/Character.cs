@@ -1,24 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI; // 나중에 이미지 분리하면 삭제하기
+
+enum eState
+{
+    Run,
+    Attack,
+    Pause,
+}
 
 public class Character : ObjBase
 {
 	public GameObject charModel;
 	protected GameObject model;
     
-	protected Renderer renderer;
+	protected Renderer objRenderer;
 
 	protected bool isDamaged = false;
 
 	public bool isDead = false;
 
-	protected float m_elapsedTime = 0;
-
+	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 
 	protected Character targetObj = null;
+
+    protected NavMeshAgent navMeshAgent;
+
+    public Character godjiulguya = null;
 
     // 데미지 관련
 
@@ -35,8 +46,6 @@ public class Character : ObjBase
 
     [SerializeField] GameObject basicSkillEffect = null;
 
-    
-
     public void GenerateModel()
 	{
 		model = Instantiate(charModel, transform);
@@ -44,13 +53,13 @@ public class Character : ObjBase
 		bs.center = transform.position;
 
 		bs.size = Vector3.one;
-		renderer = GetComponentInChildren<Renderer>();
+        objRenderer = GetComponentInChildren<Renderer>();
 
 
-        //데미지 관련
+        // ★ 데미지 관련
         uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
 
-        GameObject hpBar = Instantiate<GameObject>(hpBarPrefab, uiCanvas.transform);
+        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
 
         hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
 
@@ -60,7 +69,28 @@ public class Character : ObjBase
 
     }
 
-	public void Damaged()
+    public void ChangeDestination(List<Character> targetList)
+    {
+        Character target = null;
+
+        for (int i = 0; i < targetList.Count; ++i)
+        {
+            if (target == null
+                || Vector3.Distance(target.transform.position, transform.position) >
+                   Vector3.Distance(targetList[i].transform.position, transform.position))
+            {
+                target = targetList[i];
+            }
+        }
+
+        if (target != null)
+        {
+            godjiulguya = target;
+            navMeshAgent.SetDestination(target.transform.position);
+        }
+    }
+
+    public void Damaged()
 	{
 		hp -= 10;
         hpBarImage.fillAmount = hp / initHp;
@@ -105,23 +135,23 @@ public class Character : ObjBase
 			isDead = true;
 			Destroy(gameObject);
 
-            Debug.Log("dfa");
+            Debug.Log("dead");
 		}
 	}
 
 	public void Blink()
 	{
-		m_elapsedTime += Time.deltaTime * damageEffectSpeed;
-		m_elapsedTime = Mathf.Clamp(m_elapsedTime, 0.0f, 2.0f);
-		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(m_elapsedTime, 1));
+		elapsedTime += Time.deltaTime * damageEffectSpeed;
+		elapsedTime = Mathf.Clamp(elapsedTime, 0.0f, 2.0f);
+		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(elapsedTime, 1));
 
-		renderer.material.SetFloat("_R", color.r);
-		renderer.material.SetFloat("_G", color.g);
-		renderer.material.SetFloat("_B", color.b);
+		objRenderer.material.SetFloat("_R", color.r);
+		objRenderer.material.SetFloat("_G", color.g);
+        objRenderer.material.SetFloat("_B", color.b);
 
-		if (m_elapsedTime >= 2.0f)
+		if (elapsedTime >= 2.0f)
 		{
-			m_elapsedTime = 0.0f;
+			elapsedTime = 0.0f;
 			isDamaged = false;
 		}
 	}
