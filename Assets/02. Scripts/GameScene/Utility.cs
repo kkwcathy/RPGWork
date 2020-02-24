@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Utility 
 {
+	public static float spawnDelayTime = 0.8f;
+
 	public static bool GetIsNear(Vector3 A, Vector3 B)
 	{
 		float distance =

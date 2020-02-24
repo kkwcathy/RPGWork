@@ -35,7 +35,7 @@ public class Player : Character
 	void Start()
 	{
 		//characterController = GetComponent<CharacterController>();
-		navMeshAgent = GetComponent<NavMeshAgent>();
+		
 		
 
 		// 시작할 땐 첫 웨이브 전까지 ↙ 방향으로 이동
@@ -69,22 +69,22 @@ public class Player : Character
 
 	}
 
-	public void CheckDamaged()
-	{
-        enemies = enemyGroup.GetComponentsInChildren<Enemy>();
+	//public void CheckDamaged()
+	//{
+ //       enemies = enemyGroup.GetComponentsInChildren<Enemy>();
 
-		foreach(var i in enemies)
-		{
-			if (bs.Intersects(i.bs))
-			{
-				targetObj = i;
-			}
-			else
-			{
-				targetObj = null;
-			}
-		}
-	}
+	//	foreach(var i in enemies)
+	//	{
+	//		if (bs.Intersects(i.bs))
+	//		{
+	//			targetObj = i;
+	//		}
+	//		else
+	//		{
+	//			targetObj = null;
+	//		}
+	//	}
+	//}
 
 	void Update()
 	{
@@ -92,7 +92,7 @@ public class Player : Character
 
 		bs.center = transform.position;
 
-		CheckDamaged();
+		//CheckDamaged();
 
 		//if (isLerpMoving)
 		//{

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI; // 나중에 이미지 분리하면 삭제하기
+using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
 
-enum eState
+public enum eState
 {
-    Run,
-    Attack,
-    Pause,
+	Run,
+	Attack,
+	Pause,
 }
 
 public class Character : ObjBase
 {
+	// ★ 나중에 더 다듬기
+	new public Transform transform;
+
 	public GameObject charModel;
 	protected GameObject model;
     
@@ -22,9 +25,11 @@ public class Character : ObjBase
 
 	public bool isDead = false;
 
+	[SerializeField] protected float navSpeed = 5.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 
+	[SerializeField]
 	protected Character targetObj = null;
 
     protected NavMeshAgent navMeshAgent;
@@ -33,67 +38,67 @@ public class Character : ObjBase
 
     // 데미지 관련
 
-    private float hp = 100.0f;
-    private float initHp = 100.0f;
+    protected float hp = 100.0f;
+    protected float initHp = 100.0f;
 
     public GameObject hpBarPrefab;
     public Vector3 hpBarOffset = new Vector3(0, 2.2f, 0);
-    private Canvas uiCanvas;
-    private Image hpBarImage;
+    protected Canvas uiCanvas;
+    protected Image hpBarImage;
 
 
     // 공격 관련
 
     [SerializeField] GameObject basicSkillEffect = null;
 
+	// 상태 관련
+
+	protected eState curState = eState.Run;
+
     public void GenerateModel()
 	{
+		transform = GetComponent<Transform>();
 		model = Instantiate(charModel, transform);
 
 		bs.center = transform.position;
 
 		bs.size = Vector3.one;
         objRenderer = GetComponentInChildren<Renderer>();
+		navMeshAgent = GetComponent<NavMeshAgent>();
+		navMeshAgent.speed = navSpeed;
+		navMeshAgent.autoBraking = false;
 
+	}
 
-        // ★ 데미지 관련
-        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
-
-        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
-
-        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-
-        var hpBarComp = hpBar.GetComponent<HpBar>();
-        hpBarComp.targetTr = transform;
-        hpBarComp.offset = hpBarOffset;
-
-    }
+	public void ChangeState(eState state)
+	{
+		curState = state;
+	}
 
     public void ChangeDestination(List<Character> targetList)
     {
-        Character target = null;
-
         for (int i = 0; i < targetList.Count; ++i)
         {
-            if (target == null
-                || Vector3.Distance(target.transform.position, transform.position) >
+            if (targetObj == null
+                || Vector3.Distance(targetObj.transform.position, transform.position) >
                    Vector3.Distance(targetList[i].transform.position, transform.position))
             {
-                target = targetList[i];
+                targetObj = targetList[i];
             }
         }
 
-        if (target != null)
+        if (targetObj != null)
         {
-            godjiulguya = target;
-            navMeshAgent.SetDestination(target.transform.position);
+            godjiulguya = targetObj;
+            navMeshAgent.SetDestination(targetObj.transform.position);
         }
     }
 
-    public void Damaged()
+	// ★ 일단 플레이어에 hpbar 흔들리는거 보기 싫어서 몬스터만 띄울려고 virtual 로 했음
+    virtual public void Damaged()
 	{
 		hp -= 10;
-        hpBarImage.fillAmount = hp / initHp;
+        
 
         if (!isDamaged)
 		{
@@ -136,6 +141,24 @@ public class Character : ObjBase
 			Destroy(gameObject);
 
             Debug.Log("dead");
+		}
+
+		if(targetObj != null)
+		{
+			CheckDistance();
+		}
+	}
+
+	public float DistanceToTarget()
+	{
+		return Vector3.Distance(targetObj.transform.position, transform.position);
+	}
+
+	public void CheckDistance()
+	{
+		if(DistanceToTarget() < 1.0f)
+		{
+			navMeshAgent.isStopped = true;
 		}
 	}
 

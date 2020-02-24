@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (player.godjiulguya != null)
-        Debug.Log(Vector3.Distance(player.transform.position, player.godjiulguya.transform.position));
+        //if (player.godjiulguya != null)
+        //Debug.Log(Vector3.Distance(player.transform.position, player.godjiulguya.transform.position));
     }
 }
