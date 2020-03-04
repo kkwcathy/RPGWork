@@ -25,9 +25,12 @@ public class Character : ObjBase
 
 	public bool isDead = false;
 
-	[SerializeField] protected float navSpeed = 5.0f;
+	protected float navSpeed = 8.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
+
+	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+	private Vector3 tempVelocity = Vector3.zero;
 
 	[SerializeField]
 	protected Character targetObj = null;
@@ -66,7 +69,6 @@ public class Character : ObjBase
         objRenderer = GetComponentInChildren<Renderer>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		navMeshAgent.speed = navSpeed;
-		navMeshAgent.autoBraking = false;
 
 	}
 
@@ -135,17 +137,15 @@ public class Character : ObjBase
 			Blink();
 		}
 
+		if (targetObj != null)
+		{
+			CheckDistance();
+		}
+
 		if (hp <= 0)
 		{
 			isDead = true;
 			Destroy(gameObject);
-
-            Debug.Log("dead");
-		}
-
-		if(targetObj != null)
-		{
-			CheckDistance();
 		}
 	}
 
@@ -156,9 +156,20 @@ public class Character : ObjBase
 
 	public void CheckDistance()
 	{
-		if(DistanceToTarget() < 1.0f)
+		if(DistanceToTarget() < stopDistance)
 		{
+			navMeshAgent.velocity = Vector3.zero;
 			navMeshAgent.isStopped = true;
+		}
+		else
+		{
+			if(navMeshAgent.isStopped)
+			{
+				navMeshAgent.velocity = tempVelocity;
+				navMeshAgent.isStopped = false;
+			}
+
+			tempVelocity = navMeshAgent.velocity;
 		}
 	}
 

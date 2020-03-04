@@ -14,8 +14,6 @@ public class Enemy : Character
 
 		Character[] c = GameObject.Find("Team").GetComponentsInChildren<Player>();
 
-		Debug.Log("size" + c.Length);
-
 		for (int i = 0; i < c.Length; i++)
 		{
 			_playerList.Add(c[i]);
