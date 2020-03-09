@@ -6,6 +6,8 @@ public class CharacterAI
 {
 	Character _character;
 
+	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+
 	public enum charState
 	{
 		Idle,
@@ -41,8 +43,15 @@ public class CharacterAI
 		return _state;
 	}
 
-	public void UpdateState()
-	{ 
+	public void CheckDistance()
+	{
 
+	}
+	public void UpdateState()
+	{
+		if (_character.GetTargetDistance() < stopDistance)
+		{
+			ChangeState(charState.Fight);
+		}
 	}
 }

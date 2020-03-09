@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
 
-
-
 public class Character : MonoBehaviour
 {
 	// ★ 나중에 더 다듬기
@@ -24,7 +22,7 @@ public class Character : MonoBehaviour
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 
-	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+	
 	private Vector3 tempVelocity = Vector3.zero;
 
 	[SerializeField]
@@ -45,11 +43,9 @@ public class Character : MonoBehaviour
     protected Image hpBarImage;
 
     // 공격 관련
-
     [SerializeField] GameObject basicSkillEffect = null;
 
 	// 상태 관련
-
 
     public void GenerateModel()
 	{
@@ -125,41 +121,40 @@ public class Character : MonoBehaviour
 			Blink();
 		}
 
-		if (targetObj != null)
-		{
-			CheckDistance();
-		}
+		//if (targetObj != null)
+		//{
+		//	CheckDistance();
+		//}
 
 		if (hp <= 0)
 		{
 			isDead = true;
 			Destroy(gameObject);
 		}
+
+		// ★ 정리 다 되면 적절한 곳에 넣기
+		tempVelocity = navMeshAgent.velocity;
+
 	}
 
-	public float DistanceToTarget()
+	public float GetTargetDistance()
 	{
 		return Vector3.Distance(targetObj.transform.position, transform.position);
 	}
 
-	public void CheckDistance()
+	public void StopMove()
 	{
-		if(DistanceToTarget() < stopDistance)
-		{
-			navMeshAgent.velocity = Vector3.zero;
-			navMeshAgent.isStopped = true;
-		}
-		else
-		{
-			if(navMeshAgent.isStopped)
-			{
-				navMeshAgent.velocity = tempVelocity;
-				navMeshAgent.isStopped = false;
-			}
-
-			tempVelocity = navMeshAgent.velocity;
-		}
+		navMeshAgent.velocity = Vector3.zero;
+		navMeshAgent.isStopped = true;
 	}
+
+	public void BeginMove()
+	{
+		navMeshAgent.velocity = tempVelocity;
+		navMeshAgent.isStopped = false;
+	}
+
+
 
 	public void Blink()
 	{
