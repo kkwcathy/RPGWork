@@ -54,7 +54,7 @@ public class Enemy : Character
 			ChangeDestination(_playerList);
 		}
 
-		bs.center = transform.position;
+		//bs.center = transform.position;
     }
 
 	public override void Damaged()

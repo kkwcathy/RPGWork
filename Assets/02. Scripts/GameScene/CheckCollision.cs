@@ -4,32 +4,39 @@ using UnityEngine;
 
 public class CheckCollision : MonoBehaviour
 {
-	ObjBase objBounds;
-	Bounds bs;
-    Character[] obj;
+	//ObjBase objBounds;
+	//Bounds bs;
+ //   Character[] obj;
 
-    void Start()
-    {
-		objBounds = transform.GetComponent<ObjBase>();
-    }
-    
-    private void CheckInstersect()
-    {
-        obj = transform.parent.GetComponent<Player>().enemies;
+	//  void Start()
+	//  {
+	//objBounds = transform.GetComponent<ObjBase>();
+	//  }
 
-        foreach(var i in obj)
-        {
-            if (bs.Intersects(i.bs))
-            {
-                i.Damaged();
-            }
-        }
-    }
+	//  private void CheckInstersect()
+	//  {
+	//      obj = transform.parent.GetComponent<Player>().enemies;
 
-    // Update is called once per frame
-    void Update()
-    {
-		bs = objBounds.GetBounds();
-		CheckInstersect();
-    }
+	//      foreach(var i in obj)
+	//      {
+	//          if (bs.Intersects(i.bs))
+	//          {
+	//              i.Damaged();
+	//          }
+	//      }
+	//  }
+
+	//  // Update is called once per frame
+	//  void Update()
+	//  {
+	//bs = objBounds.GetBounds();
+	//CheckInstersect();
+	//  }
+
+	private void OnTriggerEnter(Collider other)
+	{
+		Character target = other.GetComponentInParent<Enemy>();
+		Debug.Log(other.name);
+		target.Damaged();
+	}
 }

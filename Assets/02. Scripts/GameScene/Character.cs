@@ -11,7 +11,7 @@ public enum eState
 	Pause,
 }
 
-public class Character : ObjBase
+public class Character : MonoBehaviour
 {
 	// ★ 나중에 더 다듬기
 	new public Transform transform;
@@ -63,9 +63,9 @@ public class Character : ObjBase
 		transform = GetComponent<Transform>();
 		model = Instantiate(charModel, transform);
 
-		bs.center = transform.position;
+		//bs.center = transform.position;
 
-		bs.size = Vector3.one;
+		//bs.size = Vector3.one;
         objRenderer = GetComponentInChildren<Renderer>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		navMeshAgent.speed = navSpeed;

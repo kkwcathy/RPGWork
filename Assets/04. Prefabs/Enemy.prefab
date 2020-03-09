@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7855129912344793769}
-  - component: {fileID: 1198056512490882228}
   - component: {fileID: 1914783046716877544}
   - component: {fileID: 3106823972070440770}
   m_Layer: 9
@@ -33,24 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &1198056512490882228
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1981106145682425779}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!195 &1914783046716877544
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -85,12 +66,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e5449a0dacf8d47b531963b927a177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bs:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  transform: {fileID: 0}
   charModel: {fileID: 1111084942782338, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
   isDead: 0
+  targetObj: {fileID: 0}
+  godjiulguya: {fileID: 0}
   hpBarPrefab: {fileID: 1325243606125559942, guid: 1e8f7a0a3c8731d49b26763ef79a8ed4,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
   basicSkillEffect: {fileID: 0}
+  _playerList: []

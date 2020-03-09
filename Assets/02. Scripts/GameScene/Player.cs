@@ -90,7 +90,7 @@ public class Player : Character
 	{
 		UpdateDo();
 
-		bs.center = transform.position;
+		//bs.center = transform.position;
 
 		//CheckDamaged();
 

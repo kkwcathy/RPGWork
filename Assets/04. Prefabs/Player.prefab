@@ -69,8 +69,11 @@ MonoBehaviour:
   bs:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  transform: {fileID: 0}
   charModel: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
   isDead: 0
+  targetObj: {fileID: 0}
+  godjiulguya: {fileID: 0}
   hpBarPrefab: {fileID: 1325243606125559942, guid: 1e8f7a0a3c8731d49b26763ef79a8ed4,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
