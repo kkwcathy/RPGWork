@@ -5,7 +5,7 @@ using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
 
 public class Enemy : Character
 {
-	[SerializeField] List<Character> _playerList;
+	[SerializeField] List<Character> _playerList = null;
 	// Start is called before the first frame update
 	void Start()
     {

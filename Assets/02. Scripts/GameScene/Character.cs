@@ -4,12 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
 
-public enum eState
-{
-	Run,
-	Attack,
-	Pause,
-}
+
 
 public class Character : ObjBase
 {
@@ -49,14 +44,12 @@ public class Character : ObjBase
     protected Canvas uiCanvas;
     protected Image hpBarImage;
 
-
     // 공격 관련
 
     [SerializeField] GameObject basicSkillEffect = null;
 
 	// 상태 관련
 
-	protected eState curState = eState.Run;
 
     public void GenerateModel()
 	{
@@ -70,11 +63,6 @@ public class Character : ObjBase
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		navMeshAgent.speed = navSpeed;
 
-	}
-
-	public void ChangeState(eState state)
-	{
-		curState = state;
 	}
 
     public void ChangeDestination(List<Character> targetList)
