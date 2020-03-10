@@ -6,7 +6,7 @@ public class CharacterState
 {
 	protected Character _character;
 	
-	public void SetCharacter(Character character)
+	public CharacterState(Character character)
 	{
 		_character = character;
 	}

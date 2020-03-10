@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class DeathState : CharacterState
 {
-    // Start is called before the first frame update
-    void Start()
+	public DeathState(Character character) : base(character)
+	{
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
         
     }

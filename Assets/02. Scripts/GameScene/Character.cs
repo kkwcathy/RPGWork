@@ -22,6 +22,7 @@ public class Character : MonoBehaviour
 	protected float navSpeed = 8.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
+	private float rotateSpeed = 2.0f;
 
 	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
 
@@ -31,7 +32,7 @@ public class Character : MonoBehaviour
 	protected Character targetObj = null;
 
     protected NavMeshAgent navMeshAgent;
-	protected CharacterAI charAI;
+	private CharacterAI charAI;
 
     // 데미지 관련
 
@@ -47,6 +48,16 @@ public class Character : MonoBehaviour
     [SerializeField] GameObject basicSkillEffect = null;
 
 	// 상태 관련
+
+	[SerializeField] protected Animator _animator;
+
+	public void StartDo()
+	{
+		
+		charAI = new CharacterAI(this);
+		charAI.Init();
+		GenerateModel();
+	}
 
     public void GenerateModel()
 	{
@@ -92,7 +103,8 @@ public class Character : MonoBehaviour
 
 	public void Attack()
 	{
-        StartCoroutine(BasicAttack());
+		Debug.Log("s");
+        StartCoroutine(BaseAttack());
 	}
 
     public void BasicSkillAttack()
@@ -102,18 +114,21 @@ public class Character : MonoBehaviour
 
     }
 
-    IEnumerator BasicAttack()
+    IEnumerator BaseAttack()
     {
         while(targetObj != null)
         {
+			PlayAnimation("Attack");
 			BasicSkillAttack();
 
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(2.0f);
         }
     }
     
 	public void UpdateDo()
 	{
+		charAI.UpdateState();
+
 		if (isDamaged)
 		{
 			Blink();
@@ -121,6 +136,7 @@ public class Character : MonoBehaviour
 
 		if (targetObj != null)
 		{
+			RotateToTarget();
 			CheckDistance();
 		}
 
@@ -160,6 +176,19 @@ public class Character : MonoBehaviour
 	{
 		navMeshAgent.velocity = tempVelocity;
 		navMeshAgent.isStopped = false;
+	}
+
+	public void PlayAnimation(string trigger)
+	{
+		_animator.SetTrigger(trigger);
+	}
+
+	public void RotateToTarget()
+	{
+		Vector3 dir = targetObj.transform.position - transform.position;
+
+		
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotateSpeed * Time.deltaTime);
 	}
 
 	public void Blink()

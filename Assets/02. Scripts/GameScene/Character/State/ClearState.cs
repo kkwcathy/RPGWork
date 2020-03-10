@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class ClearState : CharacterState
 {
-    // Start is called before the first frame update
-    void Start()
+	public ClearState(Character character) : base(character)
+	{
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
         
     }

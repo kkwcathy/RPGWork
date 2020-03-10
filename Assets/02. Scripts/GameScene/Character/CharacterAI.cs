@@ -16,7 +16,7 @@ public class CharacterAI
 		Clear,
 	}
 
-	private Dictionary<charState, CharacterState> _charStateDic = null;
+	private Dictionary<charState, CharacterState> _charStateDic = new Dictionary<charState, CharacterState>();
 
 	private CharacterState _state = null;
 	private charState _stateKey = charState.None;
@@ -28,10 +28,10 @@ public class CharacterAI
 
 	public void Init()
 	{
-		_charStateDic.Add(charState.Idle,	new IdleState());
-		_charStateDic.Add(charState.Run,	new RunState());
-		_charStateDic.Add(charState.Fight,	new FightState());
-		_charStateDic.Add(charState.Death,	new DeathState());
+		_charStateDic.Add(charState.Idle,	new IdleState(_character));
+		_charStateDic.Add(charState.Run,	new RunState(_character));
+		_charStateDic.Add(charState.Fight,	new FightState(_character));
+		_charStateDic.Add(charState.Death,	new DeathState(_character));
 	}
 
 	public void ChangeState(charState state)
@@ -58,10 +58,12 @@ public class CharacterAI
 			if (_character.isAttackable &&
 			_stateKey != charState.Fight)
 			{
+				Debug.Log("ss" + _stateKey + _character.name);
 				ChangeState(charState.Fight);
 			}
-			else if (_stateKey != charState.Run)
+			else if (_stateKey != charState.Run && _stateKey != charState.Fight)
 			{
+				Debug.Log("d");
 				ChangeState(charState.Run);
 			}
 		}

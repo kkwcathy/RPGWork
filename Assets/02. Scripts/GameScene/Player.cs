@@ -24,9 +24,9 @@ public class Player : Character
 
 	private void Awake()
 	{
-		GenerateModel();
+		StartDo();
 		//model.transform.parent = transform;
-
+		_animator = GetComponentInChildren<Animator>();
 		//IsChange = false
 		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
 	}

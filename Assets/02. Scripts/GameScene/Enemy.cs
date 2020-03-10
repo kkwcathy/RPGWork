@@ -9,7 +9,10 @@ public class Enemy : Character
 	// Start is called before the first frame update
 	void Start()
     {
-		GenerateModel();
+		
+		StartDo();
+
+		_animator = GetComponentInChildren<Animator>();
 		// ★ 플레이어들을 모두 가져와 리스트에 넣어줌 나중에 더 다듬기
 
 		Character[] c = GameObject.Find("Team").GetComponentsInChildren<Player>();

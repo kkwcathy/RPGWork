@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class RunState : CharacterState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public RunState(Character character) : base(character)
+	{
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	}
+
+	public override void SwitchState()
+	{
+		base.SwitchState();
+
+		_character.PlayAnimation("Run");
+	}
 }

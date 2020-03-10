@@ -36,7 +36,11 @@ public class CheckCollision : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		Character target = other.GetComponentInParent<Enemy>();
-		Debug.Log(other.name);
-		target.Damaged();
+		//Debug.Log(other.name);
+
+		if(target != null)
+		{
+			target.Damaged();
+		}
 	}
 }

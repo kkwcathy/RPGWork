@@ -13,7 +13,7 @@ public class SkillEffect : SkillBase
         Init();
         gameObject.layer = transform.parent.gameObject.layer;
 
-        Destroy(gameObject, 5.0f);
+        Destroy(gameObject, 1.0f);
     }
 
     void Update()

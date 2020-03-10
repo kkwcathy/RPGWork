@@ -69,10 +69,12 @@ MonoBehaviour:
   transform: {fileID: 0}
   charModel: {fileID: 1111084942782338, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
   isDead: 0
+  isAttackable: 0
   targetObj: {fileID: 0}
-  godjiulguya: {fileID: 0}
   hpBarPrefab: {fileID: 1325243606125559942, guid: 1e8f7a0a3c8731d49b26763ef79a8ed4,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
-  basicSkillEffect: {fileID: 0}
+  basicSkillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
+    type: 3}
+  _animator: {fileID: 0}
   _playerList: []

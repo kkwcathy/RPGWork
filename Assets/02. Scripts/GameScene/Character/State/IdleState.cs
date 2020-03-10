@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class IdleState : CharacterState
 {
-    // Start is called before the first frame update
-    void Start()
+	public IdleState(Character character) : base(character)
+	{
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
         
     }
