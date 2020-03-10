@@ -11,7 +11,7 @@ public class CharacterState
 		_character = character;
 	}
 
-	virtual public void StartState()
+	virtual public void SwitchState()
 	{
 		
 	}

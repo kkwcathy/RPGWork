@@ -5,11 +5,10 @@ using UnityEngine;
 public class CharacterAI
 {
 	Character _character;
-
-	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
-
+	
 	public enum charState
 	{
+		None,
 		Idle,
 		Run,
 		Fight,
@@ -18,7 +17,9 @@ public class CharacterAI
 	}
 
 	private Dictionary<charState, CharacterState> _charStateDic = null;
-	private charState _state = charState.Idle;
+
+	private CharacterState _state = null;
+	private charState _stateKey = charState.None;
 
 	public CharacterAI(Character character)
 	{
@@ -35,23 +36,34 @@ public class CharacterAI
 
 	public void ChangeState(charState state)
 	{
-		_state = state;
+		_stateKey = state;
+		_state = _charStateDic[state];
+		_state.SwitchState();
 	}
 
-	public charState GetCurState()
+	public charState GetStateKey()
 	{
-		return _state;
+		return _stateKey;
 	}
 
-	public void CheckDistance()
-	{
-
-	}
 	public void UpdateState()
 	{
-		if (_character.GetTargetDistance() < stopDistance)
+		if (_character.isDead && 
+			_stateKey != charState.Death)
 		{
-			ChangeState(charState.Fight);
+			ChangeState(charState.Death);
+		}
+		else if(!_character.isDead)
+		{
+			if (_character.isAttackable &&
+			_stateKey != charState.Fight)
+			{
+				ChangeState(charState.Fight);
+			}
+			else if (_stateKey != charState.Run)
+			{
+				ChangeState(charState.Run);
+			}
 		}
 	}
 }

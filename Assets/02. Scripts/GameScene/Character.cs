@@ -17,20 +17,21 @@ public class Character : MonoBehaviour
 	protected bool isDamaged = false;
 
 	public bool isDead = false;
+	public bool isAttackable = false;
 
 	protected float navSpeed = 8.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 
-	
+	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+
 	private Vector3 tempVelocity = Vector3.zero;
 
 	[SerializeField]
 	protected Character targetObj = null;
 
     protected NavMeshAgent navMeshAgent;
-
-    public Character godjiulguya = null;
+	protected CharacterAI charAI;
 
     // 데미지 관련
 
@@ -58,7 +59,6 @@ public class Character : MonoBehaviour
         objRenderer = GetComponentInChildren<Renderer>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		navMeshAgent.speed = navSpeed;
-
 	}
 
     public void ChangeDestination(List<Character> targetList)
@@ -75,7 +75,6 @@ public class Character : MonoBehaviour
 
         if (targetObj != null)
         {
-            godjiulguya = targetObj;
             navMeshAgent.SetDestination(targetObj.transform.position);
         }
     }
@@ -85,7 +84,6 @@ public class Character : MonoBehaviour
 	{
 		hp -= 10;
         
-
         if (!isDamaged)
 		{
 			isDamaged = true;
@@ -94,7 +92,7 @@ public class Character : MonoBehaviour
 
 	public void Attack()
 	{
-        StartCoroutine(Attacking());
+        StartCoroutine(BasicAttack());
 	}
 
     public void BasicSkillAttack()
@@ -104,11 +102,11 @@ public class Character : MonoBehaviour
 
     }
 
-    IEnumerator Attacking()
+    IEnumerator BasicAttack()
     {
         while(targetObj != null)
         {
-            targetObj.Damaged();
+			BasicSkillAttack();
 
             yield return new WaitForSeconds(1.0f);
         }
@@ -121,10 +119,10 @@ public class Character : MonoBehaviour
 			Blink();
 		}
 
-		//if (targetObj != null)
-		//{
-		//	CheckDistance();
-		//}
+		if (targetObj != null)
+		{
+			CheckDistance();
+		}
 
 		if (hp <= 0)
 		{
@@ -132,14 +130,24 @@ public class Character : MonoBehaviour
 			Destroy(gameObject);
 		}
 
+		
+
 		// ★ 정리 다 되면 적절한 곳에 넣기
 		tempVelocity = navMeshAgent.velocity;
 
 	}
 
-	public float GetTargetDistance()
+	public void CheckDistance()
 	{
-		return Vector3.Distance(targetObj.transform.position, transform.position);
+		if(Vector3.Distance
+			(targetObj.transform.position, transform.position) < stopDistance)
+		{
+			isAttackable = true;
+		}
+		else
+		{
+			isAttackable = false;
+		}
 	}
 
 	public void StopMove()
@@ -153,8 +161,6 @@ public class Character : MonoBehaviour
 		navMeshAgent.velocity = tempVelocity;
 		navMeshAgent.isStopped = false;
 	}
-
-
 
 	public void Blink()
 	{
