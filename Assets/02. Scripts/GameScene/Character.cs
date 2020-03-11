@@ -6,6 +6,11 @@ using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
 
 public class Character : MonoBehaviour
 {
+	public enum CharType
+	{
+		Player,
+		Enemy,
+	}
 	// ★ 나중에 더 다듬기
 	new public Transform transform;
 
@@ -24,7 +29,7 @@ public class Character : MonoBehaviour
 	protected float damageEffectSpeed = 10.0f;
 	private float rotateSpeed = 2.0f;
 
-	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+	private float stopDistance = 3.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
 
 	private Vector3 tempVelocity = Vector3.zero;
 
@@ -103,7 +108,6 @@ public class Character : MonoBehaviour
 
 	public void Attack()
 	{
-		Debug.Log("s");
         StartCoroutine(BaseAttack());
 	}
 
@@ -124,10 +128,20 @@ public class Character : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
         }
     }
-    
+
 	public void UpdateDo()
 	{
 		charAI.UpdateState();
+
+		AnimatorStateInfo stateInfo =
+		_animator.GetCurrentAnimatorStateInfo(0);
+
+		if (stateInfo.normalizedTime >= 1.0f)
+		{
+			Debug.Log(name);
+
+		}
+
 
 		if (isDamaged)
 		{

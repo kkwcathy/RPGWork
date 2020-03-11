@@ -5,16 +5,12 @@ using UnityEngine.AI;
 
 public class Player : Character
 {
-	//[SerializeField] private float speed = 15.0f;
-
 	public float dodgeSpeed = 5.0f;
 
 	[SerializeField] private float dodgeDistance = -5.0f;
 	public Vector3 curDesPos;
 
 	Vector3 targetPos;
-
-	//private bool isLerpMoving = false;
 
 	public GameObject enemyGroup;
     public Enemy[] enemies;
@@ -25,9 +21,7 @@ public class Player : Character
 	private void Awake()
 	{
 		StartDo();
-		//model.transform.parent = transform;
 		_animator = GetComponentInChildren<Animator>();
-		//IsChange = false
 		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
 	}
 
@@ -65,45 +59,10 @@ public class Player : Character
 			navMeshAgent.isStopped = false;
 			navMeshAgent.SetDestination(curDesPos);
 		}
-
-
 	}
-
-	//public void CheckDamaged()
-	//{
- //       enemies = enemyGroup.GetComponentsInChildren<Enemy>();
-
-	//	foreach(var i in enemies)
-	//	{
-	//		if (bs.Intersects(i.bs))
-	//		{
-	//			targetObj = i;
-	//		}
-	//		else
-	//		{
-	//			targetObj = null;
-	//		}
-	//	}
-	//}
 
 	void Update()
 	{
 		UpdateDo();
-
-		//bs.center = transform.position;
-
-		//CheckDamaged();
-
-		//if (isLerpMoving)
-		//{
-		//	Vector3 curPos = transform.position;
-
-		//	characterController.Move((targetPos - curPos) * Time.deltaTime * dodgeSpeed);
-
-		//	if (Utility.GetIsNear(curPos, targetPos))
-		//	{
-		//		isLerpMoving = false;
-		//	}
-		//}
 	}
 }

@@ -6,7 +6,7 @@ public class CharacterAI
 {
 	Character _character;
 	
-	public enum charState
+	public enum CharState
 	{
 		None,
 		Idle,
@@ -16,10 +16,10 @@ public class CharacterAI
 		Clear,
 	}
 
-	private Dictionary<charState, CharacterState> _charStateDic = new Dictionary<charState, CharacterState>();
+	private Dictionary<CharState, CharacterState> _charStateDic = new Dictionary<CharState, CharacterState>();
 
 	private CharacterState _state = null;
-	private charState _stateKey = charState.None;
+	private CharState _stateKey = CharState.None;
 
 	public CharacterAI(Character character)
 	{
@@ -28,20 +28,20 @@ public class CharacterAI
 
 	public void Init()
 	{
-		_charStateDic.Add(charState.Idle,	new IdleState(_character));
-		_charStateDic.Add(charState.Run,	new RunState(_character));
-		_charStateDic.Add(charState.Fight,	new FightState(_character));
-		_charStateDic.Add(charState.Death,	new DeathState(_character));
+		_charStateDic.Add(CharState.Idle,	new IdleState(_character));
+		_charStateDic.Add(CharState.Run,	new RunState(_character));
+		_charStateDic.Add(CharState.Fight,	new FightState(_character));
+		_charStateDic.Add(CharState.Death,	new DeathState(_character));
 	}
 
-	public void ChangeState(charState state)
+	public void ChangeState(CharState state)
 	{
 		_stateKey = state;
 		_state = _charStateDic[state];
 		_state.SwitchState();
 	}
 
-	public charState GetStateKey()
+	public CharState GetStateKey()
 	{
 		return _stateKey;
 	}
@@ -49,22 +49,20 @@ public class CharacterAI
 	public void UpdateState()
 	{
 		if (_character.isDead && 
-			_stateKey != charState.Death)
+			_stateKey != CharState.Death)
 		{
-			ChangeState(charState.Death);
+			ChangeState(CharState.Death);
 		}
 		else if(!_character.isDead)
 		{
 			if (_character.isAttackable &&
-			_stateKey != charState.Fight)
+			_stateKey != CharState.Fight)
 			{
-				Debug.Log("ss" + _stateKey + _character.name);
-				ChangeState(charState.Fight);
+				ChangeState(CharState.Fight);
 			}
-			else if (_stateKey != charState.Run && _stateKey != charState.Fight)
+			else if (_stateKey != CharState.Run && _stateKey != CharState.Fight)
 			{
-				Debug.Log("d");
-				ChangeState(charState.Run);
+				ChangeState(CharState.Run);
 			}
 		}
 	}
