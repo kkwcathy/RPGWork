@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GenerateCharModel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+	public GameObject[] gameObjects;
+	// Start is called before the first frame update
+	void Start()
     {
-        
+		gameObjects = Resources.LoadAll<GameObject>("Prefabs/Models");
     }
 
     // Update is called once per frame

@@ -8,8 +8,8 @@ public class Character : MonoBehaviour
 {
 	public enum CharType
 	{
-		Player,
-		Enemy,
+		Fire,
+		Water,
 	}
 
 	public enum StateType
@@ -37,10 +37,16 @@ public class Character : MonoBehaviour
 
 	public bool isDead = false;
 
+
+	// 움직임 관련
 	protected float navSpeed = 8.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 	private float rotateSpeed = 2.0f;
+
+	public float dodgeSpeed = 5.0f;
+	[SerializeField] private float dodgeDistance = -5.0f;
+
 
 	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
 
@@ -196,11 +202,10 @@ public class Character : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("Animation not set");
+			Debug.Log("Animator not set");
 		}
 
 	}
-
 
 	public bool IsAnimationPlaying(string anim)
 	{
@@ -242,4 +247,11 @@ public class Character : MonoBehaviour
 			isDamaged = false;
 		}
 	}
+
+	//public void Dodge()
+	//{
+	//	targetPos = transform.position + (transform.forward * -dodgeDistance);
+
+	//	// isLerpMoving = true;
+	//}
 }
