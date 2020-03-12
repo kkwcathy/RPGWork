@@ -11,6 +11,20 @@ public class Character : MonoBehaviour
 		Player,
 		Enemy,
 	}
+
+	public enum StateType
+	{
+		None,
+		Idle,
+		Run,
+		Fight,
+		Death,
+		Patrol,
+		Clear,
+	}
+
+	private StateType _stateType = StateType.Run;
+
 	// ★ 나중에 더 다듬기
 	new public Transform transform;
 
@@ -22,14 +36,13 @@ public class Character : MonoBehaviour
 	protected bool isDamaged = false;
 
 	public bool isDead = false;
-	public bool isAttackable = false;
 
 	protected float navSpeed = 8.0f;
 	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 	private float rotateSpeed = 2.0f;
 
-	private float stopDistance = 3.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
 
 	private Vector3 tempVelocity = Vector3.zero;
 
@@ -58,10 +71,10 @@ public class Character : MonoBehaviour
 
 	public void StartDo()
 	{
-		
+		GenerateModel();
+
 		charAI = new CharacterAI(this);
 		charAI.Init();
-		GenerateModel();
 	}
 
     public void GenerateModel()
@@ -69,9 +82,6 @@ public class Character : MonoBehaviour
 		transform = GetComponent<Transform>();
 		model = Instantiate(charModel, transform);
 
-		//bs.center = transform.position;
-
-		//bs.size = Vector3.one;
         objRenderer = GetComponentInChildren<Renderer>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		navMeshAgent.speed = navSpeed;
@@ -120,28 +130,17 @@ public class Character : MonoBehaviour
 
     IEnumerator BaseAttack()
     {
-        while(targetObj != null)
+        while(targetObj != null && _stateType == StateType.Fight)
         {
 			PlayAnimation("Attack");
 			BasicSkillAttack();
-
-            yield return new WaitForSeconds(2.0f);
+			yield return new WaitForSeconds(2.0f);
         }
     }
 
 	public void UpdateDo()
 	{
-		charAI.UpdateState();
-
-		AnimatorStateInfo stateInfo =
-		_animator.GetCurrentAnimatorStateInfo(0);
-
-		if (stateInfo.normalizedTime >= 1.0f)
-		{
-			Debug.Log(name);
-
-		}
-
+		charAI.UpdateState(_stateType);
 
 		if (isDamaged)
 		{
@@ -151,7 +150,6 @@ public class Character : MonoBehaviour
 		if (targetObj != null)
 		{
 			RotateToTarget();
-			CheckDistance();
 		}
 
 		if (hp <= 0)
@@ -159,24 +157,22 @@ public class Character : MonoBehaviour
 			isDead = true;
 			Destroy(gameObject);
 		}
-
 		
-
 		// ★ 정리 다 되면 적절한 곳에 넣기
 		tempVelocity = navMeshAgent.velocity;
-
 	}
 
-	public void CheckDistance()
+	public bool IsAttackable()
 	{
-		if(Vector3.Distance
-			(targetObj.transform.position, transform.position) < stopDistance)
+		if(targetObj != null && 
+			Vector3.Distance(targetObj.transform.position, transform.position) 
+			< stopDistance)
 		{
-			isAttackable = true;
+			return true;
 		}
 		else
 		{
-			isAttackable = false;
+			return false;
 		}
 	}
 
@@ -194,15 +190,40 @@ public class Character : MonoBehaviour
 
 	public void PlayAnimation(string trigger)
 	{
-		_animator.SetTrigger(trigger);
+		if(_animator != null)
+		{
+			_animator.SetTrigger(trigger);
+		}
+		else
+		{
+			Debug.Log("Animation not set");
+		}
+
+	}
+
+
+	public bool IsAnimationPlaying(string anim)
+	{
+		AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+
+		return info.IsName(anim) && _animator.IsInTransition(0);
 	}
 
 	public void RotateToTarget()
 	{
 		Vector3 dir = targetObj.transform.position - transform.position;
-
-		
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotateSpeed * Time.deltaTime);
+	}
+
+	public void ChangeState(StateType state)
+	{
+		_stateType = state;
+		charAI.SwitchState(state);
+	}
+
+	public StateType GetStateType()
+	{
+		return _stateType;
 	}
 
 	public void Blink()

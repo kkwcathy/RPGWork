@@ -5,21 +5,8 @@ using UnityEngine;
 public class CharacterAI
 {
 	Character _character;
-	
-	public enum CharState
-	{
-		None,
-		Idle,
-		Run,
-		Fight,
-		Death,
-		Clear,
-	}
 
-	private Dictionary<CharState, CharacterState> _charStateDic = new Dictionary<CharState, CharacterState>();
-
-	private CharacterState _state = null;
-	private CharState _stateKey = CharState.None;
+	private Dictionary<Character.StateType, CharacterState> _charStateDic = new Dictionary<Character.StateType, CharacterState>();
 
 	public CharacterAI(Character character)
 	{
@@ -28,42 +15,27 @@ public class CharacterAI
 
 	public void Init()
 	{
-		_charStateDic.Add(CharState.Idle,	new IdleState(_character));
-		_charStateDic.Add(CharState.Run,	new RunState(_character));
-		_charStateDic.Add(CharState.Fight,	new FightState(_character));
-		_charStateDic.Add(CharState.Death,	new DeathState(_character));
+		_charStateDic.Add(Character.StateType.Idle,		new IdleState(_character));
+		_charStateDic.Add(Character.StateType.Run,		new RunState(_character));
+		_charStateDic.Add(Character.StateType.Fight,	new FightState(_character));
+		_charStateDic.Add(Character.StateType.Death,	new DeathState(_character));
 	}
 
-	public void ChangeState(CharState state)
+	public void SwitchState(Character.StateType state)
 	{
-		_stateKey = state;
-		_state = _charStateDic[state];
-		_state.SwitchState();
+		_charStateDic[state].StartState();
 	}
 
-	public CharState GetStateKey()
+	public void UpdateState(Character.StateType state)
 	{
-		return _stateKey;
-	}
-
-	public void UpdateState()
-	{
-		if (_character.isDead && 
-			_stateKey != CharState.Death)
+		if (!_character.isDead)
 		{
-			ChangeState(CharState.Death);
+			_charStateDic[state].CheckState();
 		}
-		else if(!_character.isDead)
+		else
 		{
-			if (_character.isAttackable &&
-			_stateKey != CharState.Fight)
-			{
-				ChangeState(CharState.Fight);
-			}
-			else if (_stateKey != CharState.Run && _stateKey != CharState.Fight)
-			{
-				ChangeState(CharState.Run);
-			}
+			_character.ChangeState(Character.StateType.Death);
 		}
 	}
+
 }

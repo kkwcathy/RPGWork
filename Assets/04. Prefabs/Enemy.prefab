@@ -69,7 +69,7 @@ MonoBehaviour:
   transform: {fileID: 0}
   charModel: {fileID: 1111084942782338, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
   isDead: 0
-  isAttackable: 0
+  stopDistance: 2
   targetObj: {fileID: 0}
   hpBarPrefab: {fileID: 1325243606125559942, guid: 1e8f7a0a3c8731d49b26763ef79a8ed4,
     type: 3}

@@ -137,6 +137,11 @@ PrefabInstance:
       propertyPath: enemyGroup
       value: 
       objectReference: {fileID: 1790987413}
+    - target: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
+        type: 3}
+      propertyPath: stopDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7188697079655286280, guid: 57ab2fc0e71ae184cbf884e2f101c855,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2718,6 +2723,11 @@ PrefabInstance:
       propertyPath: enemyGroup
       value: 
       objectReference: {fileID: 1790987413}
+    - target: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
+        type: 3}
+      propertyPath: stopDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7188697079655286280, guid: 57ab2fc0e71ae184cbf884e2f101c855,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4641,18 +4651,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 468867}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1588518343 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
-    type: 3}
-  m_PrefabInstance: {fileID: 468867}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebf4abef0c201d34f8fbd28362f98387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1627032043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5430,6 +5428,11 @@ PrefabInstance:
       propertyPath: enemyGroup
       value: 
       objectReference: {fileID: 1790987413}
+    - target: {fileID: 7188697079655286295, guid: 57ab2fc0e71ae184cbf884e2f101c855,
+        type: 3}
+      propertyPath: stopDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7188697079655286280, guid: 57ab2fc0e71ae184cbf884e2f101c855,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5555,7 +5558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c90a7af9e58824b9d545d07f7cb4ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1588518343}
 --- !u!4 &2086244596
 Transform:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class Player : Character
 	public float dodgeSpeed = 5.0f;
 
 	[SerializeField] private float dodgeDistance = -5.0f;
+
 	public Vector3 curDesPos;
 
 	Vector3 targetPos;
@@ -22,7 +23,7 @@ public class Player : Character
 	{
 		StartDo();
 		_animator = GetComponentInChildren<Animator>();
-		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
+		PlayAnimation("Run");
 	}
 
 
@@ -30,8 +31,7 @@ public class Player : Character
 	{
 		//characterController = GetComponent<CharacterController>();
 		
-		
-
+		curDesPos = transform.position + (Vector3.left * 20 + Vector3.back * 20);
 		// 시작할 땐 첫 웨이브 전까지 ↙ 방향으로 이동
 		navMeshAgent.SetDestination(curDesPos);
 		//navMeshAgent.SetDestination(wayPoints[0].transform.position);

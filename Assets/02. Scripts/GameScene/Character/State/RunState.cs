@@ -9,10 +9,17 @@ public class RunState : CharacterState
 
 	}
 
-	public override void SwitchState()
+	public override void StartState()
 	{
-		base.SwitchState();
-
+		_character.BeginMove();
 		_character.PlayAnimation("Run");
+	}
+
+	public override void CheckState()
+	{
+		if (_character.IsAttackable())
+		{
+			_character.ChangeState(Character.StateType.Fight);
+		}
 	}
 }

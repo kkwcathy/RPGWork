@@ -8,15 +8,20 @@ public class FightState : CharacterState
 	{
 	}
 
-
-	public override void SwitchState()
+	public override void StartState()
 	{
-		base.SwitchState();
-
 		_character.StopMove();
 		//_character.PlayAnimation("Attack");
-
 		_character.Attack();
-		
+	}
+
+	public override void CheckState()
+	{
+		base.CheckState();
+
+		if (!_character.IsAttackable())
+		{
+			_character.ChangeState(Character.StateType.Run);
+		}
 	}
 }
