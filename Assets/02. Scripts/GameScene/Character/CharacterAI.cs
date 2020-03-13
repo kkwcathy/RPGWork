@@ -7,7 +7,7 @@ public class CharacterAI
 	Character _character;
 
 	private Dictionary<Character.StateType, CharacterState> _charStateDic = new Dictionary<Character.StateType, CharacterState>();
-
+	
 	public CharacterAI(Character character)
 	{
 		_character = character;
@@ -15,10 +15,10 @@ public class CharacterAI
 
 	public void Init()
 	{
-		_charStateDic.Add(Character.StateType.Idle,		new IdleState(_character));
-		_charStateDic.Add(Character.StateType.Run,		new RunState(_character));
-		_charStateDic.Add(Character.StateType.Fight,	new FightState(_character));
-		_charStateDic.Add(Character.StateType.Death,	new DeathState(_character));
+		_charStateDic.Add(Character.StateType.Idle, new IdleState(_character));
+		_charStateDic.Add(Character.StateType.RunTowards, new RunState(_character));
+		_charStateDic.Add(Character.StateType.Fight, new FightState(_character));
+		_charStateDic.Add(Character.StateType.Death, new DeathState(_character));
 	}
 
 	public void SwitchState(Character.StateType state)
@@ -26,11 +26,11 @@ public class CharacterAI
 		_charStateDic[state].StartState();
 	}
 
-	public void UpdateState(Character.StateType state)
+	public void CheckState(Character.StateType state)
 	{
 		if (!_character.isDead)
 		{
-			_charStateDic[state].CheckState();
+			_charStateDic[state].UpdateState();
 		}
 		else
 		{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveController : MonoBehaviour
+public class WaveManager : MonoBehaviour
 {
     delegate void TeamHandler(List<Character> targetList);
     TeamHandler teamHandler;

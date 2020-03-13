@@ -24,15 +24,7 @@ public class Enemy : Character
 		
 
 		// ★ 데미지 관련
-		uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
 
-		GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
-
-		hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-
-		var hpBarComp = hpBar.GetComponent<HpBar>();
-		hpBarComp.targetTr = transform;
-		hpBarComp.offset = hpBarOffset;
 
 		navMeshAgent.isStopped = true;
 		StartCoroutine(StartDelay());
@@ -43,7 +35,7 @@ public class Enemy : Character
 	{
 		yield return new WaitForSeconds(Utility.spawnDelayTime);
 
-		navMeshAgent.isStopped = false;
+		_agent.isStopped = false;
 		
 	}
 
@@ -60,9 +52,5 @@ public class Enemy : Character
 		//bs.center = transform.position;
     }
 
-	public override void Damaged()
-	{
-		base.Damaged();
-		hpBarImage.fillAmount = hp / initHp;
-	}
+
 }

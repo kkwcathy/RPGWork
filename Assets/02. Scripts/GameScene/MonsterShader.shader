@@ -32,13 +32,10 @@
             float2 uv_MainTex;
         };
 
-
         fixed4 _Color;
 		fixed _R;
 		fixed _G;
 		fixed _B;
-
-
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {

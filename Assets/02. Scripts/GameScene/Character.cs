@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI; // ★ 나중에 이미지 분리하면 삭제하기
+
 
 public class Character : MonoBehaviour
 {
@@ -16,10 +16,10 @@ public class Character : MonoBehaviour
 	{
 		None,
 		Idle,
-		Run,
+		Explore,
+		RunTowards,
 		Fight,
 		Death,
-		Patrol,
 		Clear,
 	}
 
@@ -28,93 +28,80 @@ public class Character : MonoBehaviour
 	// ★ 나중에 더 다듬기
 	new public Transform transform;
 
-	public GameObject charModel;
-	protected GameObject model;
-    
-	protected Renderer objRenderer;
+	protected Renderer _renderer;
 
 	protected bool isDamaged = false;
-
 	public bool isDead = false;
-
 
 	// 움직임 관련
 	protected float navSpeed = 8.0f;
-	protected float elapsedTime = 0;
 	protected float damageEffectSpeed = 10.0f;
 	private float rotateSpeed = 2.0f;
 
 	public float dodgeSpeed = 5.0f;
 	[SerializeField] private float dodgeDistance = -5.0f;
+ 
+    // 공격 관련
+    [SerializeField] GameObject basicSkillEffect = null;
 
+	// 상태 관련
+	private List<Character> _targetList = new List<Character>();
+	private Vector3 _explorePoint;
+	private Character _target = null;
 
 	private float stopDistance = 1.5f; // 타겟과의 거리가 이만큼 이하이면 멈춤
 
 	private Vector3 tempVelocity = Vector3.zero;
 
-	[SerializeField]
-	protected Character targetObj = null;
-
-    protected NavMeshAgent navMeshAgent;
-	private CharacterAI charAI;
-
-    // 데미지 관련
-
-    protected float hp = 100.0f;
-    protected float initHp = 100.0f;
-
-    public GameObject hpBarPrefab;
-    public Vector3 hpBarOffset = new Vector3(0, 2.2f, 0);
-    protected Canvas uiCanvas;
-    protected Image hpBarImage;
-
-    // 공격 관련
-    [SerializeField] GameObject basicSkillEffect = null;
-
-	// 상태 관련
+	private NavMeshAgent _agent;
+	private CharacterAI _charAI;
 
 	[SerializeField] protected Animator _animator;
 
 	public void StartDo()
 	{
-		GenerateModel();
-
-		charAI = new CharacterAI(this);
-		charAI.Init();
-	}
-
-    public void GenerateModel()
-	{
 		transform = GetComponent<Transform>();
-		model = Instantiate(charModel, transform);
 
-        objRenderer = GetComponentInChildren<Renderer>();
-		navMeshAgent = GetComponent<NavMeshAgent>();
-		navMeshAgent.speed = navSpeed;
+		_renderer = GetComponentInChildren<Renderer>();
+		_agent = GetComponent<NavMeshAgent>();
+		_agent.speed = navSpeed;
+
+		_charAI = new CharacterAI(this);
+		_charAI.Init();
 	}
 
-    public void ChangeDestination(List<Character> targetList)
+	public void SetExplorePoint(Vector3 point)
+	{
+		_explorePoint = point;
+	}
+
+	public void Explore()
+	{
+		_agent.SetDestination(_explorePoint);
+	}
+
+	public void SearchTarget()
     {
-        for (int i = 0; i < targetList.Count; ++i)
+        for (int i = 0; i < _targetList.Count; ++i)
         {
-            if (targetObj == null
-                || Vector3.Distance(targetObj.transform.position, transform.position) >
-                   Vector3.Distance(targetList[i].transform.position, transform.position))
+            if (_target == null
+                || Vector3.Distance(_target.transform.position, transform.position) >
+                   Vector3.Distance(_targetList[i].transform.position, transform.position))
             {
-                targetObj = targetList[i];
+                _target = _targetList[i];
             }
         }
 
-        if (targetObj != null)
+        if (_target != null)
         {
-            navMeshAgent.SetDestination(targetObj.transform.position);
+            _agent.SetDestination(_target.transform.position);
         }
     }
 
 	// ★ 일단 플레이어에 hpbar 흔들리는거 보기 싫어서 몬스터만 띄울려고 virtual 로 했음
     virtual public void Damaged()
 	{
-		hp -= 10;
+		//hp -= 10;
         
         if (!isDamaged)
 		{
@@ -136,7 +123,7 @@ public class Character : MonoBehaviour
 
     IEnumerator BaseAttack()
     {
-        while(targetObj != null && _stateType == StateType.Fight)
+        while(_target != null && _stateType == StateType.Fight)
         {
 			PlayAnimation("Attack");
 			BasicSkillAttack();
@@ -146,32 +133,32 @@ public class Character : MonoBehaviour
 
 	public void UpdateDo()
 	{
-		charAI.UpdateState(_stateType);
+		_charAI.CheckState(_stateType);
 
 		if (isDamaged)
 		{
 			Blink();
 		}
 
-		if (targetObj != null)
+		if (_target != null)
 		{
 			RotateToTarget();
 		}
 
-		if (hp <= 0)
-		{
-			isDead = true;
-			Destroy(gameObject);
-		}
+		//if (hp <= 0)
+		//{
+		//	isDead = true;
+		//	Destroy(gameObject);
+		//}
 		
 		// ★ 정리 다 되면 적절한 곳에 넣기
-		tempVelocity = navMeshAgent.velocity;
+		tempVelocity = _agent.velocity;
 	}
 
 	public bool IsAttackable()
 	{
-		if(targetObj != null && 
-			Vector3.Distance(targetObj.transform.position, transform.position) 
+		if(_target != null && 
+			Vector3.Distance(_target.transform.position, transform.position) 
 			< stopDistance)
 		{
 			return true;
@@ -184,14 +171,14 @@ public class Character : MonoBehaviour
 
 	public void StopMove()
 	{
-		navMeshAgent.velocity = Vector3.zero;
-		navMeshAgent.isStopped = true;
+		_agent.velocity = Vector3.zero;
+		_agent.isStopped = true;
 	}
 
 	public void BeginMove()
 	{
-		navMeshAgent.velocity = tempVelocity;
-		navMeshAgent.isStopped = false;
+		_agent.velocity = tempVelocity;
+		_agent.isStopped = false;
 	}
 
 	public void PlayAnimation(string trigger)
@@ -200,11 +187,6 @@ public class Character : MonoBehaviour
 		{
 			_animator.SetTrigger(trigger);
 		}
-		else
-		{
-			Debug.Log("Animator not set");
-		}
-
 	}
 
 	public bool IsAnimationPlaying(string anim)
@@ -216,14 +198,14 @@ public class Character : MonoBehaviour
 
 	public void RotateToTarget()
 	{
-		Vector3 dir = targetObj.transform.position - transform.position;
+		Vector3 dir = _target.transform.position - transform.position;
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotateSpeed * Time.deltaTime);
 	}
 
 	public void ChangeState(StateType state)
 	{
 		_stateType = state;
-		charAI.SwitchState(state);
+		_charAI.SwitchState(state);
 	}
 
 	public StateType GetStateType()
@@ -231,15 +213,22 @@ public class Character : MonoBehaviour
 		return _stateType;
 	}
 
+	public List<Character> GetTargetList()
+	{
+		return _targetList;
+	}
+
+	float elapsedTime = 0;
+
 	public void Blink()
 	{
 		elapsedTime += Time.deltaTime * damageEffectSpeed;
 		elapsedTime = Mathf.Clamp(elapsedTime, 0.0f, 2.0f);
 		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(elapsedTime, 1));
 
-		objRenderer.material.SetFloat("_R", color.r);
-		objRenderer.material.SetFloat("_G", color.g);
-        objRenderer.material.SetFloat("_B", color.b);
+		_renderer.material.SetFloat("_R", color.r);
+		_renderer.material.SetFloat("_G", color.g);
+        _renderer.material.SetFloat("_B", color.b);
 
 		if (elapsedTime >= 2.0f)
 		{

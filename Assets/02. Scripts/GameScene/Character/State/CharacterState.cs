@@ -16,7 +16,7 @@ public class CharacterState
 
 	}
 
-	virtual public void CheckState()
+	virtual public void UpdateState()
 	{
 		
 	}

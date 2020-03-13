@@ -15,13 +15,11 @@ public class FightState : CharacterState
 		_character.Attack();
 	}
 
-	public override void CheckState()
+	public override void UpdateState()
 	{
-		base.CheckState();
-
 		if (!_character.IsAttackable())
 		{
-			_character.ChangeState(Character.StateType.Run);
+			_character.ChangeState(Character.StateType.RunTowards);
 		}
 	}
 }

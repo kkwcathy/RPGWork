@@ -15,8 +15,10 @@ public class RunState : CharacterState
 		_character.PlayAnimation("Run");
 	}
 
-	public override void CheckState()
+	public override void UpdateState()
 	{
+		_character.SearchTarget();
+
 		if (_character.IsAttackable())
 		{
 			_character.ChangeState(Character.StateType.Fight);
