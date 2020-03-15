@@ -4,96 +4,139 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    delegate void TeamHandler(List<Character> targetList);
-    TeamHandler teamHandler;
+	delegate void CharAddTargetHandler(Character character);
+	delegate void CharDeleteTargetHandler(Character character);
 
-    EnemyGenerator enemyGenerator;
+	delegate void PlayerExploreHandler(Vector3 point);
+
+	CharAddTargetHandler _charAddTarget;
+	CharDeleteTargetHandler _charDeleteTarget;
+
+	PlayerExploreHandler _playerExplore;
+
+	public EnemyGenerator enemyGenerator;
     public FollowCamera followCam;
 
-    [SerializeField] List<Character> _enemyList = null;
+	[SerializeField] private List<Character> _charList = null;
 
-	bool _isGameStart = false;
-	bool _isWaveCleared () => _enemyList.Count <= 0;
+	private int _maxWave = 0;
+	private float DelayTime = 3.0f;
+	private float spawnRunTime = 1.0f;
 
-	Character curEnemy;
-	int curEnemyIndex = 0;
 
-	void InitTeamSet()
-    {
-        Player[] players = GameObject.Find("Team").GetComponentsInChildren<Player>();
-
-        foreach(var i in players)
-        {
-            teamHandler += new TeamHandler(i.ChangeDestination);
-        }
-    }
-    
-    void Start()
-    {
-        // 나중에 필요없으면 인스펙터 창에서 드랙앤드롭으로 대체
-        enemyGenerator = GetComponent<EnemyGenerator>();
-
-        InitTeamSet();
-		StartCoroutine(RunWaves());
-    }
-
-    public void AddEnemy(Character enemy)
-    {
-        _enemyList.Add(enemy);
-    }
-
-    public void DeleteEnemy(Character enemy)
-    {
-        _enemyList.Remove(enemy);
-    }
-
-    void Update()
-    {
-		if (_isGameStart)
-		{
-            CheckDeath();
-            teamHandler(_enemyList);
-		}
-
+	private void Awake()
+	{
+		Init();
 	}
 
-    public void CheckDeath()
+	private void Init()
+	{
+		Character[] characters = GameObject.Find("Team").GetComponentsInChildren<Character>();
+
+		for (int i = 0; i < characters.Length; ++i)
+		{
+			_playerExplore += new PlayerExploreHandler(characters[i].SetExplorePoint);
+			_charAddTarget += new CharAddTargetHandler(characters[i].AddTarget);
+			_charDeleteTarget += new CharDeleteTargetHandler(characters[i].DeleteTarget);
+
+			_charList.Add(characters[i]);
+		}
+
+		Debug.Log("C");
+
+		_maxWave = enemyGenerator.GetMaxWave();
+		_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
+	}
+
+	private void Start()
     {
-        for(int i = 0; i < _enemyList.Count; ++i)
-        {
-            if(_enemyList[i].isDead)
-            {
-                DeleteEnemy(_enemyList[i]);
-                //teamHandler(_enemyList);
-            }
-        }
+		StartCoroutine(RunWaves());
+	}
+
+    private void SetEnemy()
+    {
+		List<Character> enemyList = enemyGenerator.GenerateEnemy();
+
+		for (int i = 0; i < enemyList.Count; ++i)
+		{
+			_charAddTarget += new CharAddTargetHandler(enemyList[i].AddTarget);
+
+			_charList.Add(enemyList[i]);
+		}
     }
 
-	public void ChangeWave()
+	private void AddTarget()
 	{
-		curEnemyIndex = 0;
+		for(int i = 0; i < _charList.Count; ++i)
+		{
+			_charAddTarget(_charList[i]);
+		}
+	}
 
-		Transform curPoint = enemyGenerator.GenerateEnemy(_enemyList);
-		curEnemy = _enemyList[curEnemyIndex];
+    private void DeleteTarget(Character target)
+    {
+		_charAddTarget -= target.AddTarget;
+		_charDeleteTarget -= target.DeleteTarget;
+
+		if(IsPlayer(target))
+		{
+			_playerExplore -= target.SetExplorePoint;
+		}
+
+		_charDeleteTarget(target);
+    }
+
+	private bool IsWaveClear()
+	{
+		for(int i = 0; i < _charList.Count; ++i)
+		{
+			if(_charList[i].IsDead())
+			{
+				DeleteTarget(_charList[i]);
+				_charList.Remove(_charList[i]);
+
+				--i;
+			}
+		}
+
+		return _charList.TrueForAll(IsPlayer);
+	}
+
+	private void FixedUpdate()
+	{
+		Debug.Log("B");
+	}
+	private void ChangeWave()
+	{
+		SetEnemy();
 
 		followCam.ChangeDistance(2, -3, 3);
-		followCam.ChangeTarget(curPoint);
+		followCam.ChangeTarget(enemyGenerator.GetCurSpawnPoint());
 	}
 
 	IEnumerator RunWaves()
     {
-        yield return new WaitForSeconds(3.0f);
-
-		_isGameStart = true;
-
-		while (enemyGenerator.CurWave < enemyGenerator._maxWave)
+		while (enemyGenerator.GetCurWave() < _maxWave)
 		{
+			yield return new WaitForSeconds(DelayTime);
+
 			ChangeWave();
 
-            yield return new WaitUntil(_isWaveCleared);
+			yield return new WaitForSeconds(Utility.spawnDelayTime);
+
+			AddTarget();
+
+			yield return new WaitUntil(IsWaveClear);
+
+			_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 
 			followCam.ChangeDistance(-2, 3, -3);
-			enemyGenerator.CurWave += 1;
+			enemyGenerator.AddWave();
 		}
     }
+
+	private bool IsPlayer(Character character)
+	{
+		return character.GetCharType() == Character.CharType.Player;
+	}
 }

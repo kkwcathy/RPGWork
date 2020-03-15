@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : CharacterState
+public class ExploreState : CharacterState
 {
-	public IdleState(Character character) : base(character)
+	public ExploreState(Character character) : base(character)
 	{
-
 	}
 
 	public override void StartState()
 	{
-		_character.PlayAnimation("Idle");
+		_character.PlayAnimation("Run");
+		_character.Explore();
+		_character.BeginMove();
 	}
 
 	public override void UpdateState()
 	{
-		if (_character.CheckTargetExist())
+		if(_character.CheckTargetExist())
 		{
 			_character.ChangeState(Character.StateType.RunToTarget);
 		}
 	}
+
 }

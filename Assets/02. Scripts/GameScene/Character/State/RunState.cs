@@ -19,7 +19,11 @@ public class RunState : CharacterState
 	{
 		_character.SearchTarget();
 
-		if (_character.IsAttackable())
+		if(!_character.CheckTargetExist())
+		{
+			_character.ChangeState(Character.StateType.NoTarget);
+		}
+		else if (_character.CheckTargetDistance())
 		{
 			_character.ChangeState(Character.StateType.Fight);
 		}

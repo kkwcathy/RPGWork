@@ -10,13 +10,13 @@ public class FollowCamera : MonoBehaviour
 	Transform target;
 
 	public float moveDamping = 15.0f;
-	//public float rotateDamping = 10.0f;
+
 	private float xDistance;
 	private float zDistance;
 
 	private float _height;
 
-	private Transform tr;
+	private Transform _tr;
 
 	//bool isTargetChange = false;
 	bool isEnemyFocus = false;
@@ -28,11 +28,11 @@ public class FollowCamera : MonoBehaviour
 	{
 		target = playerFocus;
 
-		tr = GetComponent<Transform>();
+		_tr = GetComponent<Transform>();
 
-		xDistance = tr.position.x;
-		zDistance = tr.position.z;
-		_height = tr.position.y;
+		xDistance = _tr.position.x;
+		zDistance = _tr.position.z;
+		_height = _tr.position.y;
 	}
 
     public void ChangeDistance(int x, int y, int z)
@@ -48,13 +48,13 @@ public class FollowCamera : MonoBehaviour
 
 		if (!isEnemyFocus)
 		{
-			tr.position = followPos;
+			_tr.position = followPos;
 		}
 		else
 		{
-			tr.position = Vector3.Lerp(tr.position, followPos, Time.deltaTime * moveDamping);
+			_tr.position = Vector3.Lerp(_tr.position, followPos, Time.deltaTime * moveDamping);
 
-			if (Utility.GetIsNear(tr.position, followPos) && target == playerFocus)
+			if (Utility.GetIsNear(_tr.position, followPos) && target == playerFocus)
 			{
 				isEnemyFocus = false;
 			}
@@ -76,7 +76,5 @@ public class FollowCamera : MonoBehaviour
 		yield return new WaitForSeconds(Utility.spawnDelayTime);
 
 		target = playerFocus;
-
-		
 	}
 }

@@ -11,15 +11,18 @@ public class FightState : CharacterState
 	public override void StartState()
 	{
 		_character.StopMove();
-		//_character.PlayAnimation("Attack");
-		_character.Attack();
+		_character.StartBaseAttack();
 	}
 
 	public override void UpdateState()
 	{
-		if (!_character.IsAttackable())
+		if (!_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.StateType.RunTowards);
+			_character.ChangeState(Character.StateType.NoTarget);
+		}
+		else if (!_character.CheckTargetDistance())
+		{
+			_character.ChangeState(Character.StateType.RunToTarget);
 		}
 	}
 }

@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAI
+public class CharacterAI 
 {
-	Character _character;
-
-	private Dictionary<Character.StateType, CharacterState> _charStateDic = new Dictionary<Character.StateType, CharacterState>();
+	protected Character _character;
+	
+	protected Dictionary<Character.StateType, CharacterState> _charStateDic = new Dictionary<Character.StateType, CharacterState>();
 	
 	public CharacterAI(Character character)
 	{
 		_character = character;
 	}
 
-	public void Init()
+	virtual public void Init()
 	{
-		_charStateDic.Add(Character.StateType.Idle, new IdleState(_character));
-		_charStateDic.Add(Character.StateType.RunTowards, new RunState(_character));
+		_charStateDic.Add(Character.StateType.RunToTarget, new RunState(_character));
 		_charStateDic.Add(Character.StateType.Fight, new FightState(_character));
 		_charStateDic.Add(Character.StateType.Death, new DeathState(_character));
 	}
@@ -26,15 +25,16 @@ public class CharacterAI
 		_charStateDic[state].StartState();
 	}
 
-	public void CheckState(Character.StateType state)
+	virtual public void CheckState(Character.StateType state)
 	{
-		if (!_character.isDead)
+		if (_character.IsDead())
 		{
-			_charStateDic[state].UpdateState();
+			_character.ChangeState(Character.StateType.Death);
+			
 		}
 		else
 		{
-			_character.ChangeState(Character.StateType.Death);
+			_charStateDic[state].UpdateState();
 		}
 	}
 

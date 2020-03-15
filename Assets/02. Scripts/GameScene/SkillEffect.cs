@@ -11,12 +11,19 @@ public class SkillEffect : SkillBase
     void Start()
     {
         Init();
-        gameObject.layer = transform.parent.gameObject.layer;
 
         Destroy(gameObject, 1.0f);
     }
 
-    void Update()
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.layer != gameObject.layer)
+		{
+			Destroy(gameObject);
+		}
+	}
+
+	void Update()
     {
         BoundsUpdate();
 
