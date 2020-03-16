@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExploreState : CharacterState
+public class ExploreState : StateBase
 {
 	public ExploreState(Character character) : base(character)
 	{
@@ -19,7 +19,7 @@ public class ExploreState : CharacterState
 	{
 		if(_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.StateType.RunToTarget);
+			_character.ChangeState(Character.eStateType.RunToTarget);
 		}
 	}
 

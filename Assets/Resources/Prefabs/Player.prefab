@@ -68,9 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf831ed472cf6048a8bec71ce4b5af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDead: 0
-  dodgeSpeed: 5
-  dodgeDistance: -5
+  tr: {fileID: 0}
   _firePoint: {fileID: 4898927474870839325}
   _attack: {fileID: 0}
   _charType: 0
@@ -147,6 +145,11 @@ PrefabInstance:
     - target: {fileID: 4744222756475520, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859306995664985114, guid: 66ed1f8690ee0db478abac28acfef574,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1726154227701254, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_Layer
@@ -277,11 +280,6 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1992369794795074, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6859306995664985114, guid: 66ed1f8690ee0db478abac28acfef574,
-        type: 3}
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}

@@ -17,21 +17,30 @@ public class WaveManager : MonoBehaviour
 	public EnemyGenerator enemyGenerator;
     public FollowCamera followCam;
 
-	[SerializeField] private List<Character> _charList = null;
+	private List<Character> _charList = new List<Character>();
 
+	private Character _headPlayer;
 	private int _maxWave = 0;
-	private float DelayTime = 3.0f;
-	private float spawnRunTime = 1.0f;
 
+	private float _waveDelayTime = 4.0f;
+	private float _spawnRunTime = 1.0f;
 
 	private void Awake()
 	{
 		Init();
 	}
 
+	private void Start()
+	{
+		StartCoroutine(RunWaves());
+	}
+
 	private void Init()
 	{
 		Character[] characters = GameObject.Find("Team").GetComponentsInChildren<Character>();
+		
+		_headPlayer = characters[0];
+		followCam.SetMainPlayer(_headPlayer.tr);
 
 		for (int i = 0; i < characters.Length; ++i)
 		{
@@ -42,18 +51,11 @@ public class WaveManager : MonoBehaviour
 			_charList.Add(characters[i]);
 		}
 
-		Debug.Log("C");
-
 		_maxWave = enemyGenerator.GetMaxWave();
 		_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 	}
 
-	private void Start()
-    {
-		StartCoroutine(RunWaves());
-	}
-
-    private void SetEnemy()
+    private void ChangeWave()
     {
 		List<Character> enemyList = enemyGenerator.GenerateEnemy();
 
@@ -63,7 +65,10 @@ public class WaveManager : MonoBehaviour
 
 			_charList.Add(enemyList[i]);
 		}
-    }
+
+		followCam.SetMainEnemy(enemyList[0].tr);
+		followCam.ChangeTarget(_spawnRunTime);
+	}
 
 	private void AddTarget()
 	{
@@ -90,7 +95,7 @@ public class WaveManager : MonoBehaviour
 	{
 		for(int i = 0; i < _charList.Count; ++i)
 		{
-			if(_charList[i].IsDead())
+			if(_charList[i].GetStateType() == Character.eStateType.Death)
 			{
 				DeleteTarget(_charList[i]);
 				_charList.Remove(_charList[i]);
@@ -101,28 +106,18 @@ public class WaveManager : MonoBehaviour
 
 		return _charList.TrueForAll(IsPlayer);
 	}
-
-	private void FixedUpdate()
-	{
-		Debug.Log("B");
-	}
-	private void ChangeWave()
-	{
-		SetEnemy();
-
-		followCam.ChangeDistance(2, -3, 3);
-		followCam.ChangeTarget(enemyGenerator.GetCurSpawnPoint());
-	}
-
+	
 	IEnumerator RunWaves()
     {
 		while (enemyGenerator.GetCurWave() < _maxWave)
 		{
-			yield return new WaitForSeconds(DelayTime);
+			_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
+
+			yield return new WaitForSeconds(_waveDelayTime);
 
 			ChangeWave();
 
-			yield return new WaitForSeconds(Utility.spawnDelayTime);
+			yield return new WaitForSeconds(_spawnRunTime);
 
 			AddTarget();
 
@@ -130,13 +125,13 @@ public class WaveManager : MonoBehaviour
 
 			_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 
-			followCam.ChangeDistance(-2, 3, -3);
+			followCam.Unzoom();
 			enemyGenerator.AddWave();
 		}
     }
 
 	private bool IsPlayer(Character character)
 	{
-		return character.GetCharType() == Character.CharType.Player;
+		return character.GetCharType() == Character.eCharType.Player;
 	}
 }

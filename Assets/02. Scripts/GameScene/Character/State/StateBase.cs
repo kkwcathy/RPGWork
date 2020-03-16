@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterState
+public class StateBase
 {
 	protected Character _character;
-	
-	public CharacterState(Character character)
+
+	public StateBase(Character character)
 	{
 		_character = character;
 	}

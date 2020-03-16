@@ -6,7 +6,7 @@ public class CharacterAI
 {
 	protected Character _character;
 	
-	protected Dictionary<Character.StateType, CharacterState> _charStateDic = new Dictionary<Character.StateType, CharacterState>();
+	protected Dictionary<Character.eStateType, StateBase> _charStateDic = new Dictionary<Character.eStateType, StateBase>();
 	
 	public CharacterAI(Character character)
 	{
@@ -15,27 +15,18 @@ public class CharacterAI
 
 	virtual public void Init()
 	{
-		_charStateDic.Add(Character.StateType.RunToTarget, new RunState(_character));
-		_charStateDic.Add(Character.StateType.Fight, new FightState(_character));
-		_charStateDic.Add(Character.StateType.Death, new DeathState(_character));
+		_charStateDic.Add(Character.eStateType.RunToTarget, new RunState(_character));
+		_charStateDic.Add(Character.eStateType.Fight, new FightState(_character));
+		_charStateDic.Add(Character.eStateType.Death, new DeathState(_character));
 	}
 
-	public void SwitchState(Character.StateType state)
+	public void SwitchState(Character.eStateType state)
 	{
 		_charStateDic[state].StartState();
 	}
 
-	virtual public void CheckState(Character.StateType state)
+	virtual public void CheckState(Character.eStateType state)
 	{
-		if (_character.IsDead())
-		{
-			_character.ChangeState(Character.StateType.Death);
-			
-		}
-		else
-		{
-			_charStateDic[state].UpdateState();
-		}
+		_charStateDic[state].UpdateState();
 	}
-
 }

@@ -6,13 +6,13 @@ using UnityEngine.AI;
 
 public class Character : MonoBehaviour
 {
-	public enum CharType
+	public enum eCharType
 	{
 		Player,
 		Enemy,
 	}
 
-	public enum StateType
+	public enum eStateType
 	{
 		NoTarget,
 		RunToTarget,
@@ -21,16 +21,22 @@ public class Character : MonoBehaviour
 		Clear,
 	}
 
-	private StateType _stateType = StateType.NoTarget;
+	private eStateType _stateType = eStateType.NoTarget;
 
-	private Transform _tr;
-	public bool _isDead = false;
+	public Transform tr;
 
 	// 움직임 관련
-	private float rotateSpeed = 2.0f;
+	private float _rotateSpeed = 2.0f;
+	private float _fightDistance = 2.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
+
+	public float FightDistance
+	{
+		get { return _fightDistance; }
+		set { _fightDistance = value; }
+	}
 
 	// 공격 관련
-	public Transform _firePoint;
+	[SerializeField] private Transform _firePoint;
 	[SerializeField] private Attack _attack;
 
 	// 상태 관련
@@ -38,17 +44,16 @@ public class Character : MonoBehaviour
 	private Vector3 _explorePoint;
 	private Character _target = null;
 
-	private float stopDistance = 2.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
-	
 	private NavMeshAgent _agent;
 
-	[SerializeField] private CharType _charType = CharType.Enemy;
+	[SerializeField] private eCharType _charType = eCharType.Enemy;
 	private CharacterAI _charAI;
 
 	[SerializeField] protected Animator _animator;
 
 	private void Awake()
 	{
+		tr = GetComponent<Transform>();
 		_charAI = new CharacterFactory(this).GetCharAI();
 	}
 
@@ -59,7 +64,6 @@ public class Character : MonoBehaviour
 
 	private void Start()
 	{
-		_tr = GetComponent<Transform>();
 		_animator = GetComponentInChildren<Animator>();
 		_attack = GetComponent<Attack>();
 		_agent = GetComponent<NavMeshAgent>();
@@ -67,7 +71,7 @@ public class Character : MonoBehaviour
 		_charAI.Init();
 	}
 
-	public CharType GetCharType()
+	public eCharType GetCharType()
 	{
 		return _charType;
 	}
@@ -79,14 +83,13 @@ public class Character : MonoBehaviour
 
 	public void Explore()
 	{
-		Debug.Log(_explorePoint);
 		_agent.SetDestination(_explorePoint);
 	}
 
-	public bool CheckTargetDistance()
+	public bool CheckTargetDistance(float distance)
 	{
-		return Vector3.Distance(_target._tr.position,
-				_tr.position) < stopDistance;
+		return Vector3.Distance(_target.tr.position,
+				tr.position) < distance;
 	}
 
 	public bool CheckTargetExist()
@@ -99,8 +102,8 @@ public class Character : MonoBehaviour
         for (int i = 0; i < _targetList.Count; ++i)
         {
             if (_target == null
-                || Vector3.Distance(_target._tr.position, _tr.position) >
-                   Vector3.Distance(_targetList[i]._tr.position, _tr.position))
+                || Vector3.Distance(_target.tr.position, tr.position) >
+                   Vector3.Distance(_targetList[i].tr.position, tr.position))
             {
                 _target = _targetList[i];
             }
@@ -108,7 +111,7 @@ public class Character : MonoBehaviour
 
 		if (_target != null)
 		{
-			_agent.SetDestination(_target._tr.position);
+			_agent.SetDestination(_target.tr.position);
 		}
     }
 
@@ -119,11 +122,11 @@ public class Character : MonoBehaviour
 
     IEnumerator BaseAttack()
     {
-        while(_target != null && _stateType == StateType.Fight)
+        while(_target != null && _stateType == eStateType.Fight)
         {
 			PlayAnimation("Attack");
-
 			_attack.Fire(_firePoint);
+
 			yield return new WaitForSeconds(2.0f);
         }
     }
@@ -172,19 +175,26 @@ public class Character : MonoBehaviour
 		return info.IsName(anim) && _animator.IsInTransition(0);
 	}
 
+	//public bool IsAnimationPlaying(float elapsedTime)
+	//{
+	//	AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+
+	//	return info.normalizedTime >= elapsedTime;
+	//}
+
 	public void RotateToTarget()
 	{
-		Vector3 dir = _target._tr.position - _tr.position;
-		_tr.rotation = Quaternion.Lerp(_tr.rotation, Quaternion.LookRotation(dir), rotateSpeed * Time.deltaTime);
+		Vector3 dir = _target.tr.position - tr.position;
+		tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.LookRotation(dir), _rotateSpeed * Time.deltaTime);
 	}
 
-	public void ChangeState(StateType state)
+	public void ChangeState(eStateType state)
 	{
 		_stateType = state;
 		_charAI.SwitchState(state);
 	}
 
-	public StateType GetStateType()
+	public eStateType GetStateType()
 	{
 		return _stateType;
 	}
@@ -213,8 +223,8 @@ public class Character : MonoBehaviour
 		}
 	}
 
-	public bool IsDead()
+	public void Die()
 	{
-		return _isDead;
+		Destroy(gameObject);
 	}
 }

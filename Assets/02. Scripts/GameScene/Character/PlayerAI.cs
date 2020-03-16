@@ -12,9 +12,9 @@ public class PlayerAI : CharacterAI
 	{
 		base.Init();
 
-		_charStateDic.Add(Character.StateType.NoTarget, new ExploreState(_character));
-		_charStateDic.Add(Character.StateType.Clear, new ClearState(_character));
+		_charStateDic.Add(Character.eStateType.NoTarget, new ExploreState(_character));
+		_charStateDic.Add(Character.eStateType.Clear, new ClearState(_character));
 
-		_character.ChangeState(Character.StateType.NoTarget);
+		_character.ChangeState(Character.eStateType.NoTarget);
 	}
 }

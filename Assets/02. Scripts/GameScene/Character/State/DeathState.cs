@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathState : CharacterState
+public class DeathState : StateBase
 {
 	public DeathState(Character character) : base(character)
 	{
 	}
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
+	public override void StartState()
+	{
+		_character.PlayAnimation("Death");
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void UpdateState()
+	{
+		if (!_character.IsAnimationPlaying("Death"))
+		{
+			_character.Die();
+		}
+	}
 }

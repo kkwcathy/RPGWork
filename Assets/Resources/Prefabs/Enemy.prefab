@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1914783046716877544}
   - component: {fileID: 2505726080672635049}
   - component: {fileID: 8736499060459379942}
+  - component: {fileID: -9160121594117573652}
+  - component: {fileID: 8825214149483633598}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -68,9 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf831ed472cf6048a8bec71ce4b5af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDead: 0
-  dodgeSpeed: 5
-  dodgeDistance: -5
+  tr: {fileID: 0}
   _firePoint: {fileID: 6498649367034957108}
   _attack: {fileID: 0}
   _charType: 1
@@ -89,6 +89,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSkillEffect: {fileID: 3978393620265791201, guid: a5d44e7c4004f2940b719d564216a025,
     type: 3}
+--- !u!114 &-9160121594117573652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981106145682425779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abdb27a2733acd94697860a22d312b92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!143 &8825214149483633598
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981106145682425779}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &8157103405317441587
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +340,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6185963175203287397, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f4dd49991b372e649ab3c182c3624c10, type: 3}
 --- !u!4 &921530848260798155 stripped
 Transform:

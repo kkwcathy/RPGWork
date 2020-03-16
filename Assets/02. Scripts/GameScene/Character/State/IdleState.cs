@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : CharacterState
+public class IdleState : StateBase
 {
 	public IdleState(Character character) : base(character)
 	{
@@ -18,7 +18,7 @@ public class IdleState : CharacterState
 	{
 		if (_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.StateType.RunToTarget);
+			_character.ChangeState(Character.eStateType.RunToTarget);
 		}
 	}
 }

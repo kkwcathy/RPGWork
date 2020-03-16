@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillBase : ObjBase
+public class SkillBase : MonoBehaviour
 {
+	protected Transform _tr;
 
+	protected void StartDo()
+	{
+		_tr = GetComponent<Transform>();
+	}
 }

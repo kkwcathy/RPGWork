@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class SkillEffect : SkillBase
 {
-	public Transform Axis;
-
-    float speed = 1.0f;
+    private float _speed = 1.0f;
+	private float _destroyTime = 1.0f;
 
     void Start()
     {
-        Init();
+		StartDo();
 
-        Destroy(gameObject, 1.0f);
+        Destroy(gameObject, _destroyTime);
     }
 
 	private void OnTriggerEnter(Collider other)
@@ -25,11 +24,6 @@ public class SkillEffect : SkillBase
 
 	void Update()
     {
-        BoundsUpdate();
-
-		//Debug.Log("position"+bs.center);
-
-        transform.Translate(Vector3.forward * speed);
-		//transform.RotateAround(Axis.position, Vector3.down, 100 * Time.deltaTime);
+        _tr.Translate(Vector3.forward * _speed);
     }
 }

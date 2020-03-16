@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunState : CharacterState
+public class RunState : StateBase
 {
 	public RunState(Character character) : base(character)
 	{
@@ -21,11 +21,11 @@ public class RunState : CharacterState
 
 		if(!_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.StateType.NoTarget);
+			_character.ChangeState(Character.eStateType.NoTarget);
 		}
-		else if (_character.CheckTargetDistance())
+		else if (_character.CheckTargetDistance(_character.FightDistance))
 		{
-			_character.ChangeState(Character.StateType.Fight);
+			_character.ChangeState(Character.eStateType.Fight);
 		}
 	}
 }

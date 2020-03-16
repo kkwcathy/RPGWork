@@ -6,7 +6,7 @@ public class CharacterFactory
 {
 	Character _character;
 
-	Dictionary<Character.CharType, CharacterAI> _charAIDic = new Dictionary<Character.CharType, CharacterAI>();
+	Dictionary<Character.eCharType, CharacterAI> _charAIDic = new Dictionary<Character.eCharType, CharacterAI>();
 
 	public CharacterFactory(Character character)
 	{
@@ -16,8 +16,8 @@ public class CharacterFactory
 
 	public void BuildCharAI()
 	{
-		_charAIDic.Add(Character.CharType.Player, new PlayerAI(_character));
-		_charAIDic.Add(Character.CharType.Enemy, new EnemyAI(_character));
+		_charAIDic.Add(Character.eCharType.Player, new PlayerAI(_character));
+		_charAIDic.Add(Character.eCharType.Enemy, new EnemyAI(_character));
 	}
 
 	public CharacterAI GetCharAI()

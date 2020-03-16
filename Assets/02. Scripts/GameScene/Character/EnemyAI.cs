@@ -13,6 +13,6 @@ public class EnemyAI : CharacterAI
 	{
 		base.Init();
 
-		_charStateDic.Add(Character.StateType.NoTarget, new IdleState(_character));
+		_charStateDic.Add(Character.eStateType.NoTarget, new IdleState(_character));
 	}
 }

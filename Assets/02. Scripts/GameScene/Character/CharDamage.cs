@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class CharDamage : MonoBehaviour
 {
+	private Character _character;
 	private Renderer _renderer;
+
 	private float _blinkSpeed = 10.0f;
+
+	private float _hp;
+	private float _initHp = 100;
 
 	private bool _isDamaged = false;
 
-	// Start is called before the first frame update
 	void Start()
     {
+		_character = GetComponent<Character>();
 		_renderer = GetComponentInChildren<Renderer>();
+		_hp = _initHp;
+	}
+
+	void Update()
+	{
+		UpdateDo();
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -23,9 +34,21 @@ public class CharDamage : MonoBehaviour
 		}
 	}
 
+	private void UpdateDo()
+	{
+		if(_hp <= 0)
+		{
+			_character.ChangeState(Character.eStateType.Death);
+		}
+		else if (_isDamaged)
+		{
+			Blink();
+		}
+	}
+
 	virtual public void Damaged()
 	{
-		//hp -= 10;
+		_hp -= 50;
 
 		if (!_isDamaged)
 		{
@@ -33,14 +56,6 @@ public class CharDamage : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
-	void Update()
-    {
-		if (_isDamaged)
-		{
-			Blink();
-		}
-	}
 
 	float elapsedTime = 0;
 
