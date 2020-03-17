@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+// 캐릭터 데미지 관리 클래스
 public class CharacterDamage : MonoBehaviour
 {
 	private Character _character;
@@ -46,6 +45,7 @@ public class CharacterDamage : MonoBehaviour
 		}
 		else if (_isDamaged)
 		{
+			// 데미지를 받으면 하얗게 깜빡이기
 			Blink();
 		}
 	}

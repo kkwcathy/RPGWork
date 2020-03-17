@@ -87,6 +87,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSkillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
     type: 3}
+  _fireTime: 0.05
+  _coolTime: 1.5
 --- !u!1001 &7167035437997108592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +96,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7188697079655286280}
     m_Modifications:
+    - target: {fileID: 2344704522626516333, guid: 66ed1f8690ee0db478abac28acfef574,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4744222756475520, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

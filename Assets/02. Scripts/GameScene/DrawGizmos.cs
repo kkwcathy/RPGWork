@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+// Gizmos 그리기 클래스 (필요한 object에만 추가)
 public class DrawGizmos : MonoBehaviour
 {
 	public Color color = Color.red;

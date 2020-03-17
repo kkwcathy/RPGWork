@@ -89,6 +89,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSkillEffect: {fileID: 3978393620265791201, guid: a5d44e7c4004f2940b719d564216a025,
     type: 3}
+  _fireTime: 0.05
+  _coolTime: 1.5
 --- !u!114 &-9160121594117573652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8157103405317441587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.502, z: 0.451}
+  m_LocalPosition: {x: 0, y: 0.502, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 921530848260798155}
