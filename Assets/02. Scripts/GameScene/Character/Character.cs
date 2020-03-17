@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class Character : MonoBehaviour
 {
 	// 캐릭터 타입
@@ -73,7 +72,7 @@ public class Character : MonoBehaviour
 
 		_charAI.Init();
 	}
-
+	
 	public eCharType GetCharType()
 	{
 		return _charType;
@@ -123,21 +122,15 @@ public class Character : MonoBehaviour
     }
 
 	// 기본 공격
-	public void StartBaseAttack()
+	public void BasicAttack()
 	{
-        StartCoroutine(BaseAttack());
-	}
-
-    IEnumerator BaseAttack()
-    {
-        while(_target != null && _stateType == eStateType.Fight)
-        {
+		if(_attack.GetElapsedTime() == 0.0f)
+		{
 			PlayAnimation("Attack");
-			_attack.Fire(_firePoint);
+		}
 
-			yield return new WaitForSeconds(2.0f);
-        }
-    }
+		_attack.Fire(_firePoint);
+	}
 
 	public void UpdateDo()
 	{
