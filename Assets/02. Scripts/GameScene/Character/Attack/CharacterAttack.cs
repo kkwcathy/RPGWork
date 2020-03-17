@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+// 캐릭터 공격 동작 상위 클래스
+public class CharacterAttack : MonoBehaviour
 {
 	[SerializeField] protected GameObject _basicSkillEffect = null;
 
+	protected float _basicSkillPower = 20.0f;
+
 	virtual public void Fire(Transform tr)
 	{
-
+		
 	}
 }

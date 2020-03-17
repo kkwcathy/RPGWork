@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EnemyAI : CharacterAI
+﻿public class EnemyAI : CharacterAI
 {
 	public EnemyAI(Character character) : base(character)
 	{

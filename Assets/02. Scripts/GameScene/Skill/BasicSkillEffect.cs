@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SkillEffect : SkillBase
+public class BasicSkillEffect : SkillBase
 {
-    private float _speed = 1.0f;
+    private float _speed = 0.3f;
 	private float _destroyTime = 1.0f;
 
     void Start()

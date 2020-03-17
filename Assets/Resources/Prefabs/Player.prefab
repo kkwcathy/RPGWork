@@ -43,8 +43,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 7188697079655286283}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 8
+  m_Radius: 0.7
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -94,14 +94,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7188697079655286280}
     m_Modifications:
-    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
-      propertyPath: m_Name
-      value: FireMonster
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 4744222756475520, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -145,6 +137,14 @@ PrefabInstance:
     - target: {fileID: 4744222756475520, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
+      propertyPath: m_Name
+      value: FireMonster
+      objectReference: {fileID: 0}
+    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6859306995664985114, guid: 66ed1f8690ee0db478abac28acfef574,
         type: 3}

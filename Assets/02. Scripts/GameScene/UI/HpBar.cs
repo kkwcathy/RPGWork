@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionPractice : MonoBehaviour
+public class HpBar : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,12 +15,4 @@ public class CollisionPractice : MonoBehaviour
     {
         
     }
-
-	private void OnTriggerEnter(Collider other)
-	{
-		Debug.Log(gameObject.name + "wawawawawa");
-	}
-
-	
-
 }

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Damaged
-  m_Shader: {fileID: 4800000, guid: f29eb8c74f15d394bb38bab14d8d4e9d, type: 3}
+  m_Name: Boximon Fiery1
+  m_Shader: {fileID: 4800000, guid: ca9764c1132593f44b1cb1e37b75e388, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -58,13 +58,12 @@ Material:
     m_Floats:
     - _B: 0
     - _BumpScale: 1
-    - _Color: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _G: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0

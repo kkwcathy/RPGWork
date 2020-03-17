@@ -10,8 +10,8 @@ public class EnemyGenerator : MonoBehaviour
 
     public List<Transform> spawnPoints;
 
-    const int MAX_SPAWN = 4;
-    const int MIN_SPAWN = 1;
+    [SerializeField] private int maxSpawnAmount = 4;
+	[SerializeField] private int minSpawnAmount = 1;
 
 	private int _maxWave = 0;
 
@@ -31,7 +31,7 @@ public class EnemyGenerator : MonoBehaviour
 	{
 		List<Character> enemyList = new List<Character>();
 
-        int spawnRadius = Random.Range(MIN_SPAWN, MAX_SPAWN);
+        int spawnRadius = Random.Range(minSpawnAmount, maxSpawnAmount + 1);
 		int angle = Random.Range(0, 360);
 
         for(int i = 0; i < spawnRadius; ++i)

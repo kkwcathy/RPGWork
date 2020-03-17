@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
@@ -11,10 +10,8 @@ public class FollowCamera : MonoBehaviour
 
 	private Transform _target;
 
-	public float _moveDamping = 15.0f;
+	public float _moveDamping = 10.0f;
 
-	bool _isEnemyFocus = false;
-	
 	private Vector3 _followPos;
 	private Vector3 _followAmount;
 
@@ -58,8 +55,6 @@ public class FollowCamera : MonoBehaviour
 
 	public void ChangeTarget(float showTime)
 	{
-		_isEnemyFocus = true;
-
 		StartCoroutine(FocusEnemy(showTime));
 	}
 
@@ -78,6 +73,11 @@ public class FollowCamera : MonoBehaviour
 
 	public bool IsZoomStart()
 	{
+		if(_enemy == null)
+		{
+			return false;
+		}
+
 		return Vector3.Distance(_player.position, _enemy.position) < _zoomDistance; 
 	}
 }

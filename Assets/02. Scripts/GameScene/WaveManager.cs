@@ -8,11 +8,13 @@ public class WaveManager : MonoBehaviour
 	delegate void CharDeleteTargetHandler(Character character);
 
 	delegate void PlayerExploreHandler(Vector3 point);
+	delegate void PlayerClearHandler();
 
 	CharAddTargetHandler _charAddTarget;
 	CharDeleteTargetHandler _charDeleteTarget;
 
 	PlayerExploreHandler _playerExplore;
+	PlayerClearHandler _playerClear;
 
 	public EnemyGenerator enemyGenerator;
     public FollowCamera followCam;
@@ -22,7 +24,7 @@ public class WaveManager : MonoBehaviour
 	private Character _headPlayer;
 	private int _maxWave = 0;
 
-	private float _waveDelayTime = 4.0f;
+	private float _waveStartDelayTime = 4.0f;
 	private float _spawnRunTime = 1.0f;
 
 	private void Awake()
@@ -45,9 +47,11 @@ public class WaveManager : MonoBehaviour
 		for (int i = 0; i < characters.Length; ++i)
 		{
 			_playerExplore += new PlayerExploreHandler(characters[i].SetExplorePoint);
+			_playerClear += new PlayerClearHandler(characters[i].Clear);
+
 			_charAddTarget += new CharAddTargetHandler(characters[i].AddTarget);
 			_charDeleteTarget += new CharDeleteTargetHandler(characters[i].DeleteTarget);
-
+			
 			_charList.Add(characters[i]);
 		}
 
@@ -62,6 +66,7 @@ public class WaveManager : MonoBehaviour
 		for (int i = 0; i < enemyList.Count; ++i)
 		{
 			_charAddTarget += new CharAddTargetHandler(enemyList[i].AddTarget);
+			_charDeleteTarget += new CharDeleteTargetHandler(enemyList[i].DeleteTarget);
 
 			_charList.Add(enemyList[i]);
 		}
@@ -83,15 +88,16 @@ public class WaveManager : MonoBehaviour
 		_charAddTarget -= target.AddTarget;
 		_charDeleteTarget -= target.DeleteTarget;
 
-		if(IsPlayer(target))
+		if (IsPlayer(target))
 		{
 			_playerExplore -= target.SetExplorePoint;
+			_playerClear -= target.Clear;
 		}
 
 		_charDeleteTarget(target);
     }
 
-	private bool IsWaveClear()
+	private bool IsWaveFinished()
 	{
 		for(int i = 0; i < _charList.Count; ++i)
 		{
@@ -104,16 +110,16 @@ public class WaveManager : MonoBehaviour
 			}
 		}
 
-		return _charList.TrueForAll(IsPlayer);
+		return _charList.TrueForAll(IsPlayer) || _charList.TrueForAll(IsEnemy);
 	}
-	
+
 	IEnumerator RunWaves()
     {
 		while (enemyGenerator.GetCurWave() < _maxWave)
 		{
 			_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 
-			yield return new WaitForSeconds(_waveDelayTime);
+			yield return new WaitForSeconds(_waveStartDelayTime);
 
 			ChangeWave();
 
@@ -121,17 +127,28 @@ public class WaveManager : MonoBehaviour
 
 			AddTarget();
 
-			yield return new WaitUntil(IsWaveClear);
+			yield return new WaitUntil(IsWaveFinished);
 
-			_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
+			if(_charList.TrueForAll(IsEnemy))
+			{
+				break;
+			}
 
+			followCam.SetMainEnemy(null);
 			followCam.Unzoom();
 			enemyGenerator.AddWave();
 		}
+
+		_playerClear();
     }
 
 	private bool IsPlayer(Character character)
 	{
 		return character.GetCharType() == Character.eCharType.Player;
+	}
+
+	private bool IsEnemy(Character character)
+	{
+		return character.GetCharType() == Character.eCharType.Enemy;
 	}
 }

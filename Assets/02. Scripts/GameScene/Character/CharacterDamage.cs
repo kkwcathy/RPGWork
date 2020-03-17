@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharDamage : MonoBehaviour
+public class CharacterDamage : MonoBehaviour
 {
 	private Character _character;
 	private Renderer _renderer;
@@ -10,7 +10,9 @@ public class CharDamage : MonoBehaviour
 	private float _blinkSpeed = 10.0f;
 
 	private float _hp;
-	private float _initHp = 100;
+	private float _initHp = 100.0f;
+
+	private float _elapsedTime = 0.0f;
 
 	private bool _isDamaged = false;
 
@@ -28,9 +30,11 @@ public class CharDamage : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.layer != gameObject.layer)
+		if(other.tag == "Skill" && other.gameObject.layer != gameObject.layer)
 		{
-			Damaged();
+			float power = other.gameObject.GetComponent<SkillBase>().Power;
+
+			Damaged(power);
 		}
 	}
 
@@ -46,32 +50,30 @@ public class CharDamage : MonoBehaviour
 		}
 	}
 
-	virtual public void Damaged()
+	virtual public void Damaged(float power)
 	{
-		_hp -= 50;
+		_hp -= power;
+		_elapsedTime = 0.0f;
 
 		if (!_isDamaged)
 		{
 			_isDamaged = true;
 		}
 	}
-
-
-	float elapsedTime = 0;
-
+	
 	public void Blink()
 	{
-		elapsedTime += Time.deltaTime * _blinkSpeed;
-		elapsedTime = Mathf.Clamp(elapsedTime, 0.0f, 2.0f);
-		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(elapsedTime, 1));
+		_elapsedTime += Time.deltaTime * _blinkSpeed;
+		_elapsedTime = Mathf.Clamp(_elapsedTime, 0.0f, 2.0f);
+		Color color = Color.Lerp(Color.black, Color.white, Mathf.PingPong(_elapsedTime, 1));
 
 		_renderer.material.SetFloat("_R", color.r);
 		_renderer.material.SetFloat("_G", color.g);
 		_renderer.material.SetFloat("_B", color.b);
 
-		if (elapsedTime >= 2.0f)
+		if (_elapsedTime >= 2.0f)
 		{
-			elapsedTime = 0.0f;
+			_elapsedTime = 0.0f;
 			_isDamaged = false;
 		}
 	}
