@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7188697079655286280}
   - component: {fileID: 7188697079655286282}
+  - component: {fileID: 7413516162508988533}
   - component: {fileID: 7048392515267896905}
   - component: {fileID: 786280516}
+  - component: {fileID: 6894842830273316419}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -56,6 +58,24 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!143 &7413516162508988533
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7188697079655286283}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &7048392515267896905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,8 +107,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSkillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
     type: 3}
-  _fireTime: 0.05
-  _coolTime: 1.5
+--- !u!114 &6894842830273316419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7188697079655286283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abdb27a2733acd94697860a22d312b92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBarPrefab: {fileID: 8291294279620021336, guid: 38f5300a7e023ff449af623667d6926c,
+    type: 3}
+  _offset: 2
 --- !u!1001 &7167035437997108592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,6 +322,11 @@ PrefabInstance:
     - target: {fileID: 1992369794795074, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 137184358506803440, guid: 66ed1f8690ee0db478abac28acfef574,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}

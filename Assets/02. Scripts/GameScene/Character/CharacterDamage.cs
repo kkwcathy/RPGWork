@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 // 캐릭터 데미지 관리 클래스
 public class CharacterDamage : MonoBehaviour
@@ -15,11 +16,15 @@ public class CharacterDamage : MonoBehaviour
 
 	private bool _isDamaged = false;
 
+	[SerializeField] private GameObject _hpBarPrefab = null;
+	[SerializeField] private float _offset = 3.0f;
+
+	private GameObject _hpBar = null;
+	private Image _hpImage = null; 
+
 	void Start()
     {
-		_character = GetComponent<Character>();
-		_renderer = GetComponentInChildren<Renderer>();
-		_hp = _initHp;
+		StartDo();
 	}
 
 	void Update()
@@ -37,17 +42,35 @@ public class CharacterDamage : MonoBehaviour
 		}
 	}
 
+	private void StartDo()
+	{
+		_character = GetComponent<Character>();
+		_renderer = GetComponentInChildren<Renderer>();
+		_hp = _initHp;
+	}
+
 	private void UpdateDo()
 	{
 		if(_hp <= 0)
 		{
 			_character.ChangeState(Character.eStateType.Death);
+			Destroy(_hpBar);
 		}
 		else if (_isDamaged)
 		{
 			// 데미지를 받으면 하얗게 깜빡이기
 			Blink();
 		}
+	}
+
+	private void GenerateHpBar()
+	{
+		Canvas canvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
+
+		_hpBar = Instantiate(_hpBarPrefab, canvas.transform);
+
+		_hpImage = _hpBar.GetComponentsInChildren<Image>()[1];
+		_hpBar.GetComponent<HpBar>().SetBarPosition(_character.tr, _offset);
 	}
 
 	virtual public void Damaged(float power)
@@ -59,6 +82,13 @@ public class CharacterDamage : MonoBehaviour
 		{
 			_isDamaged = true;
 		}
+
+		if (_hpBar == null)
+		{
+			GenerateHpBar();
+		}
+
+		_hpImage.fillAmount = _hp / _initHp;
 	}
 	
 	public void Blink()

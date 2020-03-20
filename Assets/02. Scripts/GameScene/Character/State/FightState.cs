@@ -3,13 +3,6 @@
 // 캐릭터 싸움 상태 클래스
 public class FightState : StateBase
 {
-	private float _elapsedTime = 0.0f;
-
-	[SerializeField] private float _fireTime = 0.1f; // 애니메이션 시작 후 이펙트 발사까지 소요되는 시간
-
-	private bool _isFired = false; // 이펙트가 계속 발사되지 않기 위해 제어하는 변수
-	private bool _isStart = true; // true 일때만 애니메이션 실행
-
 	public FightState(Character character) : base(character)
 	{
 	}

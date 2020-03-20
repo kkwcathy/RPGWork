@@ -20,7 +20,7 @@
 
         CGPROGRAM
 
-        #pragma surface surf Standard fullforwardshadows
+        #pragma surface surf Standard
 
         #pragma target 3.0
 
