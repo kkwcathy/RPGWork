@@ -20,7 +20,7 @@
 
         CGPROGRAM
 
-        #pragma surface surf Standard
+        #pragma surface surf NoLighting
 
         #pragma target 3.0
 
@@ -36,7 +36,7 @@
 		fixed _G;
 		fixed _B;
 
-        void surf (Input IN, inout SurfaceOutputStandard o)
+        void surf (Input IN, inout SurfaceOutput o)
         {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 			fixed3 rgb = fixed3(_R, _G, _B);
@@ -44,6 +44,15 @@
 			o.Emission = rgb;
 			o.Alpha = c.a;
         }
+
+		fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten)
+		{
+			fixed4 c;
+			c.rgb = s.Albedo;
+			c.a = s.Alpha;
+			return c;
+		}
+
         ENDCG
     }
     FallBack "Diffuse"

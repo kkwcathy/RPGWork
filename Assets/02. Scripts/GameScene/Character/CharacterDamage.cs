@@ -34,7 +34,9 @@ public class CharacterDamage : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.tag == "Skill" && other.gameObject.layer != gameObject.layer)
+		if(_character.GetStateType() != Character.eStateType.Death &&
+			other.tag == "Skill" && 
+			other.gameObject.layer != gameObject.layer)
 		{
 			float power = other.gameObject.GetComponent<SkillBase>().Power;
 
@@ -51,7 +53,7 @@ public class CharacterDamage : MonoBehaviour
 
 	private void UpdateDo()
 	{
-		if(_hp <= 0)
+		if(_hp <= 0 && _character.GetStateType() != Character.eStateType.Death)
 		{
 			_character.ChangeState(Character.eStateType.Death);
 			Destroy(_hpBar);

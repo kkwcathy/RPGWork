@@ -2208,7 +2208,7 @@ MonoBehaviour:
   _spawnRadius: 0.5
   MonsterPoints: {fileID: 335902226}
   spawnPoints: []
-  maxSpawnAmount: 4
+  maxSpawnAmount: 1
   minSpawnAmount: 1
 --- !u!1 &677366398
 GameObject:

@@ -35,15 +35,15 @@ public class EnemyGenerator : MonoBehaviour
 		List<Character> enemyList = new List<Character>();
 
         int spawnNum = Random.Range(minSpawnAmount, maxSpawnAmount + 1);
-		_spawnRadius *= spawnNum;
+		float spawnRadius = _spawnRadius * spawnNum;
 
 		int angle = Random.Range(0, 360);
 
 		// 적 생성 시 일정한 간격으로 배치하기 위하여 적 갯수로 나뉜 중심각에 따라 만들어지는 호 들의 끝 좌표 마다 적을 배치
         for(int i = 0; i < spawnNum; ++i)
         {
-            float x = _spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
-            float z = _spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
+            float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
+            float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
 
             Vector3 generatePos = GetCurSpawnPoint().position + Vector3.forward * z + Vector3.right * x;
 

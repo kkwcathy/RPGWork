@@ -135,7 +135,8 @@ public class Character : MonoBehaviour
 	public void UpdateDo()
 	{
 		// 죽거나 클리어 상태가 아닐 시 상태 업데이트 지속
-		if(_stateType != eStateType.Death && _stateType != eStateType.Clear)
+		//if(_stateType != eStateType.Death && _stateType != eStateType.Clear)
+		if (_stateType != eStateType.Clear)
 		{
 			_charAI.CheckState(_stateType);
 		}
@@ -181,6 +182,13 @@ public class Character : MonoBehaviour
 		AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
 
 		return info.IsName(anim);
+	}
+
+	public bool IsAnimationFinished(string anim)
+	{
+		AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+
+		return info.IsName(anim) && info.normalizedTime >= 1.0f;
 	}
 
 	// 타겟을 향한 회전 움직임 보정

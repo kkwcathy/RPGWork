@@ -1,5 +1,7 @@
 ﻿
 // 캐릭터 사망 상태 클래스
+using UnityEngine;
+
 public class DeathState : StateBase
 {
 	public DeathState(Character character) : base(character)
@@ -8,6 +10,14 @@ public class DeathState : StateBase
 
 	public override void StartState()
 	{
-		_character.Die();
+		_character.PlayAnimation("Death");
+	}
+
+	public override void UpdateState()
+	{
+		if(_character.IsAnimationFinished("Death"))
+		{
+			_character.Die();
+		}
 	}
 }
