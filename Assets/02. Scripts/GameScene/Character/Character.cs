@@ -27,6 +27,9 @@ public class Character : MonoBehaviour
 	public Transform tr;
 
 	// 움직임 관련
+
+	private CharacterController _charController;
+
 	private float _rotateSpeed = 5.0f; // 회전 속도
 	private float _sightNormalized = 0.99f; // 타겟과 자신의 각도 차이의 정규화된 값이 이보다 크면 타겟이 시야에 들어감
 	private float _fightDistance = 3.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
@@ -66,6 +69,7 @@ public class Character : MonoBehaviour
 
 	private void Start()
 	{
+		_charController = GetComponent<CharacterController>();
 		_animator = GetComponentInChildren<Animator>();
 		_attack = GetComponent<CharacterAttack>();
 		_agent = GetComponent<NavMeshAgent>();
