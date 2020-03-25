@@ -5,7 +5,7 @@ using UnityEngine;
 // 캐릭터 공격 동작 상위 클래스
 public class CharacterAttack : MonoBehaviour
 {
-	[SerializeField] protected GameObject _basicSkillEffect = null;
+	[SerializeField] protected GameObject _skillEffect = null;
 
 	protected float _basicSkillPower = 20.0f;
 

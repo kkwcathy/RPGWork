@@ -21,7 +21,7 @@ public class BasicAttack : CharacterAttack
 		}
 		else if (!_isFired && (_elapsedTime >= _fireTime))
 		{
-			GameObject skillEffect = Instantiate(_basicSkillEffect, tr.position, tr.rotation);
+			GameObject skillEffect = Instantiate(_skillEffect, tr.position, tr.rotation);
 
 			// 스킬 이펙트의 레이어를 발사한 캐릭터의 레이어로 설정
 			skillEffect.layer = tr.gameObject.layer;

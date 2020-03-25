@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class FireAttack : CharacterAttack
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void Fire(Transform tr)
+	{
+		
+	}
 }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7413516162508988533}
   - component: {fileID: 7048392515267896905}
   - component: {fileID: 786280516}
-  - component: {fileID: 6894842830273316419}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -105,23 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4d76911a84cf7438cf206f893dc513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _basicSkillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
+  _skillEffect: {fileID: 3978393620265791201, guid: 1d6b27bc491057d48b37e5956985f361,
     type: 3}
---- !u!114 &6894842830273316419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7188697079655286283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abdb27a2733acd94697860a22d312b92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hpBarPrefab: {fileID: 8291294279620021336, guid: 38f5300a7e023ff449af623667d6926c,
-    type: 3}
-  _offset: 2
 --- !u!1001 &7167035437997108592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,10 +113,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7188697079655286280}
     m_Modifications:
-    - target: {fileID: 2344704522626516333, guid: 66ed1f8690ee0db478abac28acfef574,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.5
+    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
+      propertyPath: m_Name
+      value: FireMonster
+      objectReference: {fileID: 0}
+    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4744222756475520, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_LocalPosition.x
@@ -178,13 +165,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
-      propertyPath: m_Name
-      value: FireMonster
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975194375736644, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
-      propertyPath: m_Layer
-      value: 8
+    - target: {fileID: 2344704522626516333, guid: 66ed1f8690ee0db478abac28acfef574,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6859306995664985114, guid: 66ed1f8690ee0db478abac28acfef574,
         type: 3}
@@ -242,6 +226,11 @@ PrefabInstance:
     - target: {fileID: 1006334046390760, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 137184358506803440, guid: 66ed1f8690ee0db478abac28acfef574,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1830914707762634, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_Layer
@@ -322,11 +311,6 @@ PrefabInstance:
     - target: {fileID: 1992369794795074, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
       propertyPath: m_Layer
       value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 137184358506803440, guid: 66ed1f8690ee0db478abac28acfef574,
-        type: 3}
-      propertyPath: m_CastShadows
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ed1f8690ee0db478abac28acfef574, type: 3}
