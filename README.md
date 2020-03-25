@@ -8,4 +8,4 @@
 생성된 적 캐릭터가 모두 죽으면 일정 시간 대기 후 새 웨이브가 시작됩니다.\
 \
 3개의 웨이브로 테스트 영상:
-https://drive.google.com/file/d/1zqhszmtmQaI1E2x2aJz18EtYNdOQytFF/view?usp=sharing
+https://drive.google.com/file/d/1i2U0RtaTwg3I9wy6kK6tP5qh1AhlCGAy/view?usp=sharing
