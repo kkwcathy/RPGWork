@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillEffect: {fileID: 3978393620265791201, guid: a5d44e7c4004f2940b719d564216a025,
     type: 3}
+  _basicSkillPower: 5
 --- !u!114 &-9160121594117573652
 MonoBehaviour:
   m_ObjectHideFlags: 0
