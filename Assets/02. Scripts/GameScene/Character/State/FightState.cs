@@ -26,7 +26,7 @@ public class FightState : StateBase
 		}
 		else
 		{
-			_character.BasicAttack();
+			//_character.BasicAttack();
 		}
 	}
 }

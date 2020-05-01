@@ -9,8 +9,9 @@ public class CharacterDamage : MonoBehaviour
 
 	private float _blinkSpeed = 10.0f;
 
+	private float _defence;
 	private float _hp;
-	private float _initHp = 100.0f;
+	private float _initHp;
 
 	private float _elapsedTime = 0.0f;
 
@@ -32,6 +33,12 @@ public class CharacterDamage : MonoBehaviour
 		UpdateDo();
 	}
 
+	public void SetDamageStat(float hp, float defence)
+	{
+		_initHp = _hp = hp;
+		_defence = defence;
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if(_character.GetStateType() != Character.eStateType.Death &&
@@ -48,6 +55,8 @@ public class CharacterDamage : MonoBehaviour
 	{
 		_character = GetComponent<Character>();
 		_renderer = GetComponentInChildren<Renderer>();
+
+		//_initHp = _character.CharInfo.maxHp;
 		_hp = _initHp;
 	}
 
@@ -55,6 +64,8 @@ public class CharacterDamage : MonoBehaviour
 	{
 		if(_hp <= 0 && _character.GetStateType() != Character.eStateType.Death)
 		{
+			Debug.Log(name + " Die...");
+
 			_character.ChangeState(Character.eStateType.Death);
 			Destroy(_hpBar);
 		}

@@ -1,0 +1,7 @@
+﻿스킬ID,스킬이름,스킬 타입(eAttackType),스킬 추가 파워,시전가능거리,이펙트 프리팹 이름
+0,EMPTY,0,0,0,NULL
+10001,기본공격(풀),1,1,3,FireBallEffect
+10002,기본공격(불),1,1,3,FireBallEffect
+10003,기본공격(물),1,1,3,FireBallEffect
+10102,불꽃세례,2,1.3,10,FireBallEffect
+10202,회오리불꽃,3,1.5,5,FireBallEffect

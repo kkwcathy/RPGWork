@@ -32,23 +32,28 @@ public class WaveManager : MonoBehaviour
 
 	private void Awake()
 	{
-		Init();
+		
 	}
 
 	private void Start()
 	{
-		StartCoroutine(RunWaves());
+		//StartGame();
+		
 	}
 
 	// Team 밑에 있는 플레이어들을 가져와 기본 설정 추가해주기
-	private void Init()
+	private void StartGame()
 	{
-		Character[] characters = GameObject.Find("Team").GetComponentsInChildren<Character>();
-		
+		Debug.Log("Starting Game");
+
+		List<Character> characters = GameObject.Find("Team").GetComponent<TeamGenerator>().Generate();
+
+		Debug.Log("Team Players Generate Complete");
+
 		_headPlayer = characters[0];
 		followCam.SetMainPlayer(_headPlayer.tr);
 
-		for (int i = 0; i < characters.Length; ++i)
+		for (int i = 0; i < characters.Count; ++i)
 		{
 			_playerExplore += new PlayerExploreHandler(characters[i].SetExplorePoint);
 			_playerClear += new PlayerClearHandler(characters[i].Clear);
@@ -60,14 +65,16 @@ public class WaveManager : MonoBehaviour
 		}
 
 		_maxWave = enemyGenerator.GetMaxWave();
-		_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
+
+		StartCoroutine(RunWaves());
+		//_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 	}
 
 	// 웨이브 변경
     private void ChangeWave()
     {
 		// 적 생성
-		List<Character> enemyList = enemyGenerator.GenerateEnemy();
+		List<Character> enemyList = enemyGenerator.Generate();
 
 		for (int i = 0; i < enemyList.Count; ++i)
 		{

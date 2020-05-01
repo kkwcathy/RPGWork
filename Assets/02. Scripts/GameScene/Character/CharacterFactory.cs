@@ -5,25 +5,107 @@ using UnityEngine;
 // 캐릭터 관련 객체 생성 클래스
 public class CharacterFactory 
 {
-	Character _character;
+	//public void BuildCharInfo(TeamCharInfo teamInfo, ModelInfo modelInfo)
+	//{
+	//	_charInfo.charName = modelInfo.modelName;
+	//	_charInfo.prefabName = modelInfo.prefabName;
 
-	Dictionary<Character.eCharType, CharacterAI> _charAIDic = new Dictionary<Character.eCharType, CharacterAI>();
+	//	_charInfo.maxHp = teamInfo.maxHp;
+	//	_charInfo.power = teamInfo.power;
+	//	_charInfo.defence = teamInfo.defence;
 
-	public CharacterFactory(Character character)
+	//	_charInfo.attackIDs = modelInfo.skillIDs;
+
+	//	_charInfo.charAI = GetCharacterAI();
+	//	_charInfo.charAttack = GetCharacterAttack();
+	//}
+
+	public CharacterAI GetCharacterAI(Character.eCharType charType)
 	{
-		_character = character;
-		BuildCharAI();
+		switch (charType)
+		{
+			case Character.eCharType.Player:
+				return new PlayerAI();
+
+			case Character.eCharType.Enemy:
+				return new EnemyAI();
+
+			default:
+				return null;
+		}
 	}
 
-	public void BuildCharAI()
+	public CharacterAttack GetCharacterAttack(int[] attackIDs)
 	{
-		_charAIDic.Add(Character.eCharType.Player, new PlayerAI(_character));
-		_charAIDic.Add(Character.eCharType.Enemy, new EnemyAI(_character));
+		CharacterAttack charAttack = new CharacterAttack();
+		AttackBase[] skills = new AttackBase[attackIDs.Length];
+
+		for(int i = 0; i < skills.Length; ++i)
+		{
+			AttackType attackType = 
+				InfoManager.Instance.attackInfoDic[attackIDs[i]].attackType;
+
+			AttackBase skill = null;
+			
+			switch (attackType)
+			{
+				case AttackType.Basic:
+					skill = new BasicAttack();
+					break;
+
+				case AttackType.Throw:
+					skill = new FireAttack();
+					break;
+
+				case AttackType.Spin:
+					skill = new BasicAttack();
+					break;
+
+				case AttackType.Radiate:
+					skill = new BasicAttack();
+					break;
+
+				default:
+					skill = new BasicAttack();
+					break;
+			}
+
+			skills[i] = skill;
+		}
+
+		charAttack.SetSkills(skills);
+
+		return charAttack;
 	}
 
-	// 현재 캐릭터의 캐릭터 타입에 맞는 AI 객체 반환
-	public CharacterAI GetCharAI()
-	{
-		return _charAIDic[_character.GetCharType()];
-	}
+	//public CharacterAttack GetCharacterAttack()
+	//{
+	//	CharacterAttack charAttack = new CharacterAttack();
+
+	//	for(int i = 0; i < _charInfo.attackIDList.Count; ++i)
+	//	{
+	//		charAttack.AddAttack(
+	//			_attackDic[InfoManager.Instance.attackInfoDic
+	//			[_charInfo.attackIDList[i]]
+	//			.attackType]);
+	//	}
+
+	//	charAttack.SetPower(_charInfo.power);
+	
+	//	return charAttack;
+	//}
+	
+	//Dictionary<CharType, CharacterAI> _charAIDic;
+
+	//private void BuildCharAIDic()
+	//{
+	//	_charAIDic.Add(CharType.Player, new PlayerAI());
+	//	_charAIDic.Add(CharType.Enemy, new EnemyAI());
+	//}
+
+	//현재 캐릭터의 캐릭터 타입에 맞는 AI 객체 반환
+	//public CharacterAI GetCharAI()
+	//{
+	//	return _charAIDic[_charInfo.charType];
+	//}
 }

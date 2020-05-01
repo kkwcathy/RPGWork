@@ -8,6 +8,8 @@ public class ExploreState : StateBase
 
 	public override void StartState()
 	{
+		_character.PlayAnimation("Run");
+
 		_character.Explore();
 		_character.BeginMove();
 	}

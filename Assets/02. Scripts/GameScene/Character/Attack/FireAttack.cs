@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireAttack : CharacterAttack
+public class FireAttack : AttackBase
 {
-	public override void Fire(Transform tr)
-	{
-		
-	}
 }

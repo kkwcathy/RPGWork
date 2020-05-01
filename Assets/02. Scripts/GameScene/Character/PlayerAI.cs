@@ -2,10 +2,6 @@
 // 플레이어 상태 제어 클래스
 public class PlayerAI : CharacterAI
 {
-	public PlayerAI(Character character) : base(character)
-	{
-	}
-
 	public override void Init()
 	{
 		base.Init();

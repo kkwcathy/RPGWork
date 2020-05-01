@@ -2,11 +2,8 @@
 using UnityEngine;
 
 // 적 생성 클래스
-public class EnemyGenerator : MonoBehaviour
+public class EnemyGenerator : CharacterGenerator
 {
-	[SerializeField] private GameObject enemyPrefab = null;
-	[SerializeField] private float _spawnRadius = 0.5f;
-
     public GameObject MonsterPoints;
 
     public List<Transform> spawnPoints;
@@ -22,39 +19,19 @@ public class EnemyGenerator : MonoBehaviour
 
 	private void Awake()
 	{
+		
+	}
+
+	private void Start()
+	{
+		tr = GetComponent<Transform>();
+
 		// way point들의 transform 정보를 모두 가져온 후, way point 상위 object의 transform을 제거
 		spawnPoints = new List<Transform>(MonsterPoints.GetComponentsInChildren<Transform>());
-		spawnPoints.RemoveAt(0); 
+		spawnPoints.RemoveAt(0);
 
 		// 웨이브 수는 way point의 갯수로 설정
 		_maxWave = spawnPoints.Count;
-	}
-	
-	public List<Character> GenerateEnemy()
-	{
-		List<Character> enemyList = new List<Character>();
-
-        int spawnNum = Random.Range(minSpawnAmount, maxSpawnAmount + 1);
-		float spawnRadius = _spawnRadius * spawnNum;
-
-		int angle = Random.Range(0, 360);
-
-		// 적 생성 시 일정한 간격으로 배치하기 위하여 적 갯수로 나뉜 중심각에 따라 만들어지는 호 들의 끝 좌표 마다 적을 배치
-        for(int i = 0; i < spawnNum; ++i)
-        {
-            float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
-            float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
-
-            Vector3 generatePos = GetCurSpawnPoint().position + Vector3.forward * z + Vector3.right * x;
-
-            GameObject enemy = Instantiate(enemyPrefab, generatePos, Quaternion.identity);
-            enemy.transform.parent = transform;
-            enemyList.Add(enemy.GetComponent<Character>());
-
-            angle += 360 / spawnNum;
-        }
-
-		return enemyList;
 	}
 
 	// 플레이어의 탐험 좌표를 알려주기 위해 현재 way point 좌표 반환
@@ -76,5 +53,38 @@ public class EnemyGenerator : MonoBehaviour
 	public void AddWave()
 	{
 		++_curWave;
+	}
+
+	protected override void SetSpawnValues()
+	{
+		_axis = GetCurSpawnPoint().position;
+		_spawnAmount = Random.Range(minSpawnAmount, maxSpawnAmount + 1);
+	}
+
+	protected override void SetCharInfo(CharacterInfo charInfo)
+	{
+		charInfo.charType = Character.eCharType.Enemy;
+		
+		MapInfo mapInfo = InfoManager.Instance.mapDic[InfoManager.Instance.MapID];
+		ModelInfo modelInfo;
+
+		ModelInfo[] modelInfos = new ModelInfo[mapInfo.modelIDs.Length];
+
+		for(int i = 0; i < modelInfos.Length; ++i)
+		{
+			modelInfos[i] = InfoManager.Instance.modelDic[mapInfo.modelIDs[i]];
+		}
+
+		int index = Random.Range(0, modelInfos.Length);
+
+		modelInfo = modelInfos[index];
+
+		charInfo.maxHp = mapInfo.enemyHP;
+		charInfo.power = mapInfo.enemyPower;
+		charInfo.defence = mapInfo.enemyDefence;
+
+		charInfo.charName = modelInfo.modelName;
+		charInfo.prefabName = modelInfo.prefabName;
+		charInfo.attackIDs = modelInfo.skillIDs;
 	}
 }

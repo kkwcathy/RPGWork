@@ -29,14 +29,17 @@ public class FollowCamera : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		_followPos = _target.position + _followAmount;
+		if(_target != null)
+		{
+			_followPos = _target.position + _followAmount;
 
-		_tr.position = Vector3.Lerp(_tr.position, _followPos, Time.deltaTime * _moveDamping);
+			_tr.position = Vector3.Lerp(_tr.position, _followPos, Time.deltaTime * _moveDamping);
+		}
 	}
 
 	public void SetMainPlayer(Transform player)
 	{
-		_player = player;
+		_target = _player = player;
 	}
 
 	public void SetMainEnemy(Transform enemy)

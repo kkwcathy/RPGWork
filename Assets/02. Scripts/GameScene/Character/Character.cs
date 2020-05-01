@@ -26,6 +26,21 @@ public class Character : MonoBehaviour
 
 	public Transform tr;
 
+	public CharacterInfo Charinfo;
+
+	//private CharacterInfo _charInfo;
+
+	//public CharacterInfo CharInfo
+	//{
+	//	get { return _charInfo; }
+	//}
+
+	//public void SetCharInfo(CharacterInfo charInfo)
+	//{
+	//	_charInfo = charInfo;
+	//	//Debug.Log("character information set");
+	//}
+
 	// 움직임 관련
 
 	private CharacterController _charController;
@@ -46,7 +61,7 @@ public class Character : MonoBehaviour
 
 	// 상태 관련
 	private List<Character> _targetList = new List<Character>(); // 현재 타겟 리스트 (플레이어면 적, 적이면 플레이어)
-	private Vector3 _explorePoint; // 현재 wave의 way point
+	public Vector3 _explorePoint; // 현재 wave의 way point
 	private Character _target = null;
 
 	private NavMeshAgent _agent;
@@ -56,25 +71,33 @@ public class Character : MonoBehaviour
 
 	[SerializeField] protected Animator _animator;
 
-	private void Awake()
-	{
-		tr = GetComponent<Transform>();
-		_charAI = new CharacterFactory(this).GetCharAI(); // 캐릭터 ai 객체 가져오기
-	}
-
 	private void Update()
 	{
-		UpdateDo();
+		//UpdateDo();
 	}
 
 	private void Start()
 	{
-		_charController = GetComponent<CharacterController>();
-		_animator = GetComponentInChildren<Animator>();
-		_attack = GetComponent<CharacterAttack>();
-		_agent = GetComponent<NavMeshAgent>();
-
+		//tr = GetComponent<Transform>(); : 원래 Awake에 해줘야 함
+		
 		_charAI.Init();
+	}
+
+	public void BuildCharSetting(CharacterInfo charInfo)
+	{
+		_agent = GetComponent<NavMeshAgent>();
+		_animator = GetComponentInChildren<Animator>();
+		_charController = GetComponentInChildren<CharacterController>();
+
+		_charAI = charInfo.charAI;
+		_attack = charInfo.charAttack;
+
+		_charAI.SetCharacter(this);
+		_attack.SetCharacter(this, charInfo.power);
+
+		GetComponent<CharacterDamage>().SetDamageStat(charInfo.maxHp, charInfo.defence);
+
+		Charinfo = charInfo; // 인스펙터 확인용 곧 지울거임!!
 	}
 	
 	public eCharType GetCharType()
@@ -84,6 +107,7 @@ public class Character : MonoBehaviour
 
 	public void SetExplorePoint(Vector3 point)
 	{
+		Debug.Log(name + " set explore point : " + point);
 		_explorePoint = point;
 	}
 
@@ -126,15 +150,15 @@ public class Character : MonoBehaviour
     }
 
 	// 기본 공격
-	public void BasicAttack()
-	{
-		if(_attack.GetElapsedTime() == 0.0f)
-		{
-			PlayAnimation("Attack");
-		}
+	//public void BasicAttack()
+	//{
+	//	if(_attack.GetElapsedTime() == 0.0f)
+	//	{
+	//		PlayAnimation("Attack");
+	//	}
 
-		_attack.Fire(_firePoint);
-	}
+	//	_attack.Fire(_firePoint);
+	//}
 
 	public void UpdateDo()
 	{
@@ -149,6 +173,11 @@ public class Character : MonoBehaviour
 		{
 			RotateToTarget();
 		}
+
+		//if (_charType == eCharType.Player)
+		//{
+		//	Debug.Log(name+_stateType);
+		//}
 	}
 
 	// 움직임을 멈출 시 agent의 관성을 없애기 위해 멈추기 직전 velocity 값을 tempVelocity에 저장하고 velocity 값을 0으로 설정
@@ -239,6 +268,12 @@ public class Character : MonoBehaviour
 			_target = null;
 			SearchTarget();
 		}
+	}
+
+	// 직선 방향 움직임 (주로 공격 시 사용)
+	public void StraightMove(Vector3 moveDir, float speed)
+	{
+		_charController.Move(moveDir * Time.deltaTime * speed);
 	}
 
 	public void Die()
