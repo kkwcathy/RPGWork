@@ -38,16 +38,14 @@ public class CharacterFactory
 	public CharacterAttack GetCharacterAttack(int[] attackIDs)
 	{
 		CharacterAttack charAttack = new CharacterAttack();
-		AttackBase[] skills = new AttackBase[attackIDs.Length];
 
-		for(int i = 0; i < skills.Length; ++i)
+		for (int i = 0; i < attackIDs.Length; ++i)
 		{
-			AttackType attackType = 
-				InfoManager.Instance.attackInfoDic[attackIDs[i]].attackType;
+			AttackInfo attackInfo = InfoManager.Instance.attackInfoDic[attackIDs[i]];
 
 			AttackBase skill = null;
-			
-			switch (attackType)
+
+			switch (attackInfo.attackType)
 			{
 				case AttackType.Basic:
 					skill = new BasicAttack();
@@ -70,11 +68,13 @@ public class CharacterFactory
 					break;
 			}
 
-			skills[i] = skill;
+			skill.SetSkillInfo("Prefabs/Effects/" + attackInfo.effectName,
+								attackInfo.skillPower,
+								attackInfo.minDistance);
+
+			charAttack.AddAttack(skill);
 		}
-
-		charAttack.SetSkills(skills);
-
+	
 		return charAttack;
 	}
 

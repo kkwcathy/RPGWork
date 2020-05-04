@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 캐릭터 공격 동작 상위 클래스
-public class AttackBase : MonoBehaviour
+public class AttackBase
 {
 	protected Character _character;
 	protected GameObject _skillPrefab;
 
 	protected float _elapsedTime = 0.0f;
+
 	protected float _fireTime = 0.0f; // 애니메이션 시작 후 이펙트 발사까지 소요되는 시간
-	protected float _power = 0.0f;
+	protected float _finishTime = 0.0f;
+
+	protected float _additionalPower = 0.0f;
+	protected float _minDistance = 0.0f;
 	protected bool _isFired = false;
 
-	//public AttackBase(Character character)
-	//{
-	//	_character = character;
-	//}
+	protected float _finalPower;
 
-	public void BuildAttack(Character character)
+	public void SetSkillInfo(string effectPath, float power, float distance)
+	{
+		_skillPrefab = Resources.Load(effectPath) as GameObject;
+		_additionalPower = power;
+		_minDistance = distance;
+	}
+
+	public void SetCharacter(Character character)
 	{
 		_character = character;
-
-		Init();
 	}
 
 	virtual public void Init()
@@ -30,15 +36,9 @@ public class AttackBase : MonoBehaviour
 
 	}
 
-	virtual public void SetFirePoint()
+	virtual public void SetFirePoint(Transform effecTr)
 	{
 
-	}
-	
-	public void SetSkillInfo(string effectPath, float power)
-	{
-		_skillPrefab = Resources.Load(effectPath) as GameObject;
-		power = _power;
 	}
 
 	virtual public void StartAttack()
@@ -47,12 +47,33 @@ public class AttackBase : MonoBehaviour
 		_isFired = false;
 	}
 
+	public void SetPower(float basePower)
+	{
+		_finalPower = basePower * _additionalPower;
+	}
+
 	public void AddElapsedTime()
 	{
 		_elapsedTime += Time.deltaTime;
 	}
 
-	public float GetElapsedTime()
+	public bool IsAttackable(float coolTime)
+	{
+		//if(_character.GetCharType() == Character.eCharType.Player)
+		//{
+		//	Debug.Log((_elapsedTime >= coolTime) + ", " + _character.CheckTargetDistance(_minDistance) + " ");
+		//}
+		
+		return _elapsedTime >= coolTime &&
+				_character.CheckTargetDistance(_minDistance);
+	}
+
+	public bool IsFinished()
+	{
+		return _elapsedTime >= _finishTime;
+	}
+
+	public float GetMinDistance()
 	{
 		return _elapsedTime;
 	}

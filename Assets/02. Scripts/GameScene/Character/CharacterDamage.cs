@@ -88,7 +88,7 @@ public class CharacterDamage : MonoBehaviour
 
 	virtual public void Damaged(float power)
 	{
-		_hp -= power;
+		_hp -= (power - _defence);
 		_elapsedTime = 0.0f;
 
 		if (!_isDamaged)

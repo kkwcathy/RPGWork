@@ -5,17 +5,16 @@ using UnityEngine;
 // 기본 공격 동작 클래스
 public class BasicAttack : AttackBase
 {
-	private Transform _firePoint;
-
 	public override void Init()
 	{
 		_fireTime = 0.5f;
-		_firePoint = new GameObject().GetComponent<Transform>();
+		_finishTime = 1.0f;
 	}
 
-	public override void SetFirePoint()
+	public override void SetFirePoint(Transform effecTr)
 	{
-		_firePoint.position = _character.tr.position + _character.tr.forward * 1.0f + Vector3.up * 0.4f;
+		effecTr.position = _character.tr.position + _character.tr.forward * 1.2f + Vector3.up * 0.4f;
+		effecTr.rotation = _character.tr.rotation;
 	}
 
 	public override void StartAttack()
@@ -29,16 +28,16 @@ public class BasicAttack : AttackBase
 	{
 		if (!_isFired && _elapsedTime >= _fireTime)
 		{
-			SetFirePoint();
-			GameObject skillEffect = Instantiate(_skillPrefab, _firePoint);
+			GameObject skillEffect = _character.Fire(_skillPrefab);
+			//GameObject skillEffect = Instantiate(_skillPrefab, _character.tr);
+			SetFirePoint(skillEffect.transform);
 
 			// 스킬 이펙트의 레이어를 발사한 캐릭터의 레이어로 설정
 
 			skillEffect.layer = _character.gameObject.layer;
-			Debug.Log("skill layer = " + skillEffect.layer);
-
+	
 			// 스킬 이펙트에 기본 공격력 전달
-			skillEffect.GetComponent<SkillBase>().Power = _power;
+			skillEffect.GetComponent<SkillBase>().Power = _finalPower;
 
 			_isFired = true;
 		}

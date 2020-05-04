@@ -20,13 +20,21 @@ public class FightState : StateBase
 			_character.ChangeState(Character.eStateType.NoTarget);
 		}
 		// 타겟이 공격 가능 거리 바깥에 있으면 타겟 쫓기 상태로 변환
-		else if (!_character.CheckTargetDistance(_character.FightDistance))
+		else if(_character.Attack == null)
 		{
 			_character.ChangeState(Character.eStateType.RunToTarget);
 		}
-		else
+		else 
 		{
-			//_character.BasicAttack();
+			_character.Attack.RunAttack();
 		}
+		//else if (!_character.CheckTargetDistance(_character.FightDistance))
+		//{
+		//	_character.ChangeState(Character.eStateType.RunToTarget);
+		//}
+		//else
+		//{
+		//	_character.Attack();
+		//}
 	}
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5682000075091068689}
   - component: {fileID: 620176328357676209}
   m_Layer: 8
-  m_Name: FireBallEffect
+  m_Name: WaterBallEffect
   m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da8d96d8b4c75164c9dbdee9765b60de, type: 2}
+  - {fileID: 2100000, guid: acbf2badca50df248b9705252c8a611c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -15,8 +15,6 @@ public class BasicSkillEffect : SkillBase
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("crash" + other.name);
-
 		if (other.gameObject.layer != gameObject.layer)
 		{
 			Destroy(gameObject);
@@ -25,7 +23,7 @@ public class BasicSkillEffect : SkillBase
 
 	void Update()
     {
-		//MoveEffect();
+		MoveEffect();
     }
 
 	public override void MoveEffect()

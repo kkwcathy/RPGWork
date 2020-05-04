@@ -6,8 +6,8 @@ public class CharacterAttack
 {
 	private float _attackCoolTime = 3.0f;
 
-	private delegate void AttackHandler();
-	private AttackHandler _AddTime;
+	public delegate void AttackHandler();
+	public AttackHandler _AddTime;
 
 	public enum eAttackType
 	{
@@ -18,60 +18,66 @@ public class CharacterAttack
 	}
 
 	Character _character;
-	private float _power;
+	private float _basePower;
 
-	AttackBase _basicAttack;
-	AttackBase[] _skills;
+	AttackBase _basicAttack = null;
 
-	AttackBase _curAttack = null;
+	List<AttackBase> _skillList;
 
 	//private Queue<int> _attackQueue = new Queue<int>();
+	public CharacterAttack()
+	{
+		_skillList = new List<AttackBase>();
+	}
 
 	public void SetCharacter(Character character, float power)
 	{
 		_character = character;
-		_power = power;
+		_basePower = power;	
 	}
 
 	public void Init()
 	{
-		//_attacks[0] = new AttackBase(_character);
-		//_attackDic.Add(eAttackType.Basic, new BasicAttack());
-		//_attackDic.Add(eAttackType.Fire, new FireAttack());
-	}
-
-	public void SetSkills(AttackBase[] skills)
-	{
-		_skills = skills;
-
-		for(int i = 0; i < skills.Length; ++i)
+		for(int i = 0; i < _skillList.Count; ++i)
 		{
-			_AddTime += skills[i].AddElapsedTime;
+			_skillList[i].SetCharacter(_character);
+			_skillList[i].Init();
 		}
+
+		// 첫번째는 기본공격
+		_basicAttack = _skillList[0];
+		_skillList.RemoveAt(0);
 	}
 
-	public void SetPower(float power)
-	{
-		_power = power;
+	public void AddAttack(AttackBase attack) { 
+
+		_skillList.Add(attack);
+		_AddTime += attack.AddElapsedTime;
 	}
 
-	public void ChangeAttack()
+	public void UseSkill(int index)
 	{
+		SetAttack(_skillList[index]);
+	}
 
+	public void SetAttack(AttackBase attack)
+	{
+		attack.SetPower(_basePower);
+		attack.StartAttack();
+		_character.Attack = attack;
 	}
 
 	public void UpdateAttack()
 	{
-		_AddTime();
-
-		//if(_curAttack == null)
-		//{
-		//	SearchAttack();
-		//}
-		//else
-		//{
-		//	RunCurAttack();
-		//}
+		if(_character.Attack == null &&
+			_basicAttack.IsAttackable(_attackCoolTime))
+		{
+			SetAttack(_basicAttack);
+		}
+		else if(_character.Attack != null && _character.Attack.IsFinished())
+		{
+			_character.Attack = null;
+		}
 	}
 
 	// 나중에 적절하게 수정
@@ -86,14 +92,4 @@ public class CharacterAttack
 	//		}
 	//	}
 	//}
-
-	public void RunCurAttack()
-	{
-		_curAttack.RunAttack();
-	}
-
-	public bool IsAttackable(AttackBase attack)
-	{
-		return attack.GetElapsedTime() > _attackCoolTime;
-	}
 }

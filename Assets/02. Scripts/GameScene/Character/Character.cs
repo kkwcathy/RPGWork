@@ -47,17 +47,10 @@ public class Character : MonoBehaviour
 
 	private float _rotateSpeed = 5.0f; // 회전 속도
 	private float _sightNormalized = 0.99f; // 타겟과 자신의 각도 차이의 정규화된 값이 이보다 크면 타겟이 시야에 들어감
-	private float _fightDistance = 3.0f; // 타겟과의 거리가 이만큼 이하이면 멈춤
-
-	public float FightDistance
-	{
-		get { return _fightDistance; }
-		set { _fightDistance = value; }
-	}
 
 	// 공격 관련
-	[SerializeField] private Transform _firePoint = null; // 스킬 이펙트 생성되는 부위
-	[SerializeField] private CharacterAttack _attack = null; 
+	[SerializeField] private CharacterAttack _charAttack = null;
+	public AttackBase Attack = null;
 
 	// 상태 관련
 	private List<Character> _targetList = new List<Character>(); // 현재 타겟 리스트 (플레이어면 적, 적이면 플레이어)
@@ -73,7 +66,7 @@ public class Character : MonoBehaviour
 
 	private void Update()
 	{
-		//UpdateDo();
+		UpdateDo();
 	}
 
 	private void Start()
@@ -81,6 +74,7 @@ public class Character : MonoBehaviour
 		//tr = GetComponent<Transform>(); : 원래 Awake에 해줘야 함
 		
 		_charAI.Init();
+		_charAttack.Init();
 	}
 
 	public void BuildCharSetting(CharacterInfo charInfo)
@@ -90,10 +84,10 @@ public class Character : MonoBehaviour
 		_charController = GetComponentInChildren<CharacterController>();
 
 		_charAI = charInfo.charAI;
-		_attack = charInfo.charAttack;
+		_charAttack = charInfo.charAttack;
 
 		_charAI.SetCharacter(this);
-		_attack.SetCharacter(this, charInfo.power);
+		_charAttack.SetCharacter(this, charInfo.power);
 
 		GetComponent<CharacterDamage>().SetDamageStat(charInfo.maxHp, charInfo.defence);
 
@@ -172,7 +166,10 @@ public class Character : MonoBehaviour
 		if (_target != null)
 		{
 			RotateToTarget();
+			_charAttack.UpdateAttack();
 		}
+
+		_charAttack._AddTime();
 
 		//if (_charType == eCharType.Player)
 		//{
@@ -232,12 +229,12 @@ public class Character : MonoBehaviour
 	}
 
 	// 타겟과의 각도 차이를 통해 시야 내부에 존재하는지 확인
-	public bool IsTargetInSight()
-	{
-		Vector3 direction = (_target.tr.position - tr.position).normalized;
+	//public bool IsAttackReady()
+	//{
+	//	Vector3 direction = (_target.tr.position - tr.position).normalized;
 
-		return Vector3.Dot(tr.forward, direction) >= _sightNormalized;
-	}
+	//	return Vector3.Dot(tr.forward, direction) >= _sightNormalized;
+	//}
 
 	public void ChangeState(eStateType state)
 	{
@@ -278,11 +275,19 @@ public class Character : MonoBehaviour
 
 	public void Die()
 	{
-		Destroy(gameObject);
+		Destroy(gameObject, 0.5f);
+		//Destroy(gameObject);
 	}
 
 	public void Clear()
 	{
 		ChangeState(eStateType.Clear);
+	}
+
+	public GameObject Fire(GameObject prefab)
+	{
+		GameObject effect = Instantiate(prefab);
+
+		return effect;
 	}
 }
