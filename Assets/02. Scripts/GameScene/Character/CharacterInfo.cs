@@ -4,11 +4,9 @@
 [System.Serializable]
 public class CharacterInfo 
 {
-	public Character.eCharType charType;
+	public CharType charType;
 
 	public int modelID;
-	//public string charName;
-	//public string prefabName;
 
 	public float maxHp;
 	public float power;

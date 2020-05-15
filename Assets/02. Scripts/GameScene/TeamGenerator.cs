@@ -1,20 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+// 플레이어 팀 생성 클래스
 public class TeamGenerator : CharacterGenerator
 {
 	List<int> playerIDList;
 
 	public GameObject _charUIPrefab;
-
-	public Transform[] _charUIPanels;
-
-	private void Awake()
-	{
-
-	}
-
+	public Transform[] _charUIPanels; // CharUIPrefab이 생성될 위치들
+	
 	private void Init()
 	{
 		playerIDList = new List<int>();
@@ -29,20 +23,19 @@ public class TeamGenerator : CharacterGenerator
 		tr = GetComponent<Transform>();
 
 		Init();
-		//Generate();
 	}
 
 	protected override void SetSpawnValues()
 	{
 		_axis = tr.position;
-		_spawnAmount = playerIDList.Count;
+		_spawnAmount = playerIDList.Count; 
 	}
 
 	int index = 0;
 
 	protected override void SetCharInfo(CharacterInfo charInfo)
 	{
-		charInfo.charType = Character.eCharType.Player;
+		charInfo.charType = CharType.Player;
 
 		TeamCharInfo teamInfo = InfoManager.Instance.teamInfoDic[playerIDList[index]];
 		ModelInfo modelInfo = InfoManager.Instance.modelDic[teamInfo.modelID];

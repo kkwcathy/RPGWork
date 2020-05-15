@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // 캐릭터 공격 동작 상위 클래스
 public class AttackBase
@@ -60,7 +58,7 @@ public class AttackBase
 		_elapsedTime += Time.deltaTime;
 		_elapsedTime = Mathf.Clamp(_elapsedTime, 0.0f, _coolTime);
 	}
-
+	
 	public void SpawnSkillEffect()
 	{
 		GameObject skillEffect = _character.Fire(_skillPrefab);
@@ -70,46 +68,21 @@ public class AttackBase
 		skillEffect.GetComponent<SkillBase>().Power = _finalPower;
 	}
 
+	// 공격 가능 여부
 	public bool IsAttackable()
 	{
 		return _elapsedTime >= _coolTime &&
 				_character.CheckTargetDistance(_minDistance);
 	}
 
+	// 공격 종료 여부
 	public bool IsFinished()
 	{
 		return _elapsedTime >= _finishTime;
 	}
-
-	public float GetMinDistance()
-	{
-		return _elapsedTime;
-	}
-
+	
+	// Update 시 실행될 공격 진행 함수
 	virtual public void RunAttack()
 	{
 	}
-
-	//[SerializeField] protected GameObject _skillEffect = null;
-
-	//[SerializeField] protected float _basicSkillPower = 20.0f; // 테스트 위해 임시로 설정
-
-	//protected Character _character;
-
-	//protected bool IsStart = true;
-	//protected float _elapsedTime = 0.0f;
-
-	//public AttackBase(Character character)
-	//{
-	//	_character = character;
-	//}
-
-	//virtual public void Fire(Transform tr)
-	//{ 
-	//}
-
-	//public float GetElapsedTime()
-	//{
-	//	return _elapsedTime;
-	//}
 }

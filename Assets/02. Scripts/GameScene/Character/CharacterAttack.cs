@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
+// 캐릭터 공격 제어 클래스
 public class CharacterAttack 
 {
 	public delegate void AttackHandler();
@@ -22,7 +21,6 @@ public class CharacterAttack
 
 	List<AttackBase> _skillList;
 
-	//private Queue<int> _attackQueue = new Queue<int>();
 	public CharacterAttack()
 	{
 		_skillList = new List<AttackBase>();
@@ -53,6 +51,7 @@ public class CharacterAttack
 		_AddTime += attack.AddElapsedTime;
 	}
 
+	// 버튼 UI에서 호출
 	public void UseSkill(int index)
 	{
 		SetAttack(_skillList[index]);
@@ -67,11 +66,13 @@ public class CharacterAttack
 
 	public void UpdateAttack()
 	{
+		// 실행 중인 공격이 없고 기본 공격이 실행 가능하면 기본 공격 실행
 		if(_character.Attack == null &&
 			_basicAttack.IsAttackable())
 		{
 			SetAttack(_basicAttack);
 		}
+		// 실행 중인 공격이 끝나면 공격 비우기
 		else if(_character.Attack != null && _character.Attack.IsFinished())
 		{
 			_character.Attack = null;

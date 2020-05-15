@@ -7,6 +7,6 @@ public class EnemyAI : CharacterAI
 		base.Init();
 
 		// 적은 타겟이 없을 때(생성 직후) 대기 상태로 들어감
-		_charStateDic.Add(Character.eStateType.NoTarget, new IdleState(_character));
+		_charStateDic.Add(StateType.NoTarget, new IdleState(_character));
 	}
 }

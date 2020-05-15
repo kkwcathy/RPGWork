@@ -5,14 +5,14 @@ using UnityEngine;
 // 캐릭터 관련 객체 생성 클래스
 public class CharacterFactory 
 {
-	public CharacterAI GetCharacterAI(Character.eCharType charType)
+	public CharacterAI GetCharacterAI(CharType charType)
 	{
 		switch (charType)
 		{
-			case Character.eCharType.Player:
+			case CharType.Player:
 				return new PlayerAI();
 
-			case Character.eCharType.Enemy:
+			case CharType.Enemy:
 				return new EnemyAI();
 
 			default:
@@ -65,35 +65,4 @@ public class CharacterFactory
 	
 		return charAttack;
 	}
-
-	//public CharacterAttack GetCharacterAttack()
-	//{
-	//	CharacterAttack charAttack = new CharacterAttack();
-
-	//	for(int i = 0; i < _charInfo.attackIDList.Count; ++i)
-	//	{
-	//		charAttack.AddAttack(
-	//			_attackDic[InfoManager.Instance.attackInfoDic
-	//			[_charInfo.attackIDList[i]]
-	//			.attackType]);
-	//	}
-
-	//	charAttack.SetPower(_charInfo.power);
-	
-	//	return charAttack;
-	//}
-	
-	//Dictionary<CharType, CharacterAI> _charAIDic;
-
-	//private void BuildCharAIDic()
-	//{
-	//	_charAIDic.Add(CharType.Player, new PlayerAI());
-	//	_charAIDic.Add(CharType.Enemy, new EnemyAI());
-	//}
-
-	//현재 캐릭터의 캐릭터 타입에 맞는 AI 객체 반환
-	//public CharacterAI GetCharAI()
-	//{
-	//	return _charAIDic[_charInfo.charType];
-	//}
 }

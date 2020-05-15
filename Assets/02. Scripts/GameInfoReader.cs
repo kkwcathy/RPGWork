@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
 using System.Text;
 
+// CSV 파일 읽어들이는 클래스
 public class GameInfoReader
 {
 	public enum InfoType
@@ -32,6 +31,7 @@ public class GameInfoReader
 
 		filePath.Append("/CSV/");
 
+		// Info Type에 맞는 추가 함수 및 경로 설정
 		switch (infoType)
 		{
 			case InfoType.Team:
@@ -82,95 +82,8 @@ public class GameInfoReader
 		CSVFileOpen(InfoType.Attack);
 		CSVFileOpen(InfoType.Map);
 
-		InfoManager.Instance.MapID = 100;
+		InfoManager.Instance.MapID = 100; // 임시로 100 세팅
 
 		Debug.Log("File Open Complete");
-
-		//GameObject.Find("Team").SendMessage("Generate");
-
-		//GameObject.Find("WaveController").SendMessage("StartGame");
-
-		//SetText();
-		//GenPlayer();
 	}
-
-	//void SetText()
-	//{
-	//	GameObject.Find("CharView").SendMessage("SetText");
-	//}
-
-	//void GenPlayer()
-	//{
-	//	GameObject.Find("GeneratePractice").SendMessage("SibalLetsGeneratePlayers");
-	//}
-
-	//private void TeamFileOpen()
-	//{
-	//	string fileName = Application.dataPath + "/CSV/PlayerDocument.csv";
-
-	//	StreamReader sr = new StreamReader(fileName);
-	//	string line = sr.ReadLine();
-
-	//	while (line != null)
-	//	{
-	//		line = sr.ReadLine();
-
-	//		if (string.IsNullOrEmpty(line))
-	//		{
-	//			break;
-	//		}
-
-	//		InfoManager.Instance.AddTeamDic(line.Split(','));
-	//	}
-	//}
-
-	//private void ModelFileOpen()
-	//{
-	//	string fileName = Application.dataPath + "/CSV/ModelDocument.csv";
-
-	//	StreamReader sr = new StreamReader(fileName);
-	//	string line = sr.ReadLine();
-
-	//	while (line != null)
-	//	{
-	//		line = sr.ReadLine();
-
-	//		if (string.IsNullOrEmpty(line))
-	//		{
-	//			break;
-	//		}
-
-	//		InfoManager.Instance.AddModelDic(line.Split(','));
-	//	}
-	//}
-
-	//private void AttackFileOpen()
-	//{
-	//	string fileName = Application.dataPath + "/CSV/AttackDocument.csv";
-
-	//	StreamReader sr = new StreamReader(fileName);
-	//	string line = sr.ReadLine();
-	//	//string effect = null;
-
-	//	while (line != null)
-	//	{
-	//		line = sr.ReadLine();
-
-	//		if (string.IsNullOrEmpty(line))
-	//			break;
-		
-	//		InfoManager.Instance.AddAttackDic(line.Split(','));
-	//		//effect = split[split.Length - 1];
-
-	//	}
-
-	//	//Debug.Log("DONE");
-	//	//Debug.Log(effect);
-
-	//	//string effectPrefab = "Prefabs/Effects/" + effect;
-	//	//GameObject obj = Resources.Load(effectPrefab) as GameObject;
-
-	//	//Instantiate(obj, transform);
-	//}
-
 }

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+// 체력 UI 클래스
 public class HpBar : MonoBehaviour
 {
 	private Canvas _canvas;
@@ -10,7 +9,7 @@ public class HpBar : MonoBehaviour
 	private RectTransform _parentRectTr;
 	private RectTransform _rectTr;
 
-	private Transform _targetTr;
+	private Transform _targetTr; // 캐릭터 Transform
 	private float _offset;
 
     void Start()
@@ -28,6 +27,7 @@ public class HpBar : MonoBehaviour
 		_offset = offset;
 	}
 
+	// 캐릭터 이동 시 함께 이동
 	private void LateUpdate()
 	{
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(_targetTr.position + (Vector3.up * _offset));

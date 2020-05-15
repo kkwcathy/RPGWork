@@ -17,7 +17,7 @@ public class IdleState : StateBase
 		// 타겟이 잡힐 경우 타겟 쫓기 상태로 변환
 		if (_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.eStateType.RunToTarget);
+			_character.ChangeState(StateType.RunToTarget);
 		}
 	}
 }

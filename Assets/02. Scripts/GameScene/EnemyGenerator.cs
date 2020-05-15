@@ -63,7 +63,7 @@ public class EnemyGenerator : CharacterGenerator
 
 	protected override void SetCharInfo(CharacterInfo charInfo)
 	{
-		charInfo.charType = Character.eCharType.Enemy;
+		charInfo.charType = CharType.Enemy;
 		
 		MapInfo mapInfo = InfoManager.Instance.mapDic[InfoManager.Instance.MapID];
 		ModelInfo modelInfo;

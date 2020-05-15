@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-// 기본 공격 이펙트 클래스
+// 발사 공격 이펙트 클래스
 public class ThrowSkillEffect : SkillBase
 {
     private float _speed = 0.5f;

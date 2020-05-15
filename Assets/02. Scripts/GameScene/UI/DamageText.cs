@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
+// 데미지 텍스트 클래스
 public class DamageText : MonoBehaviour
 {
 	private float _elapsedTime = 0.0f;
-	private float _floatTime = 0.5f;
+	private float _floatTime = 0.5f; // 위로 떠오르는 시간
 	private float _floatSpeed = 0.8f;
 
 	private bool _isRun = true;
@@ -32,6 +31,7 @@ public class DamageText : MonoBehaviour
 		textPro.text = damage.ToString();
 	}
 
+	// 생성될 위치 계산 (캐릭터 위치 + offset)
 	public void SetPosition(Transform charTr, float offset)
 	{
 		Canvas _canvas;
@@ -69,6 +69,7 @@ public class DamageText : MonoBehaviour
 		{
 			_tr.Translate(Vector2.up * _elapsedTime * _floatSpeed);
 		}
+		// 떠오르는 시간이 지나면 사라지는 애니메이션 실행 및 파괴
 		else
 		{
 			_animator.SetTrigger("Disappear");

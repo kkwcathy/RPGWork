@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
+// 게임 관련 정보 보유하는 클래스
 public class InfoManager
 {
 	private static InfoManager _instance;
 
-	public Dictionary<int, AttackInfo> attackInfoDic;
-	public Dictionary<int, TeamCharInfo> teamInfoDic;
+	// CSV 파일을 불러와 저장한 정보들을 담는 Dictionary
+	public Dictionary<int, AttackInfo> attackInfoDic; // 공격 정보
+	public Dictionary<int, TeamCharInfo> teamInfoDic; // 
 	public Dictionary<int, ModelInfo> modelDic;
 	public Dictionary<int, MapInfo> mapDic;
 
@@ -27,6 +27,7 @@ public class InfoManager
 		mapDic = new Dictionary<int, MapInfo>();
 	}
 
+	// SingleTon
 	public static InfoManager Instance
 	{
 		get
@@ -116,7 +117,7 @@ public class InfoManager
 	}
 }
 
-
+// 공격 타입
 public enum AttackType
 {
 	None,
@@ -126,7 +127,22 @@ public enum AttackType
 	Radiate,
 }
 
-// 스킬 속성은 나중에 추가
+// 캐릭터 타입
+public enum CharType
+{
+	Player,
+	Enemy,
+}
+
+// 캐릭터 상태 타입
+public enum StateType
+{
+	NoTarget,
+	RunToTarget,
+	Fight,
+	Death,
+	Clear,
+}
 
 public struct AttackInfo
 {

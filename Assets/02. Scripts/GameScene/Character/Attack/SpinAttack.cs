@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+// 회전 공격 클래스 (구현 중)
 public class SpinAttack : AttackBase
 {
 	public override void Init()

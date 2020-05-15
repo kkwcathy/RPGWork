@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+ 
+// 장거리 발사 공격 클래스
 public class ThrowAttack : AttackBase
 {
 	float moveSpeed = 10.0f;
@@ -19,7 +18,6 @@ public class ThrowAttack : AttackBase
 
 	public override void SetFirePoint(Transform effecTr)
 	{
-		//effecTr.position = _character.tr.position + _character.tr.forward * 1.2f + Vector3.up * 0.4f;
 		effecTr.position = _character.tr.position + Vector3.up * 0.4f;
 		effecTr.rotation = _character.tr.rotation;
 	}
@@ -34,6 +32,7 @@ public class ThrowAttack : AttackBase
 
 	public override void RunAttack()
 	{
+		// 일정 시간 동안 캐릭터를 후진
 		if (_elapsedTime < moveTime)
 		{
 			_character.StraightMove(moveDir, moveSpeed);

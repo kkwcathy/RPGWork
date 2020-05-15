@@ -1,42 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Character : MonoBehaviour
 {
-	// 캐릭터 타입
-	public enum eCharType
-	{
-		Player,
-		Enemy,
-	}
 
-	// 캐릭터 상태 타입
-	public enum eStateType
-	{
-		NoTarget,
-		RunToTarget,
-		Fight,
-		Death,
-		Clear,
-	}
 
-	public eStateType _stateType = eStateType.NoTarget;
+	public StateType _stateType = StateType.NoTarget;
 
 	public Transform tr;
 
-	public CharacterInfo Charinfo;
-
 	// 움직임 관련
-
 	private CharacterController _charController;
-
 	private float _rotateSpeed = 5.0f; // 회전 속도
-	//private float _sightNormalized = 0.99f; // 타겟과 자신의 각도 차이의 정규화된 값이 이보다 크면 타겟이 시야에 들어감
 
 	// 공격 관련
-
 	[SerializeField] private CharacterAttack _charAttack = null;
 	public AttackBase Attack = null;
 
@@ -47,22 +25,25 @@ public class Character : MonoBehaviour
 
 	private NavMeshAgent _agent;
 
-	[SerializeField] private eCharType _charType = eCharType.Enemy;
+	[SerializeField] private CharType _charType = CharType.Enemy;
 	private CharacterAI _charAI;
 
 	[SerializeField] protected Animator _animator;
 
-	private void Update()
+	private void Awake()
 	{
-		UpdateDo();
+		tr = GetComponent<Transform>();
 	}
 
 	private void Start()
 	{
-		//tr = GetComponent<Transform>(); : 원래 Awake에 해줘야 함
-		
 		_charAI.Init();
 		_charAttack.Init();
+	}
+
+	private void Update()
+	{
+		UpdateDo();
 	}
 
 	public void BuildCharSetting(CharacterInfo charInfo)
@@ -78,11 +59,9 @@ public class Character : MonoBehaviour
 		_charAttack.SetCharacter(this, charInfo.power);
 
 		GetComponent<CharacterDamage>().SetDamageStat(charInfo.maxHp, charInfo.defence);
-
-		Charinfo = charInfo; // 인스펙터 확인용 곧 지울거임!!
 	}
 	
-	public eCharType GetCharType()
+	public CharType GetCharType()
 	{
 		return _charType;
 	}
@@ -130,28 +109,17 @@ public class Character : MonoBehaviour
 		}
     }
 
-	// 기본 공격
-	//public void BasicAttack()
-	//{
-	//	if(_attack.GetElapsedTime() == 0.0f)
-	//	{
-	//		PlayAnimation("Attack");
-	//	}
-
-	//	_attack.Fire(_firePoint);
-	//}
-
 	public void UpdateDo()
 	{
 		// 죽거나 클리어 상태가 아닐 시 상태 업데이트 지속
-		if (_stateType == eStateType.Clear)
+		if (_stateType == StateType.Clear)
 		{
 			return;
 		}
 
 		_charAI.CheckState(_stateType);
 
-		if(_stateType == eStateType.Death)
+		if(_stateType == StateType.Death)
 		{
 			return;
 		}
@@ -167,11 +135,6 @@ public class Character : MonoBehaviour
 		}
 		
 		_charAttack._AddTime();
-
-		//if (_charType == eCharType.Player)
-		//{
-		//	Debug.Log(name+_stateType);
-		//}
 	}
 
 	// 움직임을 멈출 시 agent의 관성을 없애기 위해 멈추기 직전 velocity 값을 tempVelocity에 저장하고 velocity 값을 0으로 설정
@@ -195,6 +158,7 @@ public class Character : MonoBehaviour
 		}
 	}
 
+	// 애니메이션 실행
 	public void PlayAnimation(string trigger)
 	{
 		if(_animator != null)
@@ -225,25 +189,18 @@ public class Character : MonoBehaviour
 		tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.LookRotation(direction), _rotateSpeed * Time.deltaTime);
 	}
 
-	// 타겟과의 각도 차이를 통해 시야 내부에 존재하는지 확인
-	//public bool IsAttackReady()
-	//{
-	//	Vector3 direction = (_target.tr.position - tr.position).normalized;
-
-	//	return Vector3.Dot(tr.forward, direction) >= _sightNormalized;
-	//}
-
-	public void ChangeState(eStateType state)
+	public void ChangeState(StateType state)
 	{
 		_stateType = state;
 		_charAI.SwitchState(state);
 	}
 
-	public eStateType GetStateType()
+	public StateType GetStateType()
 	{
 		return _stateType;
 	}
 
+	// 타겟 리스트 조정
 	public void AddTarget(Character target)
 	{
 		if(target.GetCharType() != _charType)
@@ -270,16 +227,7 @@ public class Character : MonoBehaviour
 		_charController.Move(moveDir * Time.deltaTime * speed);
 	}
 
-	public void Die()
-	{
-		Destroy(gameObject);
-	}
-
-	public void Clear()
-	{
-		ChangeState(eStateType.Clear);
-	}
-
+	// 스킬 이펙트 생성
 	public GameObject Fire(GameObject prefab)
 	{
 		GameObject effect = Instantiate(prefab);
@@ -288,5 +236,15 @@ public class Character : MonoBehaviour
 		effect.layer = gameObject.layer;
 
 		return effect;
+	}
+
+	public void Die()
+	{
+		Destroy(gameObject);
+	}
+
+	public void Clear()
+	{
+		ChangeState(StateType.Clear);
 	}
 }

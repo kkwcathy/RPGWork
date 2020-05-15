@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+// 캐릭터 정보 UI 클래스
 public class CharCtrlUI : MonoBehaviour
 {
-	[SerializeField] Text[] texts;
+	[SerializeField] Text[] texts; // 순서대로 캐릭터 이름, 스킬1 이름, 스킬2 이름
 	[SerializeField] SkillBtn[] skillBtns;
-	[SerializeField] Image[] images;
+	[SerializeField] Image[] images; // 순서대로 캐릭터 이미지, 스킬1 이미지, 스킬2 이미지
 
 	public void SetCharUI(CharacterInfo charInfo)
 	{

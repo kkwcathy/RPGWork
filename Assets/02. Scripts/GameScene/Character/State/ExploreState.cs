@@ -21,16 +21,17 @@ public class ExploreState : StateBase
 			_character.PlayAnimation("Run");
 		}
 
+		// 버튼을 통해 수동으로 공격이 들어오는 경우
 		if (_character.Attack != null)
 		{
 			_character.StopMove();
-			_character.ChangeState(Character.eStateType.Fight);
+			_character.ChangeState(StateType.Fight);
 		}
 
 		// 타겟이 잡힐 경우 타겟 쫓기 상태로 변환
 		if (_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.eStateType.RunToTarget);
+			_character.ChangeState(StateType.RunToTarget);
 		}
 	}
 

@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+// 캐릭터 생성 상위 클래스
 public class CharacterGenerator : MonoBehaviour
 {
 	[SerializeField] protected GameObject _charPrefab = null;
@@ -26,21 +26,23 @@ public class CharacterGenerator : MonoBehaviour
 		CharacterFactory charFactory = new CharacterFactory();
 		CharacterInfo charInfo = new CharacterInfo();
 
-		// 캐릭터 생성 시 일정한 간격으로 배치하기 위하여 생성 수로 나뉜 중심각에 따라 만들어지는 호 들의 끝 좌표 마다 캐릭터를 배치
+		// 캐릭터 생성 시 일정한 간격으로 배치하기 위하여 360도를 생성 수로 나눈 중심각을 계산하고
+		// 중심각에 따라 만들어지는 호 들의 끝 좌표 마다 캐릭터를 배치
 		for (int i = 0; i < _spawnAmount; ++i)
 		{
-			//CharacterInfo charInfo = new CharacterInfo();
-
 			float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
 			float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
 
 			Vector3 spawnPos = _axis + Vector3.forward * z + Vector3.right * x;
 
+			// 캐릭터 정보 설정
 			SetCharInfo(charInfo);
 
+			// 설정된 정보에 따라 객체 생성
 			charInfo.charAI = charFactory.GetCharacterAI(charInfo.charType);
 			charInfo.charAttack = charFactory.GetCharacterAttack(charInfo.attackIDs);
 
+			// 하단 UI 생성
 			PutCharUI(charInfo);
 
 			GameObject clone = Instantiate(_charPrefab, spawnPos, Quaternion.identity);
@@ -50,6 +52,7 @@ public class CharacterGenerator : MonoBehaviour
 
 			Instantiate(Resources.Load("Prefabs/Models/" + prefabStr), clone.transform);
 
+			// 설정된 정보에 따라 캐릭터 스탯 전달
 			Character character = clone.GetComponent<Character>();
 			character.BuildCharSetting(charInfo);
 
@@ -61,6 +64,7 @@ public class CharacterGenerator : MonoBehaviour
 		return charList;
 	}
 
+	// 플레이어와 적이 캐릭터를 생성할 때 필요한 정보가 서로 다름
 	virtual protected void SetCharInfo(CharacterInfo charInfo)
 	{
 

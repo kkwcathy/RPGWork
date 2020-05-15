@@ -38,19 +38,13 @@ public class WaveManager : MonoBehaviour
 		StartGame();
 	}
 
-	// Team 밑에 있는 플레이어들을 가져와 기본 설정 추가해주기
+	// 게임 실행 함수
 	private void StartGame()
 	{
-		Debug.Log("Starting Game");
-
+		// Team 밑에 있는 플레이어들을 가져와 기본 설정 추가해주기
 		List<Character> characters = GameObject.Find("Team").GetComponent<TeamGenerator>().Generate();
 
-		Debug.Log("Team Players Generate Complete");
-
-		//GameObject.Find("CharCtrlUI").GetComponent<CharCtrlUI>().SetCharUI(characters);
-
-		Debug.Log("Player UI Setting Working");
-
+		// 카메라가 따라갈 선두 플레이어 설정
 		_headPlayer = characters[0];
 		followCam.SetMainPlayer(_headPlayer.tr);
 
@@ -118,7 +112,7 @@ public class WaveManager : MonoBehaviour
 	{
 		for(int i = 0; i < _charList.Count; ++i)
 		{
-			if(_charList[i].GetStateType() == Character.eStateType.Death)
+			if(_charList[i].GetStateType() == StateType.Death)
 			{
 				DeleteTarget(_charList[i]);
 				_charList.Remove(_charList[i]);
@@ -153,6 +147,7 @@ public class WaveManager : MonoBehaviour
 				break;
 			}
 
+			// 마지막 웨이브에서는 스테이지 클리어를 띄우므로 웨이브 클리어 텍스트를 띄우지 않음
 			if(enemyGenerator.GetCurWave() < _maxWave - 1)
 			{
 				StartCoroutine(WaveClearAnim());
@@ -174,6 +169,7 @@ public class WaveManager : MonoBehaviour
 		
     }
 
+	// Wave 클리어 시 UI를 띄우는 코루틴
 	IEnumerator WaveClearAnim()
 	{
 		_waveClearText.SetActive(true);
@@ -185,11 +181,11 @@ public class WaveManager : MonoBehaviour
 
 	private bool IsPlayer(Character character)
 	{
-		return character.GetCharType() == Character.eCharType.Player;
+		return character.GetCharType() == CharType.Player;
 	}
 
 	private bool IsEnemy(Character character)
 	{
-		return character.GetCharType() == Character.eCharType.Enemy;
+		return character.GetCharType() == CharType.Enemy;
 	}
 }

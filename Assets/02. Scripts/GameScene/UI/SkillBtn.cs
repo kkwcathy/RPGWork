@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-// 쿨타임 수정하기
+// 스킬 버튼 UI 클래스
 public class SkillBtn : MonoBehaviour
 {
 	private int _skillIndex = 0;
 	private CharacterAttack _charAttack;
 	private float _coolTime;
 
-	[SerializeField] private Image _coverImg;
+	[SerializeField] private Image _coverImg; // 쿨타임 차는 동안 돌아갈 회색 이미지
 
 	public void SetBtn(CharacterAttack charAttack, int index, float coolTime)
 	{
@@ -18,6 +16,7 @@ public class SkillBtn : MonoBehaviour
 		_skillIndex = index;
 		_coolTime = coolTime;
 
+		// 버튼 클릭시 공격을 실행하는 Listener 추가
 		GetComponent<Button>().onClick.AddListener(() => { StartSkill(); });
 
 		_coverImg.fillAmount = 0;

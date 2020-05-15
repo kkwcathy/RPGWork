@@ -1,7 +1,5 @@
 ﻿
 // 타겟 쫓기 상태 클래스
-using UnityEngine;
-
 public class RunState : StateBase
 {
 	float _minDistance = 1.5f;
@@ -24,24 +22,15 @@ public class RunState : StateBase
 		// 타겟 없을 경우 타겟 없음 상태로 변환
 		if (!_character.CheckTargetExist())
 		{
-			_character.ChangeState(Character.eStateType.NoTarget);
+			_character.ChangeState(StateType.NoTarget);
 		}
 		// 타겟에게 공격이 가능할 만큼 가까워지면 움직임을 멈춤
 		else if(_character.Attack != null)
 		{
 			_character.StopMove();
-			_character.ChangeState(Character.eStateType.Fight);
+			_character.ChangeState(StateType.Fight);
 		}
-		//else if (_character.CheckTargetDistance(_character.FightDistance))
-		//{
-		//	_character.StopMove();
-
-		//	// 타겟이 시야에 있을 경우 공격 시작
-		//	if (_character.IsTargetInSight())
-		//	{
-		//		_character.ChangeState(Character.eStateType.Fight);
-		//	}
-		//}
+		// 타겟과 충분히 가까워지면 움직임을 멈춤
 		else if(_character.CheckTargetDistance(_minDistance))
 		{
 			_character.StopMove();

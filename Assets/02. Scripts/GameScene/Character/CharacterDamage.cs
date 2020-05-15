@@ -20,7 +20,7 @@ public class CharacterDamage : MonoBehaviour
 	[SerializeField] private GameObject _hpBarPrefab = null;
 	[SerializeField] private GameObject _damageTextPrefab = null;
 
-	[SerializeField] private float _offset = 3.0f;
+	[SerializeField] private float _offset = 3.0f; // Hp Bar와 데미지 텍스트 높이 offset
 
 	private GameObject _hpBar = null;
 	private Image _hpImage = null;
@@ -45,7 +45,8 @@ public class CharacterDamage : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(_character.GetStateType() != Character.eStateType.Death &&
+		// 충돌한 오브젝트가 스킬 이펙트이고 이벡트를 발사한 캐릭터가 나와 같은 편이 아닐 때 데미지를 입음
+		if(_character.GetStateType() != StateType.Death &&
 			other.tag == "Skill" && 
 			other.gameObject.layer != gameObject.layer)
 		{
@@ -67,14 +68,13 @@ public class CharacterDamage : MonoBehaviour
 
 	private void UpdateDo()
 	{
-		if(_hp <= 0 && _character.GetStateType() != Character.eStateType.Death)
+		if(_hp <= 0 && _character.GetStateType() != StateType.Death)
 		{
-			_character.ChangeState(Character.eStateType.Death);
+			_character.ChangeState(StateType.Death);
 			Destroy(_hpBar);
 		}
 		else if (_isDamaged)
 		{
-			// 데미지를 받으면 하얗게 깜빡이기
 			Blink();
 		}
 	}
@@ -102,11 +102,13 @@ public class CharacterDamage : MonoBehaviour
 		_hp -= damage;
 		_elapsedTime = 0.0f;
 
+		// Blink 효과 제어
 		if (!_isDamaged)
 		{
 			_isDamaged = true;
 		}
 
+		// hp Bar 가 없으면 생성
 		if (_hpBar == null)
 		{
 			GenerateHpBar();
@@ -129,6 +131,7 @@ public class CharacterDamage : MonoBehaviour
 		return damage;
 	}
 
+	// 데미지를 받으면 하얗게 깜빡이기
 	public void Blink()
 	{
 		_elapsedTime += Time.deltaTime * _blinkSpeed;
