@@ -5,15 +5,14 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
 	// 캐릭터 타겟 리스트 추가/삭제
-	delegate void CharAddTargetHandler(Character character);
-	delegate void CharDeleteTargetHandler(Character character);
+	delegate void CharTargetHandler(Character character);
 
 	// 플레이어 탐험 좌표 설정 및 클리어 이벤트 실행
 	delegate void PlayerExploreHandler(Vector3 point);
 	delegate void PlayerClearHandler();
 
-	CharAddTargetHandler _charAddTarget;
-	CharDeleteTargetHandler _charDeleteTarget;
+	CharTargetHandler _charAddTarget;
+	CharTargetHandler _charDeleteTarget;
 
 	PlayerExploreHandler _playerExplore;
 	PlayerClearHandler _playerClear;
@@ -30,15 +29,13 @@ public class WaveManager : MonoBehaviour
 	private float _waveStartDelayTime = 4.0f; // 새 웨이브 시작 전 딜레이 시간
 	private float _spawnRunTime = 1.0f; // 적 생성 이벤트 소요 시간
 
-	private void Awake()
-	{
-		
-	}
+	[SerializeField] private GameObject _waveClearText;
+	[SerializeField] private GameObject _stageClearText;
+	[SerializeField] private GameObject _charProfileUI;
 
 	private void Start()
 	{
-		//StartGame();
-		
+		StartGame();
 	}
 
 	// Team 밑에 있는 플레이어들을 가져와 기본 설정 추가해주기
@@ -50,16 +47,20 @@ public class WaveManager : MonoBehaviour
 
 		Debug.Log("Team Players Generate Complete");
 
+		//GameObject.Find("CharCtrlUI").GetComponent<CharCtrlUI>().SetCharUI(characters);
+
+		Debug.Log("Player UI Setting Working");
+
 		_headPlayer = characters[0];
 		followCam.SetMainPlayer(_headPlayer.tr);
 
 		for (int i = 0; i < characters.Count; ++i)
 		{
-			_playerExplore += new PlayerExploreHandler(characters[i].SetExplorePoint);
-			_playerClear += new PlayerClearHandler(characters[i].Clear);
+			_playerExplore += characters[i].SetExplorePoint;
+			_playerClear += characters[i].Clear;
 
-			_charAddTarget += new CharAddTargetHandler(characters[i].AddTarget);
-			_charDeleteTarget += new CharDeleteTargetHandler(characters[i].DeleteTarget);
+			_charAddTarget += characters[i].AddTarget;
+			_charDeleteTarget += characters[i].DeleteTarget;
 			
 			_charList.Add(characters[i]);
 		}
@@ -67,7 +68,6 @@ public class WaveManager : MonoBehaviour
 		_maxWave = enemyGenerator.GetMaxWave();
 
 		StartCoroutine(RunWaves());
-		//_playerExplore(enemyGenerator.GetCurSpawnPoint().position);
 	}
 
 	// 웨이브 변경
@@ -78,8 +78,8 @@ public class WaveManager : MonoBehaviour
 
 		for (int i = 0; i < enemyList.Count; ++i)
 		{
-			_charAddTarget += new CharAddTargetHandler(enemyList[i].AddTarget);
-			_charDeleteTarget += new CharDeleteTargetHandler(enemyList[i].DeleteTarget);
+			_charAddTarget += enemyList[i].AddTarget;
+			_charDeleteTarget += enemyList[i].DeleteTarget;
 
 			_charList.Add(enemyList[i]);
 		}
@@ -153,6 +153,11 @@ public class WaveManager : MonoBehaviour
 				break;
 			}
 
+			if(enemyGenerator.GetCurWave() < _maxWave - 1)
+			{
+				StartCoroutine(WaveClearAnim());
+			}
+			
 			followCam.SetMainEnemy(null);
 			followCam.Unzoom();
 			enemyGenerator.AddWave();
@@ -161,10 +166,22 @@ public class WaveManager : MonoBehaviour
 		// 웨이브가 모두 진행된 채로 게임이 끝나면 클리어
 		if(enemyGenerator.GetCurWave() == _maxWave)
 		{
+			_stageClearText.SetActive(true);
+			_charProfileUI.SetActive(false);
+
 			_playerClear();
 		}
 		
     }
+
+	IEnumerator WaveClearAnim()
+	{
+		_waveClearText.SetActive(true);
+
+		yield return new WaitForSeconds(3.0f);
+
+		_waveClearText.SetActive(false);
+	}
 
 	private bool IsPlayer(Character character)
 	{

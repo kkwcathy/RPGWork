@@ -5,8 +5,11 @@ using UnityEngine;
 public class TeamGenerator : CharacterGenerator
 {
 	List<int> playerIDList;
-	public List<Transform> spots; // 임시!!!
-	
+
+	public GameObject _charUIPrefab;
+
+	public Transform[] _charUIPanels;
+
 	private void Awake()
 	{
 
@@ -17,13 +20,14 @@ public class TeamGenerator : CharacterGenerator
 		playerIDList = new List<int>();
 
 		playerIDList.Add(1);
-		//playerIDList.Add(2);
-		//playerIDList.Add(3);
+		playerIDList.Add(2);
+		playerIDList.Add(3);
 	}
 
 	void Start()
     {
 		tr = GetComponent<Transform>();
+
 		Init();
 		//Generate();
 	}
@@ -47,10 +51,15 @@ public class TeamGenerator : CharacterGenerator
 		charInfo.power = teamInfo.power;
 		charInfo.defence = teamInfo.defence;
 
-		charInfo.charName = modelInfo.modelName;
-		charInfo.prefabName = modelInfo.prefabName;
+		charInfo.modelID = modelInfo.modelID;
 		charInfo.attackIDs = modelInfo.skillIDs;
+	}
 
+	protected override void PutCharUI(CharacterInfo charInfo)
+	{
+		GameObject charUI = Instantiate(_charUIPrefab, _charUIPanels[index]);
+
+		charUI.GetComponent<CharCtrlUI>().SetCharUI(charInfo);
 		++index;
 	}
 }

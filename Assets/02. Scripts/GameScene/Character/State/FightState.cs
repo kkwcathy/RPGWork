@@ -15,7 +15,7 @@ public class FightState : StateBase
 	public override void UpdateState()
 	{
 		// 발견되는 타겟이 존재하지 않으면 타겟 없음 상태로 변환
-		if (!_character.CheckTargetExist())
+		if (!_character.CheckTargetExist() && _character.Attack == null)
 		{
 			_character.ChangeState(Character.eStateType.NoTarget);
 		}

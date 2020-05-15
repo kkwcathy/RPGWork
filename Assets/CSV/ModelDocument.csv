@@ -1,3 +1,8 @@
-﻿모델ID,캐릭터 이름,보유스킬 ,모델이름
-101,빨간도깨비,10002/10102/10202,RedMonster
-102,파란도깨비,10003,BlueMonster
+﻿모델ID,캐릭터 이름,보유스킬 ,모델이름,모델 UI 이미지
+101,초록이,10001/10101,Flora,Model_Flora
+102,빨강이,10002/10102,Fiery,Model_Fiery
+103,파랑이,10003/10103,Cyclopes,Model_Cyclopes
+104,,10001,Beezee,
+105,,10001,Kaktos,
+106,,10001,Ketchup,
+107,,10001,Woody,

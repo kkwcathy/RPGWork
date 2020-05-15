@@ -83,8 +83,7 @@ public class EnemyGenerator : CharacterGenerator
 		charInfo.power = mapInfo.enemyPower;
 		charInfo.defence = mapInfo.enemyDefence;
 
-		charInfo.charName = modelInfo.modelName;
-		charInfo.prefabName = modelInfo.prefabName;
+		charInfo.modelID = modelInfo.modelID;
 		charInfo.attackIDs = modelInfo.skillIDs;
 	}
 }

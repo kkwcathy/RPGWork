@@ -14,25 +14,6 @@ public class CharacterGenerator : MonoBehaviour
 	protected Vector3 _axis;
 	protected int _spawnAmount;
 
-	protected Vector3[] GetSpawnPoints(Vector3 axis, int amount)
-	{
-		Vector3[] spawnPoints = new Vector3[amount];
-
-		int angle = Random.Range(0, 360);
-
-		for (int i = 0; i < amount; ++i)
-		{
-			float x = _spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
-			float z = _spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
-
-			spawnPoints[i] = axis + Vector3.forward * z + Vector3.right * x;
-
-			angle += 360 / amount;
-		}
-
-		return spawnPoints;
-	}
-
 	public List<Character> Generate()
 	{
 		List<Character> charList = new List<Character>();
@@ -60,10 +41,14 @@ public class CharacterGenerator : MonoBehaviour
 			charInfo.charAI = charFactory.GetCharacterAI(charInfo.charType);
 			charInfo.charAttack = charFactory.GetCharacterAttack(charInfo.attackIDs);
 
+			PutCharUI(charInfo);
+
 			GameObject clone = Instantiate(_charPrefab, spawnPos, Quaternion.identity);
 			clone.transform.parent = tr;
 
-			Instantiate(Resources.Load("Prefabs/Models/" + charInfo.prefabName), clone.transform);
+			string prefabStr = InfoManager.Instance.modelDic[charInfo.modelID].prefabName;
+
+			Instantiate(Resources.Load("Prefabs/Models/" + prefabStr), clone.transform);
 
 			Character character = clone.GetComponent<Character>();
 			character.BuildCharSetting(charInfo);
@@ -77,6 +62,11 @@ public class CharacterGenerator : MonoBehaviour
 	}
 
 	virtual protected void SetCharInfo(CharacterInfo charInfo)
+	{
+
+	}
+
+	virtual protected void PutCharUI(CharacterInfo charInfo)
 	{
 
 	}

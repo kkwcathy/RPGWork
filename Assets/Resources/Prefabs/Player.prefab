@@ -71,8 +71,7 @@ MonoBehaviour:
   tr: {fileID: 7188697079655286280}
   Charinfo:
     charType: 0
-    charName: 
-    prefabName: 
+    modelID: 0
     maxHp: 0
     power: 0
     defence: 0
@@ -93,6 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBarPrefab: {fileID: 8291294279620021336, guid: 38f5300a7e023ff449af623667d6926c,
+    type: 3}
+  _damageTextPrefab: {fileID: 4492966160407892882, guid: fb4933810760c1c4cb7676555904c9de,
     type: 3}
   _offset: 2.5
 --- !u!143 &-5303459355050777883

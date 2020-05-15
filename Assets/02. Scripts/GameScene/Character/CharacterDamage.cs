@@ -18,10 +18,14 @@ public class CharacterDamage : MonoBehaviour
 	private bool _isDamaged = false;
 
 	[SerializeField] private GameObject _hpBarPrefab = null;
+	[SerializeField] private GameObject _damageTextPrefab = null;
+
 	[SerializeField] private float _offset = 3.0f;
 
 	private GameObject _hpBar = null;
-	private Image _hpImage = null; 
+	private Image _hpImage = null;
+
+	private Canvas _uiCanvas;
 
 	void Start()
     {
@@ -56,7 +60,8 @@ public class CharacterDamage : MonoBehaviour
 		_character = GetComponent<Character>();
 		_renderer = GetComponentInChildren<Renderer>();
 
-		//_initHp = _character.CharInfo.maxHp;
+		_uiCanvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
+
 		_hp = _initHp;
 	}
 
@@ -64,8 +69,6 @@ public class CharacterDamage : MonoBehaviour
 	{
 		if(_hp <= 0 && _character.GetStateType() != Character.eStateType.Death)
 		{
-			Debug.Log(name + " Die...");
-
 			_character.ChangeState(Character.eStateType.Death);
 			Destroy(_hpBar);
 		}
@@ -78,17 +81,25 @@ public class CharacterDamage : MonoBehaviour
 
 	private void GenerateHpBar()
 	{
-		Canvas canvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
-
-		_hpBar = Instantiate(_hpBarPrefab, canvas.transform);
+		_hpBar = Instantiate(_hpBarPrefab, _uiCanvas.transform);
 
 		_hpImage = _hpBar.GetComponentsInChildren<Image>()[1];
 		_hpBar.GetComponent<HpBar>().SetBarPosition(_character.tr, _offset);
 	}
 
-	virtual public void Damaged(float power)
+	private void SpawnDamageText(float damage)
 	{
-		_hp -= (power - _defence);
+		DamageText damageText = Instantiate(_damageTextPrefab, _uiCanvas.transform).GetComponent<DamageText>();
+
+		damageText.SetText((int)damage);
+		damageText.SetPosition(_character.tr, _offset);
+	}
+
+	public void Damaged(float power)
+	{
+		float damage = CalculateDamage(power);
+
+		_hp -= damage;
 		_elapsedTime = 0.0f;
 
 		if (!_isDamaged)
@@ -101,9 +112,23 @@ public class CharacterDamage : MonoBehaviour
 			GenerateHpBar();
 		}
 
+		SpawnDamageText(damage);
+
 		_hpImage.fillAmount = _hp / _initHp;
 	}
 	
+	private float CalculateDamage(float power)
+	{
+		float damage = Random.Range(power - _defence, power - (_defence / 2));
+
+		if(damage <= 0)
+		{
+			damage = 1;
+		}
+
+		return damage;
+	}
+
 	public void Blink()
 	{
 		_elapsedTime += Time.deltaTime * _blinkSpeed;

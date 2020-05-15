@@ -9,6 +9,6 @@ public class ClearState : StateBase
 	public override void StartState()
 	{
 		_character.StopMove();
-		_character.PlayAnimation("Stop");
+		_character.PlayAnimation("Clear");
 	}
 }

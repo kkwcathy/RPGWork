@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CharacterAttack 
 {
-	private float _attackCoolTime = 3.0f;
-
 	public delegate void AttackHandler();
 	public AttackHandler _AddTime;
 
@@ -70,7 +68,7 @@ public class CharacterAttack
 	public void UpdateAttack()
 	{
 		if(_character.Attack == null &&
-			_basicAttack.IsAttackable(_attackCoolTime))
+			_basicAttack.IsAttackable())
 		{
 			SetAttack(_basicAttack);
 		}
@@ -79,17 +77,4 @@ public class CharacterAttack
 			_character.Attack = null;
 		}
 	}
-
-	// 나중에 적절하게 수정
-	//public void SearchAttack()
-	//{
-	//	for(int i = 0; i < _skills.Count; ++i)
-	//	{
-	//		if(_attackList[i].GetElapsedTime() > _attackCoolTime)
-	//		{
-	//			_curAttack = _attackList[i];
-	//			_curAttack.StartAttack();
-	//		}
-	//	}
-	//}
 }

@@ -11,15 +11,14 @@ public class DeathState : StateBase
 	public override void StartState()
 	{
 		_character.PlayAnimation("Death");
-		_character.Die();
+		//_character.Die();
 	}
 
 	public override void UpdateState()
 	{
-
-		//if(_character.IsAnimationFinished("Death"))
-		//{
-		//	_character.Die();	
-		//}
+		if (_character.IsAnimationFinished("Death"))
+		{
+			_character.Die();
+		}
 	}
 }

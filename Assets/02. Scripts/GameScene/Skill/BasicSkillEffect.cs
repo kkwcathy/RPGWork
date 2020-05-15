@@ -10,7 +10,7 @@ public class BasicSkillEffect : SkillBase
     {
 		StartDo();
 
-        //Destroy(gameObject, _destroyTime);
+        Destroy(gameObject, _destroyTime);
     }
 
 	private void OnTriggerEnter(Collider other)

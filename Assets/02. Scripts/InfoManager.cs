@@ -34,6 +34,7 @@ public class InfoManager
 			if(_instance == null)
 			{
 				_instance = new InfoManager();
+				new GameInfoReader().ReadGameInfo();
 			}
 
 			return _instance;
@@ -49,7 +50,9 @@ public class InfoManager
 		info.attackType = (AttackType)int.Parse(keys[2]);
 		info.skillPower = float.Parse(keys[3]);
 		info.minDistance = float.Parse(keys[4]);
-		info.effectName = keys[5];
+		info.coolTime = float.Parse(keys[5]);
+		info.effectName = keys[6];
+		info.imgName = keys[7];
 
 		attackInfoDic.Add(info.attackID, info);
 	}
@@ -84,6 +87,8 @@ public class InfoManager
 		}
 
 		info.prefabName = keys[3];
+
+		info.imgName = keys[4];
 
 		modelDic.Add(info.modelID, info);
 	}
@@ -131,8 +136,10 @@ public struct AttackInfo
 
 	public float skillPower; // 스킬을 통해 부가되는 공격력 (원래 공격력 * 스킬 부가 공격력)
 	public float minDistance; // 스킬 시전 가능 거리
+	public float coolTime; // 스킬 쿨타임
 
 	public string effectName; // 이펙트 프리팹 이름
+	public string imgName;
 }
 
 public struct TeamCharInfo
@@ -152,6 +159,7 @@ public struct ModelInfo
 	public string modelName;
 	public int[] skillIDs;
 	public string prefabName;
+	public string imgName;
 }
 
 public struct MapInfo

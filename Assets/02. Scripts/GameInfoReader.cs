@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 
-public class GameInfoReader : MonoBehaviour
+public class GameInfoReader
 {
 	public enum InfoType
 	{
@@ -21,7 +21,15 @@ public class GameInfoReader : MonoBehaviour
 	{
 		StringBuilder filePath = new StringBuilder();
 
-		filePath.Append(Application.dataPath);
+		if(Application.platform == RuntimePlatform.Android)
+		{
+			filePath.Append(Application.persistentDataPath);
+		}
+		else
+		{
+			filePath.Append(Application.dataPath);
+		}
+
 		filePath.Append("/CSV/");
 
 		switch (infoType)
@@ -67,7 +75,7 @@ public class GameInfoReader : MonoBehaviour
 		}
 	}
 
-    void Start()
+	public void ReadGameInfo()
     {
 		CSVFileOpen(InfoType.Team);
 		CSVFileOpen(InfoType.Model);
@@ -80,7 +88,7 @@ public class GameInfoReader : MonoBehaviour
 
 		//GameObject.Find("Team").SendMessage("Generate");
 
-		GameObject.Find("WaveController").SendMessage("StartGame");
+		//GameObject.Find("WaveController").SendMessage("StartGame");
 
 		//SetText();
 		//GenPlayer();

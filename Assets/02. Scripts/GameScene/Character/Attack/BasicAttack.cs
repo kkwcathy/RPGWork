@@ -13,7 +13,8 @@ public class BasicAttack : AttackBase
 
 	public override void SetFirePoint(Transform effecTr)
 	{
-		effecTr.position = _character.tr.position + _character.tr.forward * 1.2f + Vector3.up * 0.4f;
+		//effecTr.position = _character.tr.position + _character.tr.forward * 1.2f + Vector3.up * 0.4f;
+		effecTr.position = _character.tr.position + Vector3.up * 0.4f;
 		effecTr.rotation = _character.tr.rotation;
 	}
 
@@ -28,16 +29,7 @@ public class BasicAttack : AttackBase
 	{
 		if (!_isFired && _elapsedTime >= _fireTime)
 		{
-			GameObject skillEffect = _character.Fire(_skillPrefab);
-			//GameObject skillEffect = Instantiate(_skillPrefab, _character.tr);
-			SetFirePoint(skillEffect.transform);
-
-			// 스킬 이펙트의 레이어를 발사한 캐릭터의 레이어로 설정
-
-			skillEffect.layer = _character.gameObject.layer;
-	
-			// 스킬 이펙트에 기본 공격력 전달
-			skillEffect.GetComponent<SkillBase>().Power = _finalPower;
+			SpawnSkillEffect();
 
 			_isFired = true;
 		}

@@ -22,33 +22,21 @@ public class Character : MonoBehaviour
 		Clear,
 	}
 
-	private eStateType _stateType = eStateType.NoTarget;
+	public eStateType _stateType = eStateType.NoTarget;
 
 	public Transform tr;
 
 	public CharacterInfo Charinfo;
-
-	//private CharacterInfo _charInfo;
-
-	//public CharacterInfo CharInfo
-	//{
-	//	get { return _charInfo; }
-	//}
-
-	//public void SetCharInfo(CharacterInfo charInfo)
-	//{
-	//	_charInfo = charInfo;
-	//	//Debug.Log("character information set");
-	//}
 
 	// 움직임 관련
 
 	private CharacterController _charController;
 
 	private float _rotateSpeed = 5.0f; // 회전 속도
-	private float _sightNormalized = 0.99f; // 타겟과 자신의 각도 차이의 정규화된 값이 이보다 크면 타겟이 시야에 들어감
+	//private float _sightNormalized = 0.99f; // 타겟과 자신의 각도 차이의 정규화된 값이 이보다 크면 타겟이 시야에 들어감
 
 	// 공격 관련
+
 	[SerializeField] private CharacterAttack _charAttack = null;
 	public AttackBase Attack = null;
 
@@ -101,7 +89,6 @@ public class Character : MonoBehaviour
 
 	public void SetExplorePoint(Vector3 point)
 	{
-		Debug.Log(name + " set explore point : " + point);
 		_explorePoint = point;
 	}
 
@@ -157,18 +144,28 @@ public class Character : MonoBehaviour
 	public void UpdateDo()
 	{
 		// 죽거나 클리어 상태가 아닐 시 상태 업데이트 지속
-		//if(_stateType != eStateType.Death && _stateType != eStateType.Clear)
-		if (_stateType != eStateType.Clear)
+		if (_stateType == eStateType.Clear)
 		{
-			_charAI.CheckState(_stateType);
+			return;
+		}
+
+		_charAI.CheckState(_stateType);
+
+		if(_stateType == eStateType.Death)
+		{
+			return;
 		}
 
 		if (_target != null)
 		{
 			RotateToTarget();
-			_charAttack.UpdateAttack();
 		}
 
+		if(_target!= null || Attack != null)
+		{
+			_charAttack.UpdateAttack();
+		}
+		
 		_charAttack._AddTime();
 
 		//if (_charType == eCharType.Player)
@@ -275,8 +272,7 @@ public class Character : MonoBehaviour
 
 	public void Die()
 	{
-		Destroy(gameObject, 0.5f);
-		//Destroy(gameObject);
+		Destroy(gameObject);
 	}
 
 	public void Clear()
@@ -287,6 +283,9 @@ public class Character : MonoBehaviour
 	public GameObject Fire(GameObject prefab)
 	{
 		GameObject effect = Instantiate(prefab);
+
+		// 스킬 이펙트의 레이어를 발사한 캐릭터의 레이어로 설정
+		effect.layer = gameObject.layer;
 
 		return effect;
 	}

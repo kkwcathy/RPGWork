@@ -7,23 +7,26 @@ public class AttackBase
 {
 	protected Character _character;
 	protected GameObject _skillPrefab;
-
+	
 	protected float _elapsedTime = 0.0f;
 
 	protected float _fireTime = 0.0f; // 애니메이션 시작 후 이펙트 발사까지 소요되는 시간
 	protected float _finishTime = 0.0f;
 
-	protected float _additionalPower = 0.0f;
-	protected float _minDistance = 0.0f;
+	protected float _additionalPower;
+	protected float _minDistance;
+	protected float _coolTime;
+
 	protected bool _isFired = false;
 
 	protected float _finalPower;
 
-	public void SetSkillInfo(string effectPath, float power, float distance)
+	public void SetSkillInfo(string effectPath, float power, float distance, float coolTime)
 	{
 		_skillPrefab = Resources.Load(effectPath) as GameObject;
 		_additionalPower = power;
 		_minDistance = distance;
+		_coolTime = coolTime;
 	}
 
 	public void SetCharacter(Character character)
@@ -55,16 +58,21 @@ public class AttackBase
 	public void AddElapsedTime()
 	{
 		_elapsedTime += Time.deltaTime;
+		_elapsedTime = Mathf.Clamp(_elapsedTime, 0.0f, _coolTime);
 	}
 
-	public bool IsAttackable(float coolTime)
+	public void SpawnSkillEffect()
 	{
-		//if(_character.GetCharType() == Character.eCharType.Player)
-		//{
-		//	Debug.Log((_elapsedTime >= coolTime) + ", " + _character.CheckTargetDistance(_minDistance) + " ");
-		//}
-		
-		return _elapsedTime >= coolTime &&
+		GameObject skillEffect = _character.Fire(_skillPrefab);
+		SetFirePoint(skillEffect.transform);
+
+		// 스킬 이펙트에 공격력 전달
+		skillEffect.GetComponent<SkillBase>().Power = _finalPower;
+	}
+
+	public bool IsAttackable()
+	{
+		return _elapsedTime >= _coolTime &&
 				_character.CheckTargetDistance(_minDistance);
 	}
 

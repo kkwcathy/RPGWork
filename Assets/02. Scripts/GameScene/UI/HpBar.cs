@@ -11,7 +11,7 @@ public class HpBar : MonoBehaviour
 	private RectTransform _rectTr;
 
 	private Transform _targetTr;
-	private float _offset = 0.0f;
+	private float _offset;
 
     void Start()
 	{

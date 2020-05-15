@@ -5,21 +5,6 @@ using UnityEngine;
 // 캐릭터 관련 객체 생성 클래스
 public class CharacterFactory 
 {
-	//public void BuildCharInfo(TeamCharInfo teamInfo, ModelInfo modelInfo)
-	//{
-	//	_charInfo.charName = modelInfo.modelName;
-	//	_charInfo.prefabName = modelInfo.prefabName;
-
-	//	_charInfo.maxHp = teamInfo.maxHp;
-	//	_charInfo.power = teamInfo.power;
-	//	_charInfo.defence = teamInfo.defence;
-
-	//	_charInfo.attackIDs = modelInfo.skillIDs;
-
-	//	_charInfo.charAI = GetCharacterAI();
-	//	_charInfo.charAttack = GetCharacterAttack();
-	//}
-
 	public CharacterAI GetCharacterAI(Character.eCharType charType)
 	{
 		switch (charType)
@@ -52,25 +37,28 @@ public class CharacterFactory
 					break;
 
 				case AttackType.Throw:
-					skill = new FireAttack();
+					skill = new ThrowAttack();
 					break;
 
 				case AttackType.Spin:
-					skill = new BasicAttack();
+					skill = new SpinAttack();
 					break;
 
 				case AttackType.Radiate:
-					skill = new BasicAttack();
+					Debug.Log("radiate skill is not developed");
+					skill = null;
 					break;
 
 				default:
-					skill = new BasicAttack();
+					Debug.Log("Skill has no type");
+					skill = null;
 					break;
 			}
 
 			skill.SetSkillInfo("Prefabs/Effects/" + attackInfo.effectName,
 								attackInfo.skillPower,
-								attackInfo.minDistance);
+								attackInfo.minDistance,
+								attackInfo.coolTime);
 
 			charAttack.AddAttack(skill);
 		}

@@ -10,8 +10,10 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
-# 연습 씬 및 스크립트는 ignore
+# 연습 씬 및 스크립트, Resources는 ignore
 /[Aa]ssets/Practice/
+/[Aa]ssets/Resources/
+
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
