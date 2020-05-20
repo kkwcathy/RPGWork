@@ -1,9 +1,0 @@
-﻿스킬ID,스킬이름,스킬 타입(eAttackType),스킬 추가 파워,시전가능거리,쿨타임,이펙트 프리팹 이름,UI 이미지 이름
-0,EMPTY,0,0,0,0,NULL,
-10001,기본공격(풀),1,1,5,3,TinyGrassEffect,
-10002,기본공격(불),1,1,5,3,TinyFireEffect,
-10003,기본공격(물),1,1,5,3,TinyWaterEffect,
-10101,잎날가르기,2,1.5,10,5,BigGrassEffect,Skill_GrassThrow
-10102,불꽃세례,2,1.5,10,5,BigFireEffect,Skill_FireThrow
-10103,물대포,2,1.5,10,5,BigWaterEffect,Skill_WaterThrow
-10202,회오리불꽃,3,1.7,3,5,BigFireEffect,Skill_FireSpin

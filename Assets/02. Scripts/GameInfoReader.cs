@@ -20,38 +20,29 @@ public class GameInfoReader
 	{
 		StringBuilder filePath = new StringBuilder();
 
-		if(Application.platform == RuntimePlatform.Android)
-		{
-			filePath.Append(Application.persistentDataPath);
-		}
-		else
-		{
-			filePath.Append(Application.dataPath);
-		}
-
-		filePath.Append("/CSV/");
+		filePath.Append("CSV/");
 
 		// Info Type에 맞는 추가 함수 및 경로 설정
 		switch (infoType)
 		{
 			case InfoType.Team:
 				AddDic = InfoManager.Instance.AddTeamDic;
-				filePath.Append("PlayerDocument.csv");
+				filePath.Append("PlayerDocument");
 				break;
 
 			case InfoType.Map:
 				AddDic = InfoManager.Instance.AddMapDic;
-				filePath.Append("MapDocument.csv");
+				filePath.Append("MapDocument");
 				break;
 
 			case InfoType.Model:
 				AddDic = InfoManager.Instance.AddModelDic;
-				filePath.Append("ModelDocument.csv");
+				filePath.Append("ModelDocument");
 				break;
 
 			case InfoType.Attack:
 				AddDic = InfoManager.Instance.AddAttackDic;
-				filePath.Append("AttackDocument.csv");
+				filePath.Append("AttackDocument");
 				break;
 
 			default:
@@ -59,7 +50,10 @@ public class GameInfoReader
 				break;
 		}
 		
-		StreamReader sr = new StreamReader(filePath.ToString());
+		TextAsset fileText = Resources.Load<TextAsset>(filePath.ToString());
+
+		StringReader sr = new StringReader(fileText.text);
+
 		string line = sr.ReadLine(); // 첫째 라인은 안읽으므로 미리 한번 읽어줌
 
 		while (line != null)
