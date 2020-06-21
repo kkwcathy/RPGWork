@@ -6,23 +6,16 @@ public class TeamGenerator : CharacterGenerator
 {
 	List<int> playerIDList;
 
-	public GameObject _charUIPrefab;
-	public Transform[] _charUIPanels; // CharUIPrefab이 생성될 위치들
-	
-	private void Init()
-	{
-		playerIDList = new List<int>();
+	[SerializeField] private GameObject _charUIPrefab;
+	[SerializeField] private Transform[] _charUIPanels; // CharUIPrefab이 생성될 위치들
 
-		playerIDList.Add(1);
-		playerIDList.Add(2);
-		playerIDList.Add(3);
-	}
+	[SerializeField] private int _startAngle;
 
 	void Start()
     {
 		tr = GetComponent<Transform>();
 
-		Init();
+		playerIDList = InfoManager.Instance.playerIDList;
 	}
 
 	protected override void SetSpawnValues()
@@ -54,5 +47,10 @@ public class TeamGenerator : CharacterGenerator
 
 		charUI.GetComponent<CharCtrlUI>().SetCharUI(charInfo);
 		++index;
+	}
+
+	protected override int GetStartAngle()
+	{
+		return _startAngle;
 	}
 }

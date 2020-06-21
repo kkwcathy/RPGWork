@@ -85,5 +85,7 @@ public class EnemyGenerator : CharacterGenerator
 
 		charInfo.modelID = modelInfo.modelID;
 		charInfo.attackIDs = modelInfo.skillIDs;
+
+		_defaultRotation = Random.Range(0, 360);
 	}
 }

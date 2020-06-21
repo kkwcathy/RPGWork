@@ -40,6 +40,8 @@ public class FollowCamera : MonoBehaviour
 	public void SetMainPlayer(Transform player)
 	{
 		_target = _player = player;
+
+		_tr.position = _target.position + _followAmount;
 	}
 
 	public void SetMainEnemy(Transform enemy)

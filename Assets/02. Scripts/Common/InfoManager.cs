@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 // 게임 관련 정보 보유하는 클래스
-public class InfoManager
+public class InfoManager : MonoBehaviour
 {
 	private static InfoManager _instance;
 
@@ -11,7 +13,9 @@ public class InfoManager
 	public Dictionary<int, ModelInfo> modelDic;
 	public Dictionary<int, MapInfo> mapDic;
 
-	private int _mapID;
+	public List<int> playerIDList;
+
+	public int _mapID;
 
 	public int MapID
 	{
@@ -19,12 +23,14 @@ public class InfoManager
 		set { _mapID = value; }
 	}
 
-	private InfoManager()
+	private void Awake()
 	{
 		attackInfoDic = new Dictionary<int, AttackInfo>();
 		teamInfoDic = new Dictionary<int, TeamCharInfo>();
 		modelDic = new Dictionary<int, ModelInfo>();
 		mapDic = new Dictionary<int, MapInfo>();
+
+		playerIDList = new List<int>();
 	}
 
 	// SingleTon
@@ -34,7 +40,11 @@ public class InfoManager
 		{
 			if(_instance == null)
 			{
-				_instance = new InfoManager();
+				GameObject infoManager = new GameObject("InfoManager", typeof(InfoManager));
+
+				DontDestroyOnLoad(infoManager);
+				_instance = infoManager.GetComponent<InfoManager>();
+				//_instance = new InfoManager();
 				new GameInfoReader().ReadGameInfo();
 			}
 
@@ -64,9 +74,10 @@ public class InfoManager
 
 		info.charID = int.Parse(keys[0]);
 		info.modelID = int.Parse(keys[1]);
-		info.maxHp = float.Parse(keys[2]);
-		info.power = float.Parse(keys[3]);
-		info.defence = float.Parse(keys[4]);
+		info.level = int.Parse(keys[2]);
+		info.maxHp = float.Parse(keys[3]);
+		info.power = float.Parse(keys[4]);
+		info.defence = float.Parse(keys[5]);
 
 		teamInfoDic.Add(info.charID, info);
 	}
@@ -163,6 +174,7 @@ public struct TeamCharInfo
 	public int charID;
 	public int modelID;
 
+	public int level;
 	public float maxHp;
 	public float power;
 	public float defence;

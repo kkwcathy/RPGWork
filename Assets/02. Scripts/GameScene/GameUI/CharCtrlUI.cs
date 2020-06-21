@@ -13,7 +13,8 @@ public class CharCtrlUI : MonoBehaviour
 		ModelInfo modelInfo = InfoManager.Instance.modelDic[charInfo.modelID];
 		
 		texts[0].text = modelInfo.modelName;
-		images[0].sprite = Resources.Load<Sprite>("Images/Models/" + modelInfo.imgName) as Sprite;
+		//images[0].sprite = Resources.Load<Sprite>("Images/Models/" + modelInfo.imgName) as Sprite;
+		images[0].sprite = SpriteManager.Instance.GetSprite(modelInfo.imgName);
 
 		// 기본 공격 정보는 UI에 들어가지 않으므로 attackID index는 1부터 시작
 		for (int i = 1; i < charInfo.attackIDs.Length; ++i)
@@ -23,7 +24,7 @@ public class CharCtrlUI : MonoBehaviour
 			texts[i].text = attackInfo.attackName;
 			skillBtns[i - 1].SetBtn(charInfo.charAttack, i - 1, attackInfo.coolTime);
 			images[i].gameObject.SetActive(true);
-			images[i].sprite = Resources.Load<Sprite>("Images/Skills/" + attackInfo.imgName) as Sprite;
+			images[i].sprite = Resources.Load<Sprite>("Images/Game/Skills/" + attackInfo.imgName) as Sprite;
 		}
 	}
 }

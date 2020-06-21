@@ -6,6 +6,7 @@ public class CharacterGenerator : MonoBehaviour
 {
 	[SerializeField] protected GameObject _charPrefab = null;
 	[SerializeField] protected float _spawnRadius = 0.5f;
+	[SerializeField] protected float _defaultRotation = 220.0f;
 
 	protected Transform tr;
 
@@ -21,7 +22,7 @@ public class CharacterGenerator : MonoBehaviour
 		SetSpawnValues();
 
 		float spawnRadius = _spawnRadius * _spawnAmount;
-		int angle = Random.Range(0, 360);
+		int angle = GetStartAngle();
 
 		CharacterFactory charFactory = new CharacterFactory();
 		CharacterInfo charInfo = new CharacterInfo();
@@ -30,8 +31,8 @@ public class CharacterGenerator : MonoBehaviour
 		// 중심각에 따라 만들어지는 호 들의 끝 좌표 마다 캐릭터를 배치
 		for (int i = 0; i < _spawnAmount; ++i)
 		{
-			float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / 180);
-			float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / 180);
+			float x = spawnRadius * Mathf.Cos(Mathf.PI * angle / -180);
+			float z = spawnRadius * Mathf.Sin(Mathf.PI * angle / -180);
 
 			Vector3 spawnPos = _axis + Vector3.forward * z + Vector3.right * x;
 
@@ -55,7 +56,7 @@ public class CharacterGenerator : MonoBehaviour
 			// 설정된 정보에 따라 캐릭터 스탯 전달
 			Character character = clone.GetComponent<Character>();
 			character.BuildCharSetting(charInfo);
-
+			character.tr.Rotate(Vector3.one + Vector3.up * _defaultRotation);
 			charList.Add(character);
 
 			angle += 360 / _spawnAmount;
@@ -73,6 +74,11 @@ public class CharacterGenerator : MonoBehaviour
 	virtual protected void PutCharUI(CharacterInfo charInfo)
 	{
 
+	}
+
+	virtual protected int GetStartAngle()
+	{
+		return Random.Range(0, 360);
 	}
 
 	virtual protected void SetSpawnValues()

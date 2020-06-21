@@ -9,6 +9,7 @@ public class DeathState : StateBase
 	public override void StartState()
 	{
 		_character.PlayAnimation("Death");
+		_character.StopMove();
 	}
 
 	public override void UpdateState()
