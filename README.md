@@ -1,9 +1,13 @@
 모바일 퀘스트 <포켓몬 퀘스트> 모작입니다.
 
-테스트 영상:
-https://drive.google.com/file/d/11926HMxNtZkMZIwGR6-YdF39ETyckWmu/view?usp=sharing
+안드로이드 테스트 영상:
+플레이어 3마리(full) : https://drive.google.com/file/d/1AWSFqKP_tl0hN5bPZUXVFWzZcfvAiCki/view?usp=sharing
+플레이어 1마리 : https://drive.google.com/file/d/1AaIQZqRpsqnLLhkWGWl0skehGlek0-fo/view?usp=sharing
 
-게임 시작시 필드 내 way point의 수 만큼 웨이브가 설정됩니다.\
+게임 시작시 타이틀 씬이 표시되고, 게임 시작 버튼을 누르면 플레이할 캐릭터를 고르는 씬이 실행됩니다.
+보유 캐릭터 정보가 담긴 csv를 불러와 그 정보로 캐릭터 정보 박스를 우측에 있는 그리드에 표시하고, 그 중에서 원하는 캐릭터를 마우스로 끌어 왼쪽 박스에 놓아 팀으로 포지셔닝 할 수 있습니다.
+팀 편성된 캐릭터가 1마리 이상이면 게임시작 버튼이 활성화 되어 게임 씬을 시작할 수 있습니다.
+게임이 시작되면 필드 내 way point의 수 만큼 웨이브가 설정됩니다.\
 각 웨이브마다 적 캐릭터가 지정된 범위(1~4마리)안에서 일정한 거리를 두고 랜덤 생성됩니다.\
 플레이어 캐릭터는 처음에는 way point를 향해 탐험하다가 적 캐릭터가 감지되면 타겟으로 설정하고 따라갑니다.\
 타겟 적 캐릭터와 플레이어 캐릭터의 간의 거리가 설정된 값보다 작아지면 캐릭터들은 fight 상태로 넘어가 싸움을 시작하고, 카메라가 zoom 됩니다.\
