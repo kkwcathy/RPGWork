@@ -3,6 +3,7 @@
 안드로이드 테스트 영상:
 
 플레이어 3마리(full) : https://drive.google.com/file/d/1AWSFqKP_tl0hN5bPZUXVFWzZcfvAiCki/view?usp=sharing
+
 플레이어 1마리 : https://drive.google.com/file/d/1AaIQZqRpsqnLLhkWGWl0skehGlek0-fo/view?usp=sharing
 
 게임 시작시 타이틀 씬이 표시되고, 게임 시작 버튼을 누르면 플레이할 캐릭터를 고르는 씬이 실행됩니다.
