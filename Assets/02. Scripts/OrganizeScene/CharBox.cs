@@ -3,21 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Organize Scene에 사용되는 캐릭터 박스 클래스
 public class CharBox : MonoBehaviour
 {
 	[SerializeField] private GameObject _outline;
 	[SerializeField] private Image _charImg;
 	[SerializeField] private Image _container;
+	[SerializeField] private Text _levelText;
 
 	private RectTransform _tr;
+	private Sprite _initSprite;
+	private CharBoxInfo _boxInfo;
 
-	public CharBox LinkedBox;
-	public Text _levelText;
 	public Rect TrRect;
 
-	public TeamCharInfo Info;
-	
-	public Color CharImgColor
+	public CharBoxInfo BoxInfo
+	{
+		get
+		{
+			return _boxInfo;
+		}
+		set
+		{
+			_boxInfo = value;
+			SetBox(); 
+		}
+	}
+
+	public Color CharImgFadeColor
 	{
 		get
 		{
@@ -45,42 +58,37 @@ public class CharBox : MonoBehaviour
 	{
 		_tr = GetComponent<RectTransform>();
 		_levelText = GetComponentInChildren<Text>();
+
+		_initSprite = _charImg.sprite;
 	}
 
 	public void SetBoxInfo(TeamCharInfo info)
 	{
-		Info = info;
+		CharBoxInfo newInfo = new CharBoxInfo(info);
+		_charImg.sprite = newInfo.charSprite;
 
-		string name = InfoManager.Instance.modelDic[Info.modelID].imgName;
-		_charImg.sprite = SpriteManager.Instance.GetSprite(name);
-
-		_levelText.text = info.level.ToString();
+		BoxInfo = newInfo;
 	}
 
-	public void SetCharImg(Sprite sprite)
+	public void SetBox()
 	{
-		_charImg.sprite = sprite;
-	}
-
-	public Sprite GetSprite()
-	{
-		if(_charImg.sprite == null)
+		if(BoxInfo == null)
 		{
-			Debug.Log("no sprite");
-			return null;
+			return;
 		}
 
-		return _charImg.sprite;
+		_charImg.sprite = BoxInfo.charSprite;
+		_levelText.text = BoxInfo.levelText;
 	}
 
-	public Rect GetRect()
+	public void EmptyBox()
 	{
-		return TrRect;
+		_charImg.sprite = _initSprite;
+		_levelText.text = "";
 	}
 
 	public bool IsRectEmpty() => (TrRect.center == Vector2.zero);
 	public bool IsIn(Vector2 pos) => (TrRect.Contains(pos));
-	public bool IsInfoSet() => (_levelText.text.Length > 0);
 
 	public void SetRect()
 	{
@@ -99,3 +107,35 @@ public class CharBox : MonoBehaviour
 		_outline.SetActive(on);
 	}
 }
+
+// Charbox 의 캐릭터 및 링크 정보
+[System.Serializable]
+public class CharBoxInfo
+{
+	public TeamCharInfo charInfo;
+	public ModelInfo modelInfo;
+
+	public Sprite charSprite;
+	public CharBox LinkedBox;
+
+	public string levelText;
+
+	public CharBoxInfo(TeamCharInfo info)
+	{
+		charInfo = info;
+		modelInfo = InfoManager.Instance.modelDic[charInfo.modelID];
+		charSprite = ResourceManager.Instance.GetSprite(ResourceManager.SpriteType.Models, modelInfo.imgName);
+
+		levelText = charInfo.level.ToString();
+
+		LinkedBox = null;
+	}
+
+	// CharBoxInfo 복사
+	public CharBoxInfo CopyCharBoxInfo()
+	{
+		return new CharBoxInfo(charInfo);
+	}
+}
+
+

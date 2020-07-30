@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Organize Scene 에서 드래그 작업 가능한 패널들의 상위 클래스
 public class CharPanelBase : MonoBehaviour
 {
-	protected List<CharBox> _charBoxList;
-	protected Dictionary<int, CharBox> _linkedCharBoxDic;
+	[SerializeField] protected PanelType _panelType;
 
+	protected List<CharBox> _charBoxList;
 	protected CharBox _curBox;
 	
 	virtual protected void Init()
 	{
 		_charBoxList = new List<CharBox>();
-		_linkedCharBoxDic = new Dictionary<int, CharBox>();
 	}
 
 	public CharBox GetSelectedBox(Vector2 cursorPos)
@@ -25,14 +25,10 @@ public class CharPanelBase : MonoBehaviour
 				_charBoxList[i].SetRect();
 			}
 
-			//Debug.Log(_charBoxList[i].gameObject.name + "in= " + _charBoxList[i].IsIn(cursorPos));
-			//Debug.Log("Available= "+IsBoxAvailable(i));
-
-			if (_charBoxList[i].IsIn(cursorPos))
+			if (_charBoxList[i].IsIn(cursorPos) && 
+				_charBoxList[i].BoxInfo != null)
 			{
 				_curBox = _charBoxList[i];
-				//ChangeSelectedBox();
-
 				return _curBox;
 			}
 		}
@@ -40,64 +36,33 @@ public class CharPanelBase : MonoBehaviour
 		return null;
 	}
 
-	public void AddLinkedBox(int key, CharBox charbox)
-	{
-		if (!_linkedCharBoxDic.ContainsKey(key))
-		{
-			_linkedCharBoxDic.Add(key, charbox);
-		}
-	}
-
-	public void DeleteLinkedBox(int key)
-	{
-		if(_linkedCharBoxDic.ContainsKey(key))
-		{
-			_linkedCharBoxDic.Remove(key);
-		}
-	}
-
-	public int GetIndex(CharBox box)
-	{
-		return _charBoxList.IndexOf(box);
-	}
-
-	public CharBox GetLinkedBox(int key)
-	{
-		if(!_linkedCharBoxDic.ContainsKey(key))
-		{
-			return null;
-		}
-
-		return _linkedCharBoxDic[key];
-	}
-
-	virtual public bool IsCurBoxAvailable()
-	{
-		return true;
-	}
-
-	virtual public void EmptyBox()
+	// 드래그 시 기존 위치의 박스 형태 변환
+	virtual public void DisableBox()
 	{
 
 	}
 
+	// 박스 상태 초기화
 	virtual public void ReturnBox()
 	{
 
 	}
 
-	virtual public Vector2 GetOriginPos()
-	{
-		return _curBox.TrRect.center;
-	}
-
+	// 링크에 따른 박스 형태 변화
 	virtual public void UpdateBox()
 	{
 
 	}
 
-	virtual public void Attach()
+	// CharListGrid에 포함됐던 박스의 기존 위치
+	virtual public Vector2 GetOriginPos()
 	{
-
+		return _curBox.TrRect.center;
 	}
+
+	public PanelType GetPanelType()
+	{
+		return _panelType;
+	}
+	
 }

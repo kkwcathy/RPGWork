@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Game Scene 실행 흐름 제어 클래스
 public class WaveManager : MonoBehaviour
 {
 	// 캐릭터 타겟 리스트 추가/삭제
@@ -166,6 +167,11 @@ public class WaveManager : MonoBehaviour
 
 			_playerClear();
 		}
+
+		yield return new WaitForSeconds(2.0f);
+
+		SceneController.Instance.SwitchScene(SceneName.TitleScene, SceneSwitchType.Curtain, 0, 1);
+		InfoManager.Instance.playerIDList.Clear();
 		
     }
 

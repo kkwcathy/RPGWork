@@ -5,6 +5,8 @@ using System.Text;
 // CSV 파일 읽어들이는 클래스
 public class GameInfoReader
 {
+	private InfoManager _infoManager;
+
 	public enum InfoType
 	{
 		Team,
@@ -26,22 +28,22 @@ public class GameInfoReader
 		switch (infoType)
 		{
 			case InfoType.Team:
-				AddDic = InfoManager.Instance.AddTeamDic;
+				AddDic = _infoManager.AddTeamDic;
 				filePath.Append("PlayerDocument");
 				break;
 
 			case InfoType.Map:
-				AddDic = InfoManager.Instance.AddMapDic;
+				AddDic = _infoManager.AddMapDic;
 				filePath.Append("MapDocument");
 				break;
 
 			case InfoType.Model:
-				AddDic = InfoManager.Instance.AddModelDic;
+				AddDic = _infoManager.AddModelDic;
 				filePath.Append("ModelDocument");
 				break;
 
 			case InfoType.Attack:
-				AddDic = InfoManager.Instance.AddAttackDic;
+				AddDic = _infoManager.AddAttackDic;
 				filePath.Append("AttackDocument");
 				break;
 
@@ -69,14 +71,16 @@ public class GameInfoReader
 		}
 	}
 
-	public void ReadGameInfo()
+	public void ReadGameInfo(InfoManager infoManager)
     {
+		_infoManager = infoManager;
+
 		CSVFileOpen(InfoType.Team);
 		CSVFileOpen(InfoType.Model);
 		CSVFileOpen(InfoType.Attack);
 		CSVFileOpen(InfoType.Map);
 
-		InfoManager.Instance.MapID = 100; // 임시로 100 세팅
+		_infoManager.MapID = 100; // 임시로 100 세팅
 
 		Debug.Log("File Open Complete");
 	}

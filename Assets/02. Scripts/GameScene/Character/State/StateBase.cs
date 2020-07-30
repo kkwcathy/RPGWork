@@ -1,4 +1,13 @@
-﻿
+﻿// 캐릭터 상태 타입
+public enum StateType
+{
+	NoTarget,
+	RunToTarget,
+	Fight,
+	Death,
+	Clear,
+}
+
 // 캐릭터 상태 상위 클래스
 public class StateBase
 {

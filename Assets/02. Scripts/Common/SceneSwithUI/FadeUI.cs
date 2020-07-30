@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Scene 전환시 흐림 효과
 public class FadeUI : SceneSwitchUI
 {
 	private Image fadeImg;

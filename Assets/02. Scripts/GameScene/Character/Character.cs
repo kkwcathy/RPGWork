@@ -2,10 +2,15 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+// 캐릭터 타입
+public enum CharType
+{
+	Player,
+	Enemy,
+}
+
 public class Character : MonoBehaviour
 {
-
-
 	public StateType _stateType = StateType.NoTarget;
 
 	public Transform tr;

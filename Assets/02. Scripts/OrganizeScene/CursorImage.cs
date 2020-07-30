@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Organize Scene에서 드래그 시 마우스 커서와 함께 따라가는 이미지 제어 클래스
 public class CursorImage : MonoBehaviour
 {
 	public RectTransform tr;
@@ -20,7 +21,9 @@ public class CursorImage : MonoBehaviour
 	private bool _isMove = false;
 
 	public delegate void BoxSpriteHandler();
-	private BoxSpriteHandler _changeReturnBox;
+	private BoxSpriteHandler _boxHandler;
+
+	private CharBoxInfo _boxInfo;
 
 	private void Awake()
 	{
@@ -49,27 +52,14 @@ public class CursorImage : MonoBehaviour
 	{
 		_destPos = destPos;
 
-		_changeReturnBox = boxCtrl;
+		// 움직임이 끝날 시 실행할 함수 설정
+		_boxHandler = boxCtrl;
 
 		_isMove = true;
 
 		_shadow.SetActive(false);
 		_outline.SetActive(false);
 	}
-
-	//public void Attach()
-	//{
-	//	//_resetBox();
-	//	gameObject.SetActive(false);
-	//}
-
-	//public void AttachFail()
-	//{
-	//	_isMove = true;
-
-	//	_shadow.SetActive(false);
-	//	_outline.SetActive(false);
-	//}
 
 	public void Move()
 	{
@@ -78,10 +68,8 @@ public class CursorImage : MonoBehaviour
 
 		if ((Vector2)tr.position == _destPos)
 		{
-			_changeReturnBox();
-
-			//_charboxlist[_workindex].fadecharimg(false); 위 절로 대체
-
+			_boxHandler();
+			
 			_isMove = false;
 			_elapsedTime = 0.0f;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Scene 전환시 여러 이미 조각들이 순차적으로 나타났다가 사라지는 효과 
 public class CurtainUI : SceneSwitchUI
 {
 	public RectTransform[] imgs;
@@ -16,8 +17,6 @@ public class CurtainUI : SceneSwitchUI
 
 	public override void Out(float duration)
 	{
-		//base.Out(duration);
-		Debug.Log(">>>");
 		_animator.SetTrigger("Out");
 	}
 }

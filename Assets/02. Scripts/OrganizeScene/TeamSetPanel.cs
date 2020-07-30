@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Organize Scene의 팀 편성 칸 제어
 public class TeamSetPanel : CharPanelBase
 {
 	[SerializeField] private Sprite _emptySprite;
 	[SerializeField] private Color _baseContainerColor;
 
 	[SerializeField] List<Transform> _modelTrList;
+	[SerializeField] GameObject _gameStartBtn;
+	
 	GameObject[] _teamModels;
-
-	private Sprite _prevSprite;
 
 	private void Start()
     {
@@ -19,7 +20,7 @@ public class TeamSetPanel : CharPanelBase
 
 	private void Update()
 	{
-		SetModel();
+		UpdateDo();
 	}
 
 	protected override void Init()
@@ -27,44 +28,16 @@ public class TeamSetPanel : CharPanelBase
 		base.Init();
 
 		CharBox[] charBoxes = GetComponentsInChildren<CharBox>();
-
+		
 		for(int i = 0; i < charBoxes.Length; ++i)
 		{
-			charBoxes[i].SetCharImg(_emptySprite);
 			charBoxes[i].SetRect();
+			charBoxes[i].BoxInfo = null;
 
 			_charBoxList.Add(charBoxes[i]);
 		}
 
 		_teamModels = new GameObject[_charBoxList.Count];
-	}
-
-	// 빈 박스가 아니면 박스 내용물 이동 가능
-	public override bool IsCurBoxAvailable()
-	{
-		return _curBox.GetSprite() != _emptySprite;
-	}
-
-	public override void EmptyBox()
-	{
-		_prevSprite = _curBox.GetSprite();
-		_curBox.SetCharImg(_emptySprite);
-		_curBox._levelText.text = "";
-
-		_curBox.SwitchOutline(false);
-	}
-
-	public override void ReturnBox()
-	{
-		_linkedCharBoxDic[GetIndex(_curBox)].ContainerColor = _baseContainerColor;
-		DeleteLinkedBox(GetIndex(_curBox));
-
-		_curBox.Info = new TeamCharInfo();
-	}
-
-	public override Vector2 GetOriginPos()
-	{
-		return _linkedCharBoxDic[GetIndex(_curBox)].TrRect.center;
 	}
 
 	public CharBox GetAttachableBox(Vector2 cursorPos)
@@ -73,34 +46,79 @@ public class TeamSetPanel : CharPanelBase
 		{
 			if (_charBoxList[i].IsIn(cursorPos))
 			{
-				return _charBoxList[i];
+				_curBox = _charBoxList[i];
+				return _curBox;
 			}
 		}
 
 		return null;
 	}
 
+	public override void DisableBox()
+	{
+		_curBox.EmptyBox();
+		_curBox.SwitchOutline(false);
+	}
+
+	public override Vector2 GetOriginPos()
+	{
+		CharBox linkedBox = _curBox.BoxInfo.LinkedBox;
+
+		return linkedBox.TrRect.center;
+	}
+
+	public override void ReturnBox()
+	{
+		CharBox linkedBox = _curBox.BoxInfo.LinkedBox;
+
+		linkedBox.ContainerColor = _baseContainerColor;
+		
+		_curBox.BoxInfo = null;
+		linkedBox.BoxInfo.LinkedBox = null;
+	}
+
 	public void ConfirmTeam()
 	{
 		for(int i = 0; i < _charBoxList.Count; ++i)
 		{
-			if(_charBoxList[i].IsInfoSet())
+			CharBoxInfo boxInfo = _charBoxList[i].BoxInfo;
+			if (boxInfo != null)
 			{
-				InfoManager.Instance.playerIDList.Add(_charBoxList[i].Info.charID);
+				InfoManager.Instance.playerIDList.Add(boxInfo.charInfo.charID);
 			}
 		}
 	}
 
 	public bool IsGamePossible()
 	{
-		return _linkedCharBoxDic.Count > 0;
-	}
-
-	private void SetModel()
-	{
 		for(int i = 0; i < _charBoxList.Count; ++i)
 		{
-			if(!_charBoxList[i].IsInfoSet())
+			// 캐릭터가 세팅된 칸이 한 개라도 존재하면 게임 실행 가능
+			if(_charBoxList[i].BoxInfo != null)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	private void UpdateDo()
+	{
+		// 게임 시작 버튼 
+		if (!_gameStartBtn.activeInHierarchy && IsGamePossible())
+		{
+			_gameStartBtn.SetActive(true);
+		}
+		else if (!IsGamePossible())
+		{
+			_gameStartBtn.SetActive(false);
+		}
+
+		//모델
+		for (int i = 0; i < _charBoxList.Count; ++i)
+		{
+			if(_charBoxList[i].BoxInfo == null)
 			{
 				if (_teamModels[i] != null)
 				{
@@ -111,9 +129,11 @@ public class TeamSetPanel : CharPanelBase
 			}
 			else if(_teamModels[i] == null)
 			{
-				_teamModels[i] = Instantiate(Resources.Load<GameObject>("Prefabs/Models/" + 
-					InfoManager.Instance.modelDic[_charBoxList[i].Info.modelID].prefabName), 
-					_modelTrList[i]);
+				GameObject modelObj = ResourceManager.Instance.GetPrefab
+					(ResourceManager.PrefabType.Models,
+					InfoManager.Instance.modelDic[_charBoxList[i].BoxInfo.modelInfo.modelID].prefabName);
+
+				_teamModels[i] = Instantiate(modelObj, _modelTrList[i]);
 			}
 		}
 	}

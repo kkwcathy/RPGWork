@@ -1,5 +1,15 @@
 ﻿using UnityEngine;
 
+// 공격 타입
+public enum AttackType
+{
+	None,
+	Basic,
+	Throw,
+	Spin,
+	Radiate,
+}
+
 // 캐릭터 공격 동작 상위 클래스
 public class AttackBase
 {
@@ -19,9 +29,9 @@ public class AttackBase
 
 	protected float _finalPower;
 
-	public void SetSkillInfo(string effectPath, float power, float distance, float coolTime)
+	public void SetSkillInfo(string effectName, float power, float distance, float coolTime)
 	{
-		_skillPrefab = Resources.Load(effectPath) as GameObject;
+		_skillPrefab = ResourceManager.Instance.GetPrefab(ResourceManager.PrefabType.Effects, effectName);
 		_additionalPower = power;
 		_minDistance = distance;
 		_coolTime = coolTime;

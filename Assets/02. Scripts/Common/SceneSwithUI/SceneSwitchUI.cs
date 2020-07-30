@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+// Scene 전환 효과 UI 상위 클래스
 public class SceneSwitchUI : MonoBehaviour
 {
 	protected bool _isUpdate = false;

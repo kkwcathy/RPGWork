@@ -4,10 +4,12 @@ using UnityEngine;
 
 public enum SceneSwitchType
 {
+	None,
 	Fade,
 	Curtain,
 }
 
+// Scene 전환 효과 제어 클래스
 public class SceneSwitch : MonoBehaviour
 {
 	private Dictionary<SceneSwitchType, SceneSwitchUI> _switchUIDic;
@@ -22,6 +24,7 @@ public class SceneSwitch : MonoBehaviour
 	{
 		_switchUIDic = new Dictionary<SceneSwitchType, SceneSwitchUI>();
 
+		_switchUIDic.Add(SceneSwitchType.None, null);
 		_switchUIDic.Add(SceneSwitchType.Fade, Resources.Load<SceneSwitchUI>("Prefabs/UI/FadeUI"));
 		_switchUIDic.Add(SceneSwitchType.Curtain, Resources.Load<SceneSwitchUI>("Prefabs/UI/CurtainUI"));
 	}
@@ -30,7 +33,12 @@ public class SceneSwitch : MonoBehaviour
 	{
 		_curSwitchUI = _switchUIDic[type];
 
-		if(!_curSwitchUI.isActiveAndEnabled)
+		if (_curSwitchUI == null)
+		{
+			return;
+		}
+
+		if (!_curSwitchUI.isActiveAndEnabled)
 		{
 			_curSwitchUI = Instantiate(_curSwitchUI);
 			_curSwitchUI.transform.SetParent(transform);

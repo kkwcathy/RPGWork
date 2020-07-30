@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 게임 관련 정보 보유하는 클래스
-public class InfoManager : MonoBehaviour
+public class InfoManager : SingleTon<InfoManager>
 {
-	private static InfoManager _instance;
+	//private static InfoManager _instance;
 
 	// CSV 파일을 불러와 저장한 정보들을 담는 Dictionary
 	public Dictionary<int, AttackInfo> attackInfoDic; // 공격 정보
@@ -31,25 +31,8 @@ public class InfoManager : MonoBehaviour
 		mapDic = new Dictionary<int, MapInfo>();
 
 		playerIDList = new List<int>();
-	}
 
-	// SingleTon
-	public static InfoManager Instance
-	{
-		get
-		{
-			if(_instance == null)
-			{
-				GameObject infoManager = new GameObject("InfoManager", typeof(InfoManager));
-
-				DontDestroyOnLoad(infoManager);
-				_instance = infoManager.GetComponent<InfoManager>();
-				//_instance = new InfoManager();
-				new GameInfoReader().ReadGameInfo();
-			}
-
-			return _instance;
-		}
+		new GameInfoReader().ReadGameInfo(this);
 	}
 
 	public void AddAttackDic(string[] keys)
@@ -126,33 +109,6 @@ public class InfoManager : MonoBehaviour
 
 		mapDic.Add(info.mapLevel, info);
 	}
-}
-
-// 공격 타입
-public enum AttackType
-{
-	None,
-	Basic,
-	Throw,
-	Spin,
-	Radiate,
-}
-
-// 캐릭터 타입
-public enum CharType
-{
-	Player,
-	Enemy,
-}
-
-// 캐릭터 상태 타입
-public enum StateType
-{
-	NoTarget,
-	RunToTarget,
-	Fight,
-	Death,
-	Clear,
 }
 
 public struct AttackInfo

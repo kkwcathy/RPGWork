@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+// Organize Scene에서 박스 클릭 시 보여지는 캐릭터 정보 제어 클래스
 public class ShowCharProfile : MonoBehaviour
 {
 	[System.Serializable]
@@ -21,21 +20,25 @@ public class ShowCharProfile : MonoBehaviour
 	[SerializeField] private GameObject _instructionObj;
 	[SerializeField] private GameObject _profileObj;
 
-	public void ShowProfile(TeamCharInfo info)
+	public void ShowProfile(CharBoxInfo info)
 	{
-		if(!_profileObj.activeInHierarchy)
-		{
-			_instructionObj.SetActive(false);
-			_profileObj.SetActive(true);
-		}
+		_instructionObj.SetActive(false);
+		_profileObj.SetActive(true);
 
-		ModelInfo modelInfo = InfoManager.Instance.modelDic[info.modelID];
+		TeamCharInfo charInfo = info.charInfo;
+		ModelInfo modelInfo = info.modelInfo;
 
-		_profile.modelImg.sprite = SpriteManager.Instance.GetSprite(modelInfo.imgName);
+		_profile.modelImg.sprite = ResourceManager.Instance.GetSprite(ResourceManager.SpriteType.Models, modelInfo.imgName);
 		_profile.modelName.text = modelInfo.modelName;
 
-		_profile.level.text = info.level.ToString();
-		_profile.maxHp.text = info.maxHp.ToString();
-		_profile.attack.text = info.power.ToString();
+		_profile.level.text = info.levelText;
+		_profile.maxHp.text = charInfo.maxHp.ToString();
+		_profile.attack.text = charInfo.power.ToString();
+	}
+
+	public void CloseProfile()
+	{
+		_instructionObj.SetActive(true);
+		_profileObj.SetActive(false);
 	}
 }

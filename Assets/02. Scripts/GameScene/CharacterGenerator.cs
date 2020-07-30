@@ -51,7 +51,9 @@ public class CharacterGenerator : MonoBehaviour
 
 			string prefabStr = InfoManager.Instance.modelDic[charInfo.modelID].prefabName;
 
-			Instantiate(Resources.Load("Prefabs/Models/" + prefabStr), clone.transform);
+			Instantiate(
+				ResourceManager.Instance.GetPrefab(ResourceManager.PrefabType.Models, prefabStr)
+				, clone.transform);
 
 			// 설정된 정보에 따라 캐릭터 스탯 전달
 			Character character = clone.GetComponent<Character>();

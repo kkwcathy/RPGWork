@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Organize Scene에서 전체 캐릭터 리스트를 조회하는 Grid의 제어 클래스
 public class CharGridPanel : CharPanelBase
 {
 	[SerializeField] private int _maxBoxCount = 20;
@@ -41,38 +42,28 @@ public class CharGridPanel : CharPanelBase
 		}
 	}
 
-	public override bool IsCurBoxAvailable()
+	public override void DisableBox()
 	{
-		return !_linkedCharBoxDic.ContainsValue(_curBox);
-	}
-
-	public override void EmptyBox()
-	{
-		_curBox.CharImgColor = _fadeColor;
+		_curBox.CharImgFadeColor = _fadeColor;
 	}
 
 	public override void ReturnBox()
 	{
-		_curBox.CharImgColor = Color.white;
+		_curBox.CharImgFadeColor = Color.white;
 	}
 
 	public override void UpdateBox()
 	{
 		ReturnBox();
 
-		_curBox.ContainerColor = _linkedCharBoxDic[GetIndex(_curBox)].ContainerColor;
+		CharBox linkedBox = _curBox.BoxInfo.LinkedBox;
 
-		CharBox linkedBox = _linkedCharBoxDic[GetIndex(_curBox)];
+		// 등록된 팀 컨테이너의 색깔로 현재 박스의 색깔을 바꿔줌
+		_curBox.ContainerColor = linkedBox.ContainerColor;
 
-		linkedBox.SetBoxInfo(_curBox.Info);
-
-		//linkedBox.SetCharImg(_curBox.GetSprite());
-		//linkedBox.Info = _curBox.Info;
+		// 팀 컨테이너에 현재 박스의 정보 넣기
+		linkedBox.BoxInfo = _curBox.BoxInfo.CopyCharBoxInfo();
+		linkedBox.BoxInfo.LinkedBox = _curBox;
 		linkedBox.SwitchOutline(true);
-
-		//_curBox.SwitchOutline(true);
-		//_linkedCharBoxDic[GetIndex(_curBox)].SetCharImg(_curBox.GetSprite());
 	}
-
-
 }

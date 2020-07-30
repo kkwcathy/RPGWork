@@ -55,7 +55,7 @@ public class CharacterFactory
 					break;
 			}
 
-			skill.SetSkillInfo("Prefabs/Effects/" + attackInfo.effectName,
+			skill.SetSkillInfo(attackInfo.effectName,
 								attackInfo.skillPower,
 								attackInfo.minDistance,
 								attackInfo.coolTime);

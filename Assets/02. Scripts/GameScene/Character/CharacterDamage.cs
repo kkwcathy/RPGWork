@@ -63,6 +63,8 @@ public class CharacterDamage : MonoBehaviour
 
 		_uiCanvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
 
+		GenerateHpBar();
+		_hpBar.SetActive(false);
 		_hp = _initHp;
 	}
 
@@ -71,7 +73,7 @@ public class CharacterDamage : MonoBehaviour
 		if(_hp <= 0 && _character.GetStateType() != StateType.Death)
 		{
 			_character.ChangeState(StateType.Death);
-			Destroy(_hpBar);
+			_hpBar.SetActive(false);
 		}
 		else if (_isDamaged)
 		{
@@ -109,9 +111,9 @@ public class CharacterDamage : MonoBehaviour
 		}
 
 		// hp Bar 가 없으면 생성
-		if (_hpBar == null)
+		if (!_hpBar.activeInHierarchy)
 		{
-			GenerateHpBar();
+			_hpBar.SetActive(true);
 		}
 
 		SpawnDamageText(damage);
