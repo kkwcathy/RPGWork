@@ -1,10 +1,6 @@
 모바일 퀘스트 <포켓몬 퀘스트> 모작입니다.
 
-안드로이드 테스트 영상:
-
-플레이어 3마리(full) : https://drive.google.com/file/d/1AWSFqKP_tl0hN5bPZUXVFWzZcfvAiCki/view?usp=sharing
-
-플레이어 1마리 : https://drive.google.com/file/d/1AaIQZqRpsqnLLhkWGWl0skehGlek0-fo/view?usp=sharing
+테스트 영상: https://drive.google.com/file/d/1FlKXHVcZjLLKh-mM0muhRC3Ec6RoPN7A/view?usp=sharing
 
 게임 시작시 타이틀 씬이 표시되고, 게임 시작 버튼을 누르면 플레이할 캐릭터를 고르는 씬이 실행됩니다.
 보유 캐릭터 정보가 담긴 csv를 불러와 그 정보로 캐릭터 정보 박스를 우측에 있는 그리드에 표시하고, 그 중에서 원하는 캐릭터를 마우스로 끌어 왼쪽 박스에 놓아 팀으로 포지셔닝 할 수 있습니다.
