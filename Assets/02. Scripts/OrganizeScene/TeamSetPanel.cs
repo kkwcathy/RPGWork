@@ -12,16 +12,12 @@ public class TeamSetPanel : CharPanelBase
 	[SerializeField] GameObject _gameStartBtn;
 	
 	GameObject[] _teamModels;
+	CharBox _attachBox;
 
 	private void Start()
     {
 		Init();
     }
-
-	private void Update()
-	{
-		UpdateDo();
-	}
 
 	protected override void Init()
 	{
@@ -38,6 +34,8 @@ public class TeamSetPanel : CharPanelBase
 		}
 
 		_teamModels = new GameObject[_charBoxList.Count];
+
+		_gameStartBtn.SetActive(false);
 	}
 
 	public CharBox GetAttachableBox(Vector2 cursorPos)
@@ -46,8 +44,8 @@ public class TeamSetPanel : CharPanelBase
 		{
 			if (_charBoxList[i].IsIn(cursorPos))
 			{
-				_curBox = _charBoxList[i];
-				return _curBox;
+				_attachBox = _charBoxList[i];
+				return _attachBox;
 			}
 		}
 
@@ -77,6 +75,40 @@ public class TeamSetPanel : CharPanelBase
 		linkedBox.BoxInfo.LinkedBox = null;
 	}
 
+	public override void UpdateBox()
+	{
+		// 부착하는 박스가 현재 박스와 다를 경우 서로 정보 바꾸기(swap)
+		if(_attachBox != _curBox)
+		{
+			CharBox curLinkBox = _curBox.BoxInfo.LinkedBox;
+
+			if(_attachBox.BoxInfo != null)
+			{
+				CharBox attachLinkBox = _attachBox.BoxInfo.LinkedBox;
+
+				attachLinkBox.BoxInfo.LinkedBox = _curBox;
+				attachLinkBox.ContainerColor = _curBox.ContainerColor;
+			}
+
+			curLinkBox.BoxInfo.LinkedBox = _attachBox;
+			curLinkBox.ContainerColor = _attachBox.ContainerColor;
+
+
+			CharBoxInfo tempInfo = _curBox.BoxInfo;
+			
+			_curBox.BoxInfo = _attachBox.BoxInfo;
+			_attachBox.BoxInfo = tempInfo;
+
+			_curBox.ApplyBoxInfo();
+			_curBox = _attachBox;
+
+			UpdateStatus();
+		}
+
+		_curBox.ApplyBoxInfo();
+		_curBox.SwitchOutline(true);
+	}
+
 	public void ConfirmTeam()
 	{
 		for(int i = 0; i < _charBoxList.Count; ++i)
@@ -103,7 +135,7 @@ public class TeamSetPanel : CharPanelBase
 		return false;
 	}
 	
-	private void UpdateDo()
+	public void UpdateStatus()
 	{
 		// 게임 시작 버튼 
 		if (!_gameStartBtn.activeInHierarchy && IsGamePossible())
@@ -118,7 +150,7 @@ public class TeamSetPanel : CharPanelBase
 		//모델
 		for (int i = 0; i < _charBoxList.Count; ++i)
 		{
-			if(_charBoxList[i].BoxInfo == null)
+			if (_charBoxList[i].BoxInfo == null)
 			{
 				if (_teamModels[i] != null)
 				{
@@ -127,14 +159,22 @@ public class TeamSetPanel : CharPanelBase
 				}
 				continue;
 			}
-			else if(_teamModels[i] == null)
-			{
-				GameObject modelObj = ResourceManager.Instance.GetPrefab
-					(ResourceManager.PrefabType.Models,
-					InfoManager.Instance.modelDic[_charBoxList[i].BoxInfo.modelInfo.modelID].prefabName);
 
-				_teamModels[i] = Instantiate(modelObj, _modelTrList[i]);
+			GameObject modelObj = ResourceManager.Instance.GetPrefab
+				(ResourceManager.PrefabType.Models,
+				InfoManager.Instance.modelDic[_charBoxList[i].BoxInfo.modelInfo.modelID].prefabName);
+
+			if(_teamModels[i] != modelObj)
+			{
+				Destroy(_teamModels[i]);
+				_teamModels[i] = null;
 			}
+			else
+			{
+				continue;
+			}
+
+			_teamModels[i] = Instantiate(modelObj, _modelTrList[i]);
 		}
 	}
 }

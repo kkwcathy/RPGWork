@@ -20,8 +20,8 @@ public class CursorImage : MonoBehaviour
 	private float _elapsedTime;
 	private bool _isMove = false;
 
-	public delegate void BoxSpriteHandler();
-	private BoxSpriteHandler _boxHandler;
+	public delegate void MoveEndHandler();
+	private MoveEndHandler _boxHandler;
 
 	private CharBoxInfo _boxInfo;
 
@@ -48,7 +48,7 @@ public class CursorImage : MonoBehaviour
 		_outline.SetActive(true);
 	}
 
-	public void MoveBegin(Vector2 destPos, BoxSpriteHandler boxCtrl)
+	public void MoveBegin(Vector2 destPos, MoveEndHandler boxCtrl)
 	{
 		_destPos = destPos;
 

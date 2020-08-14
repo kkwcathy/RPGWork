@@ -13,7 +13,7 @@ public class CharBox : MonoBehaviour
 
 	private RectTransform _tr;
 	private Sprite _initSprite;
-	private CharBoxInfo _boxInfo;
+	public CharBoxInfo _boxInfo;
 
 	public Rect TrRect;
 
@@ -26,7 +26,7 @@ public class CharBox : MonoBehaviour
 		set
 		{
 			_boxInfo = value;
-			SetBox(); 
+			ApplyBoxInfo(); 
 		}
 	}
 
@@ -70,7 +70,7 @@ public class CharBox : MonoBehaviour
 		BoxInfo = newInfo;
 	}
 
-	public void SetBox()
+	public void ApplyBoxInfo()
 	{
 		if(BoxInfo == null)
 		{

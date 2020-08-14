@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 // 캐릭터 데미지 관리 클래스
 public class CharacterDamage : MonoBehaviour
@@ -22,10 +21,11 @@ public class CharacterDamage : MonoBehaviour
 
 	[SerializeField] private float _offset = 3.0f; // Hp Bar와 데미지 텍스트 높이 offset
 
-	private GameObject _hpBar = null;
-	private Image _hpImage = null;
+	private HpBar _hpBar;
+	//private GameObject _hpBar = null;
 
 	private Canvas _uiCanvas;
+	private RectTransform _uiCanvasTr;
 
 	void Start()
     {
@@ -62,9 +62,9 @@ public class CharacterDamage : MonoBehaviour
 		_renderer = GetComponentInChildren<Renderer>();
 
 		_uiCanvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
+		_uiCanvasTr = _uiCanvas.GetComponent<RectTransform>();
 
 		GenerateHpBar();
-		_hpBar.SetActive(false);
 		_hp = _initHp;
 	}
 
@@ -73,7 +73,7 @@ public class CharacterDamage : MonoBehaviour
 		if(_hp <= 0 && _character.GetStateType() != StateType.Death)
 		{
 			_character.ChangeState(StateType.Death);
-			_hpBar.SetActive(false);
+			_hpBar.IsBarActive = false;
 		}
 		else if (_isDamaged)
 		{
@@ -83,18 +83,17 @@ public class CharacterDamage : MonoBehaviour
 
 	private void GenerateHpBar()
 	{
-		_hpBar = Instantiate(_hpBarPrefab, _uiCanvas.transform);
-
-		_hpImage = _hpBar.GetComponentsInChildren<Image>()[1];
-		_hpBar.GetComponent<HpBar>().SetBarPosition(_character.tr, _offset);
+		_hpBar = Instantiate(_hpBarPrefab, _uiCanvas.transform).GetComponent<HpBar>();
+		_hpBar.SetUIPosition(_uiCanvas, _uiCanvasTr, _character.tr, _offset);
+		_hpBar.IsBarActive = false;
 	}
 
 	private void SpawnDamageText(float damage)
 	{
 		DamageText damageText = Instantiate(_damageTextPrefab, _uiCanvas.transform).GetComponent<DamageText>();
 
-		damageText.SetText((int)damage);
-		damageText.SetPosition(_character.tr, _offset);
+		damageText.SetUIContent(damage);
+		damageText.SetUIPosition(_uiCanvas, _uiCanvasTr, _character.tr, _offset);
 	}
 
 	public void Damaged(float power)
@@ -111,14 +110,14 @@ public class CharacterDamage : MonoBehaviour
 		}
 
 		// hp Bar 가 없으면 생성
-		if (!_hpBar.activeInHierarchy)
+		if (!_hpBar.IsBarActive)
 		{
-			_hpBar.SetActive(true);
+			_hpBar.IsBarActive = true;
 		}
 
 		SpawnDamageText(damage);
 
-		_hpImage.fillAmount = _hp / _initHp;
+		_hpBar.SetUIContent(_hp / _initHp);
 	}
 	
 	private float CalculateDamage(float power)

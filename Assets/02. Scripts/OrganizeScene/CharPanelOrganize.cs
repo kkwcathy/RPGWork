@@ -117,6 +117,9 @@ public class CharPanelOrganize : MonoBehaviour, IPointerDownHandler,
 		TeamSetPanel teamSetPanel = (TeamSetPanel)_panelDic[PanelType.TeamSet];
 		CharBox attachableBox = teamSetPanel.GetAttachableBox(eventData.position);
 
+		CursorImage.MoveEndHandler moveEndHandler;
+		Vector2 cursorDestPos;
+
 		// 팀 편성 박스에 부착 가능 박스 여부에 따른 작업
 		// 시작 지점이 CharGrid 였을 경우 커서 박스 원위치
 		// 시작 지점이 TeamSet 였을 경우 커서 박스는 기존 링크됐던 CharGrid의 위치로 돌아감과 동시에 링크 해제 (편성 해제)
@@ -124,17 +127,18 @@ public class CharPanelOrganize : MonoBehaviour, IPointerDownHandler,
 		{
 			_selectedBox.BoxInfo.LinkedBox = attachableBox;
 
-			_cursorImage.MoveBegin(
-				attachableBox.TrRect.center, 
-				_panelDic[_selectedPanelType].UpdateBox);
+			moveEndHandler = new CursorImage.MoveEndHandler(_panelDic[_selectedPanelType].UpdateBox);
+			cursorDestPos = attachableBox.TrRect.center;
 		}
 		else
 		{
-			_cursorImage.MoveBegin(
-				_panelDic[_selectedPanelType].GetOriginPos(), 
-				_panelDic[_selectedPanelType].ReturnBox);
+			moveEndHandler = new CursorImage.MoveEndHandler(_panelDic[_selectedPanelType].ReturnBox);
+			cursorDestPos = _panelDic[_selectedPanelType].GetOriginPos();
 		}
 
+		moveEndHandler += teamSetPanel.UpdateStatus;
+
+		_cursorImage.MoveBegin(cursorDestPos, moveEndHandler);
 	}
 
 	private void ShowSelectedBox()
