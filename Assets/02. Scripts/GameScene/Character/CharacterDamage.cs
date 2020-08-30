@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 // 캐릭터 데미지 관리 클래스
 public class CharacterDamage : MonoBehaviour
@@ -17,13 +18,11 @@ public class CharacterDamage : MonoBehaviour
 	private bool _isDamaged = false;
 
 	[SerializeField] private GameObject _hpBarPrefab = null;
-	[SerializeField] private GameObject _damageTextPrefab = null;
-
 	[SerializeField] private float _offset = 3.0f; // Hp Bar와 데미지 텍스트 높이 offset
-
+	
 	private HpBar _hpBar;
-	//private GameObject _hpBar = null;
 
+	private GameUIPool _damageTextPool;
 	private Canvas _uiCanvas;
 	private RectTransform _uiCanvasTr;
 
@@ -63,6 +62,7 @@ public class CharacterDamage : MonoBehaviour
 
 		_uiCanvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
 		_uiCanvasTr = _uiCanvas.GetComponent<RectTransform>();
+		_damageTextPool = _uiCanvas.GetComponent<GameUIPool>();
 
 		GenerateHpBar();
 		_hp = _initHp;
@@ -73,7 +73,7 @@ public class CharacterDamage : MonoBehaviour
 		if(_hp <= 0 && _character.GetStateType() != StateType.Death)
 		{
 			_character.ChangeState(StateType.Death);
-			_hpBar.IsBarActive = false;
+			Destroy(_hpBar.gameObject);
 		}
 		else if (_isDamaged)
 		{
@@ -88,13 +88,45 @@ public class CharacterDamage : MonoBehaviour
 		_hpBar.IsBarActive = false;
 	}
 
-	private void SpawnDamageText(float damage)
+	private void ShowDamageText(float damage = 0.0f)
 	{
-		DamageText damageText = Instantiate(_damageTextPrefab, _uiCanvas.transform).GetComponent<DamageText>();
+		DamageText availableText = _damageTextPool.GetAvailableText();
 
-		damageText.SetUIContent(damage);
-		damageText.SetUIPosition(_uiCanvas, _uiCanvasTr, _character.tr, _offset);
+		//for(int i = 0; i < _damageTextList.Count; ++i)
+		//{
+		//	// 현재 text pool 에서 사용 대기 중인 텍스트 찾기
+		//	if(!_damageTextList[i].IsTextActive)
+		//	{
+		//		Debug.Log(gameObject.name + "겟 성공");
+		//		availableText = _damageTextList[i];
+		//	}
+		//}
+
+		//// 사용 대기 중인 텍스트가 없을 경우 새로 생성
+		//if(availableText == null)
+		//{
+		//	availableText = SpawnNewDamageText();
+		//}
+		
+		availableText.SetUIContent(damage);
+		availableText.SetUIPosition(_uiCanvas, _uiCanvasTr, _character.tr, _offset);
+
+		availableText.ActivateText();
 	}
+
+	//private DamageText SpawnNewDamageText()
+	//{
+	//	GameObject newTextObj = Instantiate(_damageTextPrefab, _uiCanvas.transform);
+	//	newTextObj.name = gameObject.name + "Text";
+	//	newTextObj.SetActive(false);
+
+	//	DamageText newText = newTextObj.GetComponent<DamageText>();
+
+	//	_damageTextList.Add(newText);
+	
+
+	//	return newText;
+	//}
 
 	public void Damaged(float power)
 	{
@@ -115,7 +147,7 @@ public class CharacterDamage : MonoBehaviour
 			_hpBar.IsBarActive = true;
 		}
 
-		SpawnDamageText(damage);
+		ShowDamageText(damage);
 
 		_hpBar.SetUIContent(_hp / _initHp);
 	}
@@ -131,6 +163,16 @@ public class CharacterDamage : MonoBehaviour
 
 		return damage;
 	}
+
+	//private void DestroyUI()
+	//{
+	//	Destroy(_hpBar.gameObject);
+
+	//	for(int i = 0; i < _damageTextList.Count; ++i)
+	//	{
+	//		//_damageTextList[i].TextDestroy();
+	//	}
+	//}
 
 	// 데미지를 받으면 하얗게 깜빡이기
 	public void Blink()

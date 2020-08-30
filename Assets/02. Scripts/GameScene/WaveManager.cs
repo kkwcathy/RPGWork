@@ -27,7 +27,7 @@ public class WaveManager : MonoBehaviour
 	private Character _headPlayer;
 	private int _maxWave = 0;
 
-	private float _waveStartDelayTime = 4.0f; // 새 웨이브 시작 전 딜레이 시간
+	private float _waveStartDelayTime = 2.5f; // 새 웨이브 시작 전 딜레이 시간
 	private float _spawnRunTime = 1.0f; // 적 생성 이벤트 소요 시간
 
 	[SerializeField] private GameObject _waveClearText;

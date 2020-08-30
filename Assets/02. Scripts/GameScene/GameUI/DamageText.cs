@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 // 데미지 텍스트 클래스
 public class DamageText : MonoBehaviour, IMovingGameUI
@@ -7,35 +8,43 @@ public class DamageText : MonoBehaviour, IMovingGameUI
 	private float _elapsedTime = 0.0f;
 	private float _floatTime = 0.5f; // 위로 떠오르는 시간
 	private float _floatSpeed = 0.8f;
+	private float _exitTime = 0.8f;
 
 	private bool _isRun = true;
 
 	private Vector2 _startPos;
 
 	private RectTransform _tr;
-
-	[SerializeField] private Animator _animator;
+	
 	[SerializeField] private TMP_Text _text;
 
 	private void Awake()
     {
 		_tr = GetComponent<RectTransform>();
-		_animator = GetComponent<Animator>();
 	}
-
-	private void Start()
+	
+	public void ActivateText()
 	{
+		_elapsedTime = 0.0f;
+
 		_tr.localPosition = _startPos;
+		_tr.localScale = Vector3.one;
+
+		_isRun = true;
+		gameObject.SetActive(true);
 	}
 
     void Update()
     {
-		UpdateDo();
-    }
-
-	private void UpdateDo()
-	{
 		MoveUI();
+	}
+
+	public bool IsTextActive
+	{
+		get
+		{
+			return gameObject.activeInHierarchy;
+		}
 	}
 
 	public void SetUIPosition(Canvas uiCanvas, RectTransform uiCanvasTr, Transform targetTr, float offset)
@@ -63,13 +72,16 @@ public class DamageText : MonoBehaviour, IMovingGameUI
 		{
 			_tr.Translate(Vector2.up * _elapsedTime * _floatSpeed);
 		}
-		// 떠오르는 시간이 지나면 사라지는 애니메이션 실행 및 파괴
+		else if (_elapsedTime < _exitTime)
+		{
+			float time = (_elapsedTime - _floatTime) / (_exitTime - _floatTime);
+
+			_tr.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, time);
+		}
 		else
 		{
-			_animator.SetTrigger("Disappear");
-
+			gameObject.SetActive(false);
 			_isRun = false;
-			Destroy(gameObject, 0.5f);
 		}
 	}
 }
